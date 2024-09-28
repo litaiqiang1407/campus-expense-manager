@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Transaction } from "../Pages/Index";
 
 const routes = [
     {
@@ -19,11 +19,16 @@ const routes = [
         component: Signup
     },
     {
+        path: '/transaction',
+        name: 'Transaction',
+        component: Transaction
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
         component: NotFound
     },
-    
+
 ]
 
 const router = createRouter({
