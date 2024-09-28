@@ -38,7 +38,7 @@
             <div class="flex flex-col items-center">
                 <a @click.prevent="goToSignup" class="w-[80%] bg-[#00BC2A] rounded-full uppercase text-center font-semibold text-white py-2 mb-8 text-[12px]">Sign up for free</a>
                 <a class="uppercase text-[#00BC2A] font-semibold mb-2 text-[12px]">Sign in</a>
-                <span class="text-[8p]">Version 1</span>
+                <span class="text-[8px]">Version 1</span>
             </div>
         </footer>
     </div>
