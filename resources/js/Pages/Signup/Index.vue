@@ -4,7 +4,7 @@
         <a @click.prevent="goToSignin" class="text-[#00BC2A] font-semibold mb-2 text-[14px] text-center">
             Sign in
         </a>
-        </div>
+    </div>
 </template>
 
 <script setup>

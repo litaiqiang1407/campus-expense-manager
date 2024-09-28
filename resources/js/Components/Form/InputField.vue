@@ -11,12 +11,18 @@
       </label>
       <input
         v-model="inputValue"
-        :type="type"
+        :type="showPassword ? 'text' : type"
         @focus="isFocused = true"
         @blur="onBlur"
         :placeholder="!isFocused && !inputValue ? placeholder : ''"
         class="w-[280px] border-b-2 border-gray-400 py-2 px-4 focus:outline-none focus:border-[#00BC2A] transition duration-200"
-      />    
+      /> 
+      <font-awesome-icon
+        v-if="type === 'password'"
+        :icon="showPassword ? 'eye-slash' : 'eye'"
+        class="absolute right-2 top-4 cursor-pointer text-gray-500"
+        @click="togglePasswordVisibility"
+      />   
     </div>
 </template>
 
@@ -36,6 +42,12 @@ const props = defineProps({
 
 const inputValue = ref('');
 const isFocused = ref(false);
+
+const showPassword = ref(false); 
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;
+};
 
 const onBlur = () => {
   if (!inputValue.value) {

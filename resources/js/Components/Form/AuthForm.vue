@@ -25,7 +25,7 @@
                 <div class="flex flex-col space-y-6">
                     <InputField type="email" placeholder="Email" />
                     <InputField type="password" placeholder="Password" />
-                    <button class="bg-[#00BC2A] text-white rounded py-2 uppercase font-semibold">{{ title }}</button>
+                    <button type="submit" class="bg-[#00BC2A] text-white rounded py-2 uppercase font-semibold">{{ title }}</button>
                 </div>
             </form>
     </div>
