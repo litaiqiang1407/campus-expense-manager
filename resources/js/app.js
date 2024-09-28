@@ -2,8 +2,14 @@ import './bootstrap';
 
 import { createApp } from 'vue';
 
-import app from "./Components/App.vue";
+import App from "./Components/App.vue";
 
 import router from "./Router/Index";
 
-createApp(app).use(router).mount('#app');
+import FontAwesomeIcon from './Components/FontAwesomeIcon/Index'
+
+const app = createApp(App);
+
+app.component('font-awesome-icon', FontAwesomeIcon);
+
+app.use(router).mount('#app');
