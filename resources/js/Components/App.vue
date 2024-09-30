@@ -1,8 +1,8 @@
 <template>
-    <component :is="layoutComponent">
+    <component :is="layoutComponent" v-bind="layoutProps">
       <router-view />
     </component>
-  </template>
+</template>
 
 <script setup>
 import { computed } from 'vue';
@@ -11,6 +11,10 @@ import NoneLayout from '@/Components/Layout/NoneLayout.vue';
 
 const route = useRoute();
 const layoutComponent = computed(() => {
-    return route.meta.layout ? route.meta.layout : NoneLayout;
+    return route.meta.layout || NoneLayout;
+});
+
+const layoutProps = computed(() => {
+  return { title: route.meta.title || 'Default Title' };
 });
 </script>

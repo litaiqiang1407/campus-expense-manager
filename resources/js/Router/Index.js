@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account } from "../Pages/Index";
-import { Home, NotFound, Welcome, Signup, Transaction, Signin } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction } from "../Pages/Index";
 
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
@@ -40,7 +39,9 @@ const routes = [
     {
         path: '/account',
         name: 'Account',
-        component: Account
+        component: Account,
+        meta: { layout: HeaderLayout, title: 'Account' }, 
+        props: (route) => ({ title: route.meta.title }), 
     },
     
 

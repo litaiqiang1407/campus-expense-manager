@@ -65,6 +65,6 @@ const activeButton = ref('Home');
 
 const setActive = (button) => {
   activeButton.value = button;
-//   router.push({ name: button });
+  router.push({ name: button });
 };
 </script>

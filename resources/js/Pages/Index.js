@@ -5,4 +5,3 @@ export { default as Signup } from './Signup/Index.vue';
 export { default as Signin } from './Signin/Index.vue';
 export { default as Account } from './Account/Index.vue';
 export { default as Transaction } from './Transaction/Index.vue';
-export { default as Signin } from './Signin/Index.vue';
