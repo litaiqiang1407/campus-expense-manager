@@ -10,11 +10,11 @@ import { useRoute } from 'vue-router';
 import NoneLayout from '@/Components/Layout/NoneLayout.vue';
 
 const route = useRoute();
-const layoutComponent = computed(() => {
-    return route.meta.layout || NoneLayout;
-});
+
+const layoutComponent = computed(() => route.meta.layout || NoneLayout);
 
 const layoutProps = computed(() => {
-  return { title: route.meta.title || 'Default Title' };
+  const { title, isBack } = route.meta;
+  return layoutComponent.value === NoneLayout ? {} : { title, isBack };
 });
 </script>
