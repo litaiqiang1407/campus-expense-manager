@@ -56,15 +56,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
+const route = useRoute();
 
-const activeButton = ref('Home');
+const activeButton = ref(route.name);
 
 const setActive = (button) => {
   activeButton.value = button;
   router.push({ name: button });
 };
+
+watch(route, (newRoute) => {
+  activeButton.value = newRoute.name;
+});
 </script>
