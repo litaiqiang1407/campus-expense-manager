@@ -24,7 +24,8 @@ const routes = [
     {
         path: '/transaction',
         name: 'Transaction',
-        component: Transaction
+        component: Transaction,
+        meta: { layout: MenuLayout },
     },
     {
         path: '/signin',
