@@ -4,6 +4,8 @@ import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction } from ".
 
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
+import { Support, Menu } from "../Components/Header/Components/Index";
+
 const routes = [
     {
         path: '/',
@@ -41,8 +43,8 @@ const routes = [
         path: '/account',
         name: 'Account',
         component: Account,
-        meta: { layout: DefaultLayout, title: 'Account', isBack: false }, 
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }), 
+        meta: { layout: DefaultLayout, title: 'Account', isBack: false, headerComponent: [Support]}, 
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }), 
     },
 ]
 

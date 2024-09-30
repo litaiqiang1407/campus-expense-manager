@@ -1,9 +1,9 @@
 <template>
-  <div class="flex items-center justify-between fixed bottom-0 w-screen">
+  <div class="flex items-center justify-between fixed bottom-0 w-screen bg-white">
     <!-- Home button -->
     <button
       class="w-1/5 flex flex-col items-center space-y-[4px] py-4 px-2"
-      :class="activeButton === 'Home' ? 'text-black' : 'text-[#A7A7A7]'"
+      :class="activeButton === 'Home' ? 'text-black' : 'text-secondaryText'"
       @click="setActive('Home')"
     >
       <font-awesome-icon icon="house" />
@@ -13,7 +13,7 @@
     <!-- Transaction button -->
     <button
       class="w-1/5 flex flex-col items-center space-y-[4px] py-4 px-2"
-      :class="activeButton === 'Transaction' ? 'text-black' : 'text-[#A7A7A7]'"
+      :class="activeButton === 'Transaction' ? 'text-black' : 'text-secondaryText'"
       @click="setActive('Transaction')"
     >
       <font-awesome-icon icon="wallet" />
@@ -25,18 +25,13 @@
       class="w-1/5 flex flex-col items-center text-white"
       @click="setActive('Add')"
     >
-      <div
-        :class="activeButton === 'Add' ? 'bg-[#00A924]' : 'bg-[#00BC2A]'"
-        class="rounded-full w-12 h-12 flex items-center justify-center"
-      >
-        <font-awesome-icon icon="plus" class="text-white" />
-      </div>
+      <div class="w-12 h-12"><AddButton /></div>
     </button>
 
     <!-- Budget button -->
     <button
       class="w-1/5 flex flex-col items-center space-y-[4px] py-4 px-2"
-      :class="activeButton === 'Budget' ? 'text-black' : 'text-[#A7A7A7]'"
+      :class="activeButton === 'Budget' ? 'text-black' : 'text-secondaryText'"
       @click="setActive('Budget')"
     >
       <font-awesome-icon icon="money-bills" />
@@ -46,7 +41,7 @@
     <!-- Account button -->
     <button
       class="w-1/5 flex flex-col items-center space-y-[4px] py-4 px-2"
-      :class="activeButton === 'Account' ? 'text-black' : 'text-[#A7A7A7]'"
+      :class="activeButton === 'Account' ? 'text-black' : 'text-secondaryText'"
       @click="setActive('Account')"
     >
       <font-awesome-icon icon="user" />
@@ -58,6 +53,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import AddButton from '../Button/Add/Index.vue'
 
 const router = useRouter();
 const route = useRoute();

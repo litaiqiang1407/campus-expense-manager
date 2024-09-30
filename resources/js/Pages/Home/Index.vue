@@ -2,9 +2,9 @@
         <Header />
         <main class="p-4 flex flex-col space-y-4">
             <div class="bg-white rounded-lg py-2 pl-2 shadow">
-                <div class="flex items-center justify-between border-b-[1px] border-[#A7A7A7] pb-2 pr-2">
+                <div class="flex items-center justify-between border-b-[1px] border-secondaryText pb-2 pr-2">
                     <span class="font-semibold text-[14px]">My Wallets</span>
-                    <button class="text-[#00BC2A] font-semibold text-[10px]">See all</button>
+                    <button class="text-primary font-semibold text-[10px]">See all</button>
                 </div>
                 <div class="flex items-center justify-between py-2 pr-2">
                     <div class="flex items-center">

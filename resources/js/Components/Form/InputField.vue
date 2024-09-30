@@ -2,7 +2,7 @@
     <div class="relative w-full">
         <label
         :class="{
-          'transform -translate-y-6 left-0 text-[#00BC2A] text-sm': isFocused || inputValue,
+          'transform -translate-y-6 left-0 text-primary text-sm': isFocused || inputValue,
           'absolute left-4 top-3 text-gray-500': !isFocused && !inputValue,
         }"
         class="transition-all duration-200"
@@ -15,7 +15,7 @@
         @focus="isFocused = true"
         @blur="onBlur"
         :placeholder="!isFocused && !inputValue ? placeholder : ''"
-        class="w-[280px] border-b-2 border-gray-400 py-2 px-4 focus:outline-none focus:border-[#00BC2A] transition duration-200"
+        class="w-[280px] border-b-2 border-gray-400 py-2 px-4 focus:outline-none focus:border-primary transition duration-200"
       /> 
       <font-awesome-icon
         v-if="type === 'password'"

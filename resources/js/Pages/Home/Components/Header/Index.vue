@@ -6,7 +6,7 @@
                     <font-awesome-icon icon="eye" class="ml-2 text-[16px]" />
                 </div>
                 <div class="flex items-center mt-1">
-                    <span class="text-[8px] text-[#A7A7A7]">Total Balance</span>
+                    <span class="text-[8px] text-secondaryText">Total Balance</span>
                     <font-awesome-icon icon="circle-question" class="ml-2 text-[12px] text-[#999]" />
                 </div>
             </div>
