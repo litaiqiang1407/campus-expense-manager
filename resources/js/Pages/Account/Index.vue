@@ -1,12 +1,13 @@
 <template>
     <!-- Header -->
     <div class="p-2 bg-gray-100">
-        <h1 class="text-xl font-bold text-[#000000] mb-1">Account</h1> 
+        <h1 class="text-xl font-bold text-[#000000] mb-1">Account</h1>
     </div>
     <!-- User info -->
     <div class=" flex items-center justify-center">
         <!-- Avatar Circle -->
-        <div class="flex items-center justify-center w-16 h-16 bg-teal-400 text-white text-2xl font-bold rounded-full absolute z-0">
+        <div
+            class="flex items-center justify-center w-16 h-16 bg-teal-400 text-white text-2xl font-bold rounded-full absolute z-0">
             T
         </div>
 
@@ -21,7 +22,9 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full fill-gray-400" viewBox="0 0 24 24">
                     <rect fill-opacity="0" fill="#FFFFFF" x="0" y="0" width="24" height="24"></rect>
                     <polygon fill="#999999" points="8 10 0 0 24 0 24 20 0 20"></polygon>
-                    <polygon fill="#606060" transform="translate(20.000000, 4.000000) scale(1, -1) translate(-20.000000, -4.000000)" points="16 0 24 8 24 0"></polygon>
+                    <polygon fill="#606060"
+                        transform="translate(20.000000, 4.000000) scale(1, -1) translate(-20.000000, -4.000000)"
+                        points="16 0 24 8 24 0"></polygon>
                 </svg>
             </div>
 
@@ -29,8 +32,12 @@
             <div class="w-6 h-6 ml-12 relative z-40">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full fill-gray-400" viewBox="0 0 24 24">
                     <rect fill-opacity="0" fill="#FFFFFF" x="0" y="0" width="24" height="24"></rect>
-                    <polygon fill="#999999" transform="translate(12.000000, 10.000000) scale(-1, 1) translate(-12.000000, -10.000000)" points="8 10 0 0 24 0 24 20 0 20"></polygon>
-                    <polygon fill="#606060" transform="translate(4.000000, 4.000000) scale(-1, -1) translate(-4.000000, -4.000000)" points="0 0 8 8 8 0"></polygon>
+                    <polygon fill="#999999"
+                        transform="translate(12.000000, 10.000000) scale(-1, 1) translate(-12.000000, -10.000000)"
+                        points="8 10 0 0 24 0 24 20 0 20"></polygon>
+                    <polygon fill="#606060"
+                        transform="translate(4.000000, 4.000000) scale(-1, -1) translate(-4.000000, -4.000000)"
+                        points="0 0 8 8 8 0"></polygon>
                 </svg>
             </div>
         </div>
@@ -42,17 +49,19 @@
     </div>
     <!-- Poster -->
     <div class="h-28 bg-gray-200 border border-gray-300 flex items-center justify-center text-center">
-        <h2 class="text-lg font-semibold">Quảng Cáo</h2>
-        <p class="text-sm text-gray-600"></p>
-    </div>  
-    <div class="bg-white w-full max-w-sm p-4">
-    <!-- My Wallets -->
-    <div class="flex items-center justify-between py-2">
-        <div class="flex items-center space-x-3">
-            <font-awesome-icon icon="wallet" class=""/>
-            <span class="text-gray-800 text-sm">My Wallets</span>
-        </div>
+        <video class="w-full h-full object-cover" controls>
+            <source src="../assets/video/demovideo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
     </div>
 
-</div>
+    <div class="bg-white w-full max-w-sm p-4">
+        <!-- My Wallets -->
+        <div class="flex items-center justify-between py-2">
+            <div class="flex items-center space-x-3">
+                <font-awesome-icon icon="wallet" class="" />
+                <span class="text-gray-800 text-sm">My Wallets</span>
+            </div>
+        </div>
+    </div>
 </template>

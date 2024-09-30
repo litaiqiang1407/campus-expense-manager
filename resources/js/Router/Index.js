@@ -43,8 +43,6 @@ const routes = [
         meta: { layout: HeaderLayout, title: 'Account' }, 
         props: (route) => ({ title: route.meta.title }), 
     },
-    
-
 ]
 
 const router = createRouter({
