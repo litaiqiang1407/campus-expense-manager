@@ -1,12 +1,10 @@
 <template>
     <div style="background-color: #EFFBFF;">
-        <Header/>
+        <Header />
         <slot></slot>
-        <BottomBar/>
     </div>
 </template>
 
 <script setup>
 import Header from '@/Components/Header/Index.vue';
-import BottomBar from '@/Components/BottomBar/Index.vue';
 </script>
