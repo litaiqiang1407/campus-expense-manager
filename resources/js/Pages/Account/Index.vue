@@ -53,6 +53,6 @@
             <span class="text-gray-800 text-sm">My Wallets</span>
         </div>
     </div>
-    
+
 </div>
 </template>
