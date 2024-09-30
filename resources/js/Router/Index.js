@@ -24,7 +24,8 @@ const routes = [
     {
         path: '/transaction',
         name: 'Transaction',
-        component: Transaction
+        component: Transaction,
+        meta: { layout: MenuLayout },
     },
     {
         path: '/signin',
@@ -40,10 +41,9 @@ const routes = [
         path: '/account',
         name: 'Account',
         component: Account,
-        meta: { layout: MenuLayout }
+        meta: { layout: DefaultLayout, title: 'Account', isBack: false }, 
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }), 
     },
-    
-
 ]
 
 const router = createRouter({

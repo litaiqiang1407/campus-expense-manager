@@ -1,8 +1,8 @@
 <template>
-    <component :is="layoutComponent">
+    <component :is="layoutComponent" v-bind="layoutProps">
       <router-view />
     </component>
-  </template>
+</template>
 
 <script setup>
 import { computed } from 'vue';
@@ -10,7 +10,11 @@ import { useRoute } from 'vue-router';
 import NoneLayout from '@/Components/Layout/NoneLayout.vue';
 
 const route = useRoute();
-const layoutComponent = computed(() => {
-    return route.meta.layout ? route.meta.layout : NoneLayout;
+
+const layoutComponent = computed(() => route.meta.layout || NoneLayout);
+
+const layoutProps = computed(() => {
+  const { title, isBack } = route.meta;
+  return layoutComponent.value === NoneLayout ? {} : { title, isBack };
 });
 </script>
