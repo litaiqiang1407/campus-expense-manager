@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import { Home, NotFound, Welcome, Signup, Signin, Account } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Transaction, Signin } from "../Pages/Index";
 
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
@@ -22,6 +23,11 @@ const routes = [
         component: Signup
     },
     {
+        path: '/transaction',
+        name: 'Transaction',
+        component: Transaction
+    },
+    {
         path: '/signin',
         name: 'Signin',
         component: Signin
@@ -37,6 +43,7 @@ const routes = [
         component: Account
     },
     
+
 ]
 
 const router = createRouter({
