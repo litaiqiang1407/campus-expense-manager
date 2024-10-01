@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Budget } from "../Pages/Index";
 
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
@@ -44,6 +44,14 @@ const routes = [
         meta: { layout: DefaultLayout, title: 'Account', isBack: false }, 
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }), 
     },
+    {
+        path: '/budget',
+        name: 'Budget',
+        component: Budget,
+        meta: { layout: DefaultLayout, title: 'Budget', isBack: false }, 
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }), 
+    },
+
 ]
 
 const router = createRouter({
