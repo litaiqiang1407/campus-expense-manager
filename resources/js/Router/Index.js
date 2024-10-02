@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+// Import pages
 import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction } from "../Pages/Index";
 
+// Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
 const routes = [
@@ -41,14 +43,14 @@ const routes = [
         path: '/account',
         name: 'Account',
         component: Account,
-        meta: { layout: DefaultLayout, title: 'Account', isBack: false }, 
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }), 
+        meta: { layout: DefaultLayout, title: 'Account', isBack: false },
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }),
     },
-]
+];
 
 const router = createRouter({
     history: createWebHistory(),
     routes
-})
+});
 
 export default router;

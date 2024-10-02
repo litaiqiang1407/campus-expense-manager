@@ -1,8 +1,4 @@
 <template>
-    <!-- Header -->
-    <div class="p-2 bg-gray-100">
-        <h1 class="text-xl font-bold text-[#000000] mb-1">Account</h1>
-    </div>
     <!-- User info -->
     <div class=" flex items-center justify-center">
         <!-- Avatar Circle -->
@@ -48,12 +44,14 @@
         <p class="text-xs text-gray-500">tranvuca213@gmail.com</p>
     </div>
     <!-- Poster -->
-    <<div class="h-28 bg-gray-200 border border-gray-300 flex items-center justify-center text-center">
+    <div class="h-28 bg-gray-200 border border-gray-300 flex items-center justify-center text-center">
         <video class="w-full h-full object-cover" autoplay controls loop>
             <source src="/public/assets/video/demovideo.mp4" type="video/mp4" />
             Your browser does not support the video tag.
-        </video>
-        </div>
+        </video>    
+    </div>
+
+    <div class="bg-white w-full max-w-sm p-4">
         <!-- My Wallets -->
         <div class="flex items-center justify-between py-2">
             <div class="flex items-center space-x-3">
@@ -61,7 +59,7 @@
                 <span class="text-black font-medium text-sm">My Wallets</span>
             </div>
             <div>
-                <font-awesome-icon icon="angle-right" class="text-gray-400 size-5 pr-3" />
+                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
             </div>
         </div>
         <!-- Categories -->
@@ -71,14 +69,55 @@
                 <span class="text-black font-medium text-sm">Categories</span>
             </div>
             <div>
-                <font-awesome-icon icon="angle-right" class="text-gray-400 size-5 pr-3" />
+                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
             </div>
         </div>
         <!-- Connect to banks (Highlighted Button) -->
-        <div class="flex items-center justify-center">
-            <button class="bg-green-100 text-green-600 font-semibold px-4 py-2 rounded-lg w-full text-center shadow-sm">
+        <div class="flex items-center justify-center py-4">
+            <button class="bg-green-100 text-green-600 font-semibold px-4 py-1 rounded-3xl w-full text-center shadow-sm">
                 Connect to banks
             </button>
         </div>
+         <!-- Recurring Transactions -->
+        <div class="flex items-center justify-between py-2">
+            <div class="flex items-center space-x-3">
+                <font-awesome-icon icon="money-bills" class="text-gray-400 size-5 px-2" />
+                <span class="text-black font-medium text-sm">Recurring Transactions</span>
+            </div>
+            <div>
+                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+            </div>
         </div>
+         <!-- Debt -->
+        <div class="flex items-center justify-between py-2">
+            <div class="flex items-center space-x-3">
+                <font-awesome-icon icon="cubes" class="text-gray-400 size-5 px-2" />
+                <span class="text-black font-medium text-sm">Debt</span>
+            </div>
+            <div>
+                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+            </div>
+        </div>
+         <!-- Settings -->
+        <div class="flex items-center justify-between py-2">
+            <div class="flex items-center space-x-3">
+                <font-awesome-icon icon="cubes" class="text-gray-400 size-5 px-2" />
+                <span class="text-black font-medium text-sm">Settings</span>
+            </div>
+            <div>
+                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+            </div>
+        </div>
+         <!-- About -->
+        <div class="flex items-center justify-between py-2">
+            <div class="flex items-center space-x-3">
+                <font-awesome-icon icon="cubes" class="text-gray-400 size-5 px-2" />
+                <span class="text-black font-medium text-sm">About</span>
+            </div>
+            <div>
+                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+            </div>
+        </div>
+    </div>
+
 </template>

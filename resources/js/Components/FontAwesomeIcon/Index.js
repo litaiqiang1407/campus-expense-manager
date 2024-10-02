@@ -16,7 +16,8 @@ import {
   faEllipsisVertical, 
   faChevronDown,
   faAngleRight,
-  faCubes
+  faCubes,
+  faMoneyBill
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
@@ -36,7 +37,8 @@ library.add(
   faBell,
   faGoogle,
   faAngleRight,
-  faCubes
+  faCubes,
+  faMoneyBill
 
 );
 
