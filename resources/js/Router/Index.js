@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification } from "../Pages/Index";
 
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
@@ -45,6 +45,13 @@ const routes = [
         component: Account,
         meta: { layout: DefaultLayout, title: 'Account', isBack: false, headerComponent: [Support]}, 
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }), 
+    },
+    {
+        path: '/notification',
+        name: 'Notification',
+        component: Notification,
+        meta: { layout: HeaderLayout, title: 'Notifications', isBack: false, isCancel: true},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }), 
     },
 ]
 

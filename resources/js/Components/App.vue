@@ -14,7 +14,7 @@ const route = useRoute();
 const layoutComponent = computed(() => route.meta.layout || NoneLayout);
 
 const layoutProps = computed(() => {
-  const { title, isBack, headerComponent } = route.meta;
-  return layoutComponent.value === NoneLayout ? {} : { title, isBack, headerComponent };
+  const { title = '', isBack = false, isCancel = false, headerComponent = null } = route.meta;
+  return layoutComponent.value === NoneLayout ? {} : { title, isBack, isCancel, headerComponent };
 });
 </script>

@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col h-screen">
         <header class="h-13 px-4 py-2 flex items-center space-x-4">
-            <img src="/public/assets/img/logo.png" alt="Logo" class="h-8 w-8"/>
+            <img src="/assets/img/logo.png" alt="Logo" class="h-8 w-8"/>
             <h1 class="text-primary font-bold">Campus Expense</h1>
         </header>
         <main class="flex flex-1 items-center justify-center">
@@ -16,19 +16,19 @@
             >
                 <swiper-slide>
                     <div class="flex flex-col items-center">
-                        <img src="/public/assets/img/welcome-banner1.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
+                        <img src="/assets/img/welcome-banner1.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
                         <span class="font-semibold text-2xl">Simple money tracker</span>
                     </div>
                 </swiper-slide>
                 <swiper-slide>
                     <div class="flex flex-col items-center">
-                        <img src="/public/assets/img/welcome-banner2.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
+                        <img src="/assets/img/welcome-banner2.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
                         <span class="font-semibold text-2xl">Painless budgeting</span>
                     </div>
                 </swiper-slide>
                 <swiper-slide>
                     <div class="flex flex-col items-center">
-                        <img src="/public/assets/img/welcome-banner3.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
+                        <img src="/assets/img/welcome-banner3.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
                         <span class="font-semibold text-2xl">The whole picture in one place</span>
                     </div>
                 </swiper-slide>

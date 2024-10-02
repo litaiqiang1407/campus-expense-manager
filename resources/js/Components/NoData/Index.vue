@@ -1,14 +1,12 @@
 <template>
-    <div class="no-data-container flex flex-col items-center justify-center">
-      <img :src="imageUrl" alt="No Data" class="no-data-image" />
-      <p class="no-data-text text-center mt-2">{{ message }}</p>
+    <div class="flex flex-col items-center justify-center" :style="{ minHeight: 'calc(100vh - 52px)' }">
+      <img :src="imageUrl" alt="No Data" class="w-32 h-auto" />
+      <p class="text-center mt-8 font-semibold">{{ message }}</p>
     </div>
-  </template>
+</template>
 
-  <script setup>
-  import { defineProps } from 'vue';
-
-  const props = defineProps({
+<script setup>
+const props = defineProps({
     message: {
       type: String,
       required: true
@@ -18,17 +16,5 @@
       default: () => '/assets/img/withoutdata.png'
     }
   });
-  </script>
+</script>
 
-  <style scoped>
-  .no-data-container {
-  }
-
-  .no-data-image {
-    width: 100px;
-    height: auto;
-  }
-
-  .no-data-text {
-  }
-  </style>
