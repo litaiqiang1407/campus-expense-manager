@@ -40,8 +40,8 @@
     </div>
     <!-- User info -->
     <div class="text-center p-1">
-        <h2 class="text-sm font-semibold text-gray-800">Tranvuca213</h2>
-        <p class="text-xs text-gray-500">tranvuca213@gmail.com</p>
+        <h2 class="text-sm font-semibold text-black">Tranvuca213</h2>
+        <p class="text-xs">tranvuca213@gmail.com</p>
     </div>
     <!-- Poster -->
     <div class="h-28 bg-gray-200 border border-gray-300 flex items-center justify-center text-center">
