@@ -2,9 +2,9 @@
   <div class="flex flex-col items-center justify-start pt-5">
     <div class="flex flex-col items-center p-4">
       <img src="/public/assets/img/logo.png" alt="Logo" class="h-24 w-24 rounded-xl" />
-      <h3 class="text-[#000000] font-bold text-2xl mt-2">Money Lover</h3>
-      <h1 class="text-[#A7A7A7] font-bold text-sm">Version 8.23.0.3</h1>
-      <h1 class="text-[#A7A7A7] font-bold text-sm mb-2">by Finsify</h1>
+      <h3 class="text-[#000000] font-semibold text-2xl mt-2">Money Lover</h3>
+      <h1 class="text-[#A7A7A7] font-semibold text-sm">Version 8.23.0.3</h1>
+      <h1 class="text-[#A7A7A7] font-semibold text-sm mb-2">by Finsify</h1>
     </div>
 
   </div>
@@ -13,12 +13,12 @@
   <div class="container flex flex-col items-center">
     <div class="flex items-center justify-center w-full px-6">
       <div class="icon flex flex-col items-center flex-1">
-        <img src="/public/assets/img/logobook.png" alt="Walkthrough Icon" class="h-12 w-12" />
+        <img src="/public/assets/img/logobook.png" alt="Walkthrough Icon" class="h-12 w-12 " />
         <div>Walkthrough</div>
       </div>
       <div class="divider"></div>
       <div class="icon flex flex-col items-center flex-1">
-        <img src="/public/assets/img/logoquesiton.png" alt="Support Icon" class="h-12 w-12" />
+        <img src="/public/assets/img/logoquestion.png" alt="Support Icon" class="h-12 w-12" />
         <div>Support</div>
       </div>
     </div>
@@ -146,7 +146,7 @@
 }
 
 .mt-6 {
-  margin-top: 24px;
+  margin-top: 10px;
 }
 .footer {
     width: 100%;
@@ -161,6 +161,7 @@
     margin: 0;
     color: #000000;
     padding-left: 10px;
+    font-size: 70%;
   }
   .option img.option-icon {
     width: 30px; 
