@@ -55,7 +55,7 @@
         <!-- My Wallets -->
         <div class="flex items-center justify-between py-2">
             <div class="flex items-center space-x-3">
-                <font-awesome-icon icon="wallet" class="text-gray-400 size-5 px-2" />
+                <font-awesome-icon icon="wallet" class="secondaryText size-5 px-2" />
                 <span class="text-black font-medium text-sm">My Wallets</span>
             </div>
             <div>
