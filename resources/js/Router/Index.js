@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction,} from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, MyAccount} from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
@@ -47,6 +47,12 @@ const routes = [
         component: Account,
         meta: { layout: DefaultLayout, title: 'Account', isBack: false, headerComponent: [Support]}, 
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }), 
+    },
+    {
+        path: '/myaccount',
+        name: 'MyAccount',
+        component: MyAccount,
+        
     },
 ];
 
