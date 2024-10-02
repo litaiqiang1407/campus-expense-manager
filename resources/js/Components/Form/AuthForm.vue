@@ -5,11 +5,11 @@
 
             <div class="flex flex-col space-y-4 text-center mb-4">
                 <button class="flex items-center space-x-8 rounded border-2 px-8 py-2 text-blueText border-blueText">
-                    <img src="/public/assets/img/facebook.png" alt="Facebook" class="h-6 w-6"/>
+                    <img src="/assets/img/facebook.png" alt="Facebook" class="h-6 w-6"/>
                     <span class="uppercase font-semibold">Connect with Facebook</span>
                 </button>
                 <button class="flex items-center space-x-8 rounded border-2 px-8 py-2 text-redText border-redText">
-                    <img src="/public/assets/img/google.png" alt="Facebook" class="h-6 w-6"/>
+                    <img src="/assets/img/google.png" alt="Facebook" class="h-6 w-6"/>
                     <span class="uppercase font-semibold">Connect with Google</span>
                 </button>
                 <span class="text-[#999] text-[10px]">We’ll never post without your permission.</span>

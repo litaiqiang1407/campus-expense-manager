@@ -10,8 +10,18 @@
                     <font-awesome-icon icon="circle-question" class="ml-2 text-[12px] text-[#999]" />
                 </div>
             </div>
-            <div class="flex items-center justify-center">
+            <div class="flex items-center justify-center" @click="goToNotification">
                 <font-awesome-icon icon="bell" class="text-[20px]" />
             </div>
         </header>
 </template>
+
+<script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const goToNotification = () => {
+    router.push({ name: 'Notification' });
+};
+</script>

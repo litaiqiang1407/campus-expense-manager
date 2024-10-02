@@ -10,23 +10,15 @@
         </div>
     </header>
 </template>
-
 <script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-const props = defineProps({
-    title: {
-        type: String,
-        default: ''
-    },
-    isBack: {
-        type: Boolean,
-        default: true
-    },
-    isCancel: {
-        type: Boolean,
-        default: false
-    }
-});
+const route = useRoute();
+
+const title = computed(() => route.meta.title || '');
+const isBack = computed(() => route.meta.isBack !== false);  
+const isCancel = computed(() => route.meta.isCancel === true); 
 
 const goBack = () => {
     window.history.back()
