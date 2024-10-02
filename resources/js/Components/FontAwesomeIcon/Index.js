@@ -17,8 +17,13 @@ import {
   faChevronDown,
   faAngleRight,
   faCubes,
-  faMoneyBill
+  faMoneyBill,
+  faChevronDown, 
+  faXmark
 } from '@fortawesome/free-solid-svg-icons';
+
+import { faCircleQuestion as faCircleQuestionRegular } from '@fortawesome/free-regular-svg-icons';
+
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 library.add(
@@ -38,8 +43,10 @@ library.add(
   faGoogle,
   faAngleRight,
   faCubes,
-  faMoneyBill
+  faMoneyBill,
 
+  faXmark ,
+  faCircleQuestionRegular
 );
 
 export default FontAwesomeIcon;
