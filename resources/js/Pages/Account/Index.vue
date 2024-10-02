@@ -11,7 +11,9 @@
         <div class="flex items-center pt-16 relative z-40">
             <div class="bg-gray-500 text-white text-xs px-3 py-1 shadow whitespace-nowrap">BASIC ACCOUNT</div>
         </div>
-
+        <div class="relative">
+            <font-awesome-icon icon="angle-right" class=" text-secondaryText size-5 pr-3 absolute z-40 pl-24 pt-3" />
+        </div>
         <div class="flex items-center pt-12 absolute z-20">
             <!-- Left Icon -->
             <div class="w-6 h-6 mr-12 relative z-40">
@@ -38,10 +40,11 @@
             </div>
         </div>
     </div>
+   
     <!-- User info -->
     <div class="text-center p-1">
         <h2 class="text-sm font-semibold text-black">Tranvuca213</h2>
-        <p class="text-xs">tranvuca213@gmail.com</p>
+        <p class="text-xs text-secondaryText">tranvuca213@gmail.com</p>
     </div>
     <!-- Poster -->
     <div class="h-28 bg-gray-200 border border-gray-300 flex items-center justify-center text-center">
@@ -55,67 +58,67 @@
         <!-- My Wallets -->
         <div class="flex items-center justify-between py-2">
             <div class="flex items-center space-x-3">
-                <font-awesome-icon icon="wallet" class="secondaryText size-5 px-2" />
+                <font-awesome-icon icon="wallet" class="text-secondaryText size-5 px-2" />
                 <span class="text-black font-medium text-sm">My Wallets</span>
             </div>
             <div>
-                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+                <font-awesome-icon icon="angle-right" class="text-secondaryText size-4 pr-3" />
             </div>
         </div>
         <!-- Categories -->
         <div class="flex items-center justify-between py-2">
             <div class="flex items-center space-x-3">
-                <font-awesome-icon icon="cubes" class="text-gray-400 size-5 px-2" />
+                <font-awesome-icon icon="cubes" class="text-secondaryText size-5 px-2" />
                 <span class="text-black font-medium text-sm">Categories</span>
             </div>
             <div>
-                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+                <font-awesome-icon icon="angle-right" class="text-secondaryText size-4 pr-3" />
             </div>
         </div>
         <!-- Connect to banks (Highlighted Button) -->
         <div class="flex items-center justify-center py-4">
-            <button class="bg-green-100 text-green-600 font-semibold px-4 py-1 rounded-3xl w-full text-center shadow-sm">
+            <button class="bg-green-100 text-primary font-semibold px-4 py-1 rounded-3xl w-full text-center shadow-sm">
                 Connect to banks
             </button>
         </div>
          <!-- Recurring Transactions -->
         <div class="flex items-center justify-between py-2">
             <div class="flex items-center space-x-3">
-                <font-awesome-icon icon="money-bills" class="text-gray-400 size-5 px-2" />
+                <font-awesome-icon icon="money-bills" class="text-secondaryText size-5 px-2" />
                 <span class="text-black font-medium text-sm">Recurring Transactions</span>
             </div>
             <div>
-                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+                <font-awesome-icon icon="angle-right" class="text-secondaryText size-4 pr-3" />
             </div>
         </div>
          <!-- Debt -->
         <div class="flex items-center justify-between py-2">
             <div class="flex items-center space-x-3">
-                <font-awesome-icon icon="cubes" class="text-gray-400 size-5 px-2" />
+                <font-awesome-icon icon="hand-holding-dollar" class="text-secondaryText size-5 px-2" />
                 <span class="text-black font-medium text-sm">Debt</span>
             </div>
             <div>
-                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+                <font-awesome-icon icon="angle-right" class="text-secondaryText size-4 pr-3" />
             </div>
         </div>
          <!-- Settings -->
         <div class="flex items-center justify-between py-2">
             <div class="flex items-center space-x-3">
-                <font-awesome-icon icon="cubes" class="text-gray-400 size-5 px-2" />
+                <font-awesome-icon icon="gear" class="text-secondaryText size-5 px-2" />
                 <span class="text-black font-medium text-sm">Settings</span>
             </div>
             <div>
-                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+                <font-awesome-icon icon="angle-right" class="text-secondaryText size-4 pr-3" />
             </div>
         </div>
          <!-- About -->
         <div class="flex items-center justify-between py-2">
             <div class="flex items-center space-x-3">
-                <font-awesome-icon icon="cubes" class="text-gray-400 size-5 px-2" />
+                <font-awesome-icon icon="circle-info" class="text-secondaryText size-5 px-2" />
                 <span class="text-black font-medium text-sm">About</span>
             </div>
             <div>
-                <font-awesome-icon icon="angle-right" class="text-gray-400 size-4 pr-3" />
+                <font-awesome-icon icon="angle-right" class="text-secondaryText size-4 pr-3" />
             </div>
         </div>
     </div>

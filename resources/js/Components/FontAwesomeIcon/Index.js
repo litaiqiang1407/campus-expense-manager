@@ -18,19 +18,19 @@ import {
   faAngleRight,
   faCubes,
   faMoneyBill,
-  faChevronDown, 
-  faXmark
+  faXmark,
+  faHandHoldingDollar,
+  faGear,
+  faCircleInfo
+
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCircleQuestion as faCircleQuestionRegular } from '@fortawesome/free-regular-svg-icons';
-
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
+// Add icons to the library
 library.add(
   faArrowLeft,
-  faMagnifyingGlass,
-  faEllipsisVertical,
-  faChevronDown,
   faEye,
   faEyeSlash,
   faHome,
@@ -40,13 +40,18 @@ library.add(
   faUser,
   faCircleQuestion,
   faBell,
-  faGoogle,
+  faMagnifyingGlass,
+  faEllipsisVertical,
+  faChevronDown,
   faAngleRight,
   faCubes,
   faMoneyBill,
-
-  faXmark ,
-  faCircleQuestionRegular
+  faXmark,
+  faCircleQuestionRegular,
+  faGoogle,
+  faHandHoldingDollar,
+  faGear,
+  faCircleInfo
 );
 
 export default FontAwesomeIcon;
