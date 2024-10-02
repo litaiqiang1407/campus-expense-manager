@@ -1,7 +1,7 @@
 <template>
-    <div class="no-data-container flex flex-col items-center justify-center">
-      <img :src="imageUrl" alt="No Data" class="no-data-image" />
-      <p class="no-data-text text-center mt-2">{{ message }}</p>
+    <div class="h-screen flex flex-col items-center justify-center"> 
+      <img :src="imageUrl" alt="No Data" class="w-24 h-auto" />
+      <p class="text-center mt-2 text-sm">{{ message }}</p>
     </div>
   </template>
 
@@ -19,16 +19,3 @@
     }
   });
   </script>
-
-  <style scoped>
-  .no-data-container {
-  }
-
-  .no-data-image {
-    width: 100px;
-    height: auto;
-  }
-
-  .no-data-text {
-  }
-  </style>

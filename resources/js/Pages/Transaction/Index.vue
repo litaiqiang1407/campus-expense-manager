@@ -28,7 +28,7 @@
         </header>
 
         <!-- History Management -->
-        <div class="flex justify-between items-center m-0 pt-5 w-full max-w mx-auto px-4 bg-white text-sm">
+        <div class="flex justify-between items-center m-0 pt-2 w-full max-w mx-auto px-4 bg-white text-sm">
             <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('last')">
                 LAST MONTH
                 <span v-if="selectedMonth === 'last'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
@@ -52,7 +52,6 @@
                 <UseSage />
             </div>
         </main>
-
         <!-- Footer -->
         <!-- <footer class="flex flex-col items-center">
             <span class="text-xs">Version 1</span>
