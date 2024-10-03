@@ -1,6 +1,6 @@
 <template>
     <!-- User info -->
-    <div class="bg-white">
+    <div class="bg-white">      
         <div class=" flex items-center justify-center">
             <!-- Avatar Circle -->
             <div

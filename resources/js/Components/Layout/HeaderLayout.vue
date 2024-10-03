@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #EFFBFF;">
+    <div class="bg-primaryBackground">
         <Header :title="title" />
         <slot></slot>
     </div>

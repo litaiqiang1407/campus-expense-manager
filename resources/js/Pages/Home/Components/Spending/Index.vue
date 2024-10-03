@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-col space-y-2">
         <div class="flex items-center justify-between">
-            <span class="font-semibold text-[10px] text-[#A7A7A7]">Report this month</span>
-            <button class="text-[#00BC2A] font-semibold text-[10px]">See report</button>
+            <span class="font-semibold text-[10px] text-secondaryText">Report this month</span>
+            <button class="text-primary font-semibold text-[10px]">See report</button>
         </div>
         <div class="p-4 rounded-lg shadow bg-white">
             <div class="flex items-center p-1 bg-[#f0f0f0] rounded-[8px]">
@@ -23,10 +23,10 @@
                             <img :src="item.icon" class="w-8 h-8" alt="icon" />
                             <div class="flex flex-col">
                                 <span class="font-semibold text-[10px]">{{ item.title }}</span>
-                                <span class="text-[10px] text-[#A7A7A7]">$ {{ item.amount }}</span>
+                                <span class="text-[10px] text-secondaryText">$ {{ item.amount }}</span>
                             </div>
                         </div>
-                        <span class="font-semibold text-[10px] text-[#FF2121]">
+                        <span class="font-semibold text-[10px] text-redText">
                             {{ item.percentage }}%
                         </span>
                     </div>

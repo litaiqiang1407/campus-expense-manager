@@ -14,8 +14,12 @@ import {
   faBell, 
   faMagnifyingGlass, 
   faEllipsisVertical, 
-  faChevronDown 
+  faChevronDown, 
+  faXmark
 } from '@fortawesome/free-solid-svg-icons';
+
+import { faCircleQuestion as faCircleQuestionRegular } from '@fortawesome/free-regular-svg-icons';
+
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 library.add(
@@ -32,7 +36,9 @@ library.add(
   faUser,
   faCircleQuestion,
   faBell,
-  faGoogle 
+  faGoogle,
+  faXmark ,
+  faCircleQuestionRegular
 );
 
 export default FontAwesomeIcon;
