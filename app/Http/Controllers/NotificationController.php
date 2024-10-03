@@ -18,7 +18,8 @@ class NotificationController extends Controller
         //                             ->orderBy('created_at', 'desc')
         //                             ->get();
 
-        $notifications = Notification::select('id', 'title', 'message')
+        $notifications = Notification::select('id', 'title', 'message', 'type', 'is_read', 'created_at')
+            ->orderBy('created_at', 'desc')
             ->get();
         // return Inertia::render('Notification/Index', [
         //     'notifications' => $notifications
