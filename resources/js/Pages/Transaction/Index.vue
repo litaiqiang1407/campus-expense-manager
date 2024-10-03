@@ -20,9 +20,8 @@
             <!-- Header Bottom -->
             <div
                 class="cursor-pointer transaction-type-container bg-[#F3F3F3] flex justify-center items-center p-2 max-w-max mx-auto mt-4 rounded">
-                <!-- Sử dụng lớp rounded -->
-                <img src="/public/assets/img/wallet.jpg" alt="Wallet" class="h-6 w-6 mr-2 rounded-full" />
-                <h3 class="transaction-type text-black text-sm mr-2">Cash</h3>
+                <img :src="iconImage" alt="Icon" class="h-6 w-6 mr-2 rounded-full" />
+                <h3 class="transaction-type text-black text-sm mr-2">{{ iconName }}</h3>
                 <font-awesome-icon icon="chevron-down" />
             </div>
         </header>
@@ -49,13 +48,9 @@
                 <NoData message="Tap + to add one" />
             </div>
             <div v-else>
-                <UseSage />
+                <UseSage :totalFlow="totalFlow" :dayUse="dayUse" :iconImage="iconImage" :iconName="iconName" />
             </div>
         </main>
-        <!-- Footer -->
-        <!-- <footer class="flex flex-col items-center">
-            <span class="text-xs">Version 1</span>
-        </footer> -->
     </div>
 </template>
 
@@ -65,8 +60,12 @@ import { ref } from 'vue';
 import { UseSage } from '@/Pages/Transaction/Components/Index.js';
 
 const hasData = ref(true);
-const balance = '$0';
+const balance = '0';
 const selectedMonth = ref('this');
+const iconImage = "/assets/img/wallet.jpg";
+const iconName = 'Cash';
+const dayUse = '14';
+const totalFlow = '22';
 
 const selectMonth = (month) => {
     selectedMonth.value = month;
