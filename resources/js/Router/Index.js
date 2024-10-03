@@ -4,7 +4,7 @@ import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notifica
 
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
-import { Support, Menu } from "../Components/Header/Components/Index";
+import { Support, Menu, SelectWallet } from "../Components/Header/Components/Index";
 
 const routes = [
     {
@@ -57,8 +57,8 @@ const routes = [
         path: '/budget',
         name: 'Budget',
         component: Budget,
-        meta: { layout: DefaultLayout, title: 'Budget', isBack: false }, 
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }), 
+        meta: { layout: DefaultLayout, title: 'Budget', isBack: false, headerComponent: [SelectWallet,Menu] }, 
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent  }), 
     },
 
 ]
