@@ -10,16 +10,11 @@ class TransactionController extends Controller
 {
     public function index(Request $request)
     {
-        // Lấy ID người dùng từ yêu cầu (nếu cần)
-        // $userId = $request->user()->id;
-
-        // Lấy tất cả giao dịch của người dùng theo thứ tự thời gian mới nhất
         $transactions = Transaction::with(['category.icon', 'wallet', 'user'])
             ->select('id', 'amount', 'type', 'note', 'category_id', 'wallet_id', 'user_id', 'created_at')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Chuyển đổi giao dịch thành mảng với dữ liệu cần thiết
         $data = $transactions->map(function($transaction) {
             return [
                 'id' => $transaction->id,
@@ -31,9 +26,8 @@ class TransactionController extends Controller
                 'created_at' => $transaction->created_at->toDateTimeString(),
             ];
         });
-        // return Inertia::render('Transaction/Index', [
-        // ]);
-        return response()->json($transactions);
+
+        return response()->json($data);
     }
 
     public function markAsRead($id)

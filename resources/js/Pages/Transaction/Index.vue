@@ -19,8 +19,8 @@
             <!-- Header Bottom -->
             <div
                 class="cursor-pointer transaction-type-container bg-[#F3F3F3] flex justify-center items-center p-2 max-w-max mx-auto mt-4 rounded">
-                <img :src="iconImage" alt="Icon" class="h-6 w-6 mr-2 rounded-full" />
-                <h3 class="transaction-type text-black text-sm mr-2">{{ iconName }}</h3>
+                <img src="/public/assets/img/wallet.jpg" alt="Icon" class="h-6 w-6 mr-2 rounded-full" />
+                <h3 class="transaction-type text-black text-sm mr-2">Cash</h3>
                 <font-awesome-icon icon="chevron-down" />
             </div>
         </header>
@@ -43,11 +43,19 @@
 
         <!-- Main Content -->
         <main class="bg-[#EFFBFF]">
-            <div v-if="!hasData">
+            <div v-if="hasData">
                 <NoData message="Tap + to add one" />
             </div>
             <div v-else>
                 <UseSage :totalFlow="totalFlow" :dayUse="dayUse" :iconImage="iconImage" :iconName="iconName" />
+                <ul>
+                    <li v-for="transaction in transactions" :key="transaction.id" class="transaction-item">
+                        <div>{{ transaction.created_at }} - {{ transaction.amount }} - {{ transaction.note }}</div>
+                        <div :class="transaction.type === 'income' ? 'text-green-500' : 'text-red-500'">
+                            {{ transaction.type }}
+                        </div>
+                    </li>
+                </ul>
             </div>
         </main>
     </div>
@@ -55,19 +63,32 @@
 
 <script setup>
 import NoData from '../../Components/NoData/Index.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { UseSage } from '@/Pages/Transaction/Components/Index.js';
 
-defineProps(['transactions']);
-const hasData = ref(true);
-const balance = '0';
+const transactions = ref([]);
+
+const fetchTransactions = async () => {
+    try {
+        const response = await axios.get(route('Transaction'));
+        notifications.value = response.data;
+        console.log('Transactions:', notifications.value);
+    } catch (error) {
+        console.error('Error fetching Transactions:', error);
+    }
+};
+
+const balance = ref('0');
 const selectedMonth = ref('this');
 const iconImage = "/assets/img/wallet.jpg";
-const iconName = 'Cash';
+const iconName = transactions.iconName;
 const dayUse = '14';
 const totalFlow = '22';
 
 const selectMonth = (month) => {
     selectedMonth.value = month;
 };
+onMounted(() => {
+    fetchTransactions();
+});
 </script>
