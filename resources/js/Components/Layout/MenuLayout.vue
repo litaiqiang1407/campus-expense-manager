@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #EFFBFF;">
+    <div class="bg-primaryBackground pb-16">
         <slot></slot>
         <BottomBar/>
     </div>

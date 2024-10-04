@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget } from "../Pages/Index";
 
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
+
+import { Support, Menu, SelectWallet } from "../Components/Header/Components/Index";
 
 const routes = [
     {
@@ -41,9 +43,24 @@ const routes = [
         path: '/account',
         name: 'Account',
         component: Account,
-        meta: { layout: DefaultLayout, title: 'Account', isBack: false },
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }),
+        meta: { layout: DefaultLayout, title: 'Account', isBack: false, headerComponent: [Support]},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }),
     },
+    {
+        path: '/notification',
+        name: 'Notification',
+        component: Notification,
+        meta: { layout: HeaderLayout, title: 'Notifications', isBack: false, isCancel: true},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
+    },
+    {
+        path: '/budget',
+        name: 'Budget',
+        component: Budget,
+        meta: { layout: DefaultLayout, title: 'Budget', isBack: false, headerComponent: [SelectWallet,Menu] },
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent  }),
+    },
+
 ]
 
 const router = createRouter({
