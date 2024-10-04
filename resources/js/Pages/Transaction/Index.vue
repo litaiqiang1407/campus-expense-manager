@@ -43,12 +43,12 @@
 
         <!-- Main Content -->
         <main class="bg-[#EFFBFF]">
-            <div v-if="hasData">
+            <div v-if="!hasData">
                 <NoData message="Tap + to add one" />
             </div>
             <div v-else>
                 <UseSage :transactions="transactions"/>
-<!--
+                <!--
                 <ul>
                     <li v-for="transaction in transactions" :key="transaction.id" class="transaction-item">
                         <div>{{ transaction.created_at }} - {{ transaction.amount }} - {{ transaction.note }}</div>
@@ -68,7 +68,7 @@ import { ref, onMounted } from 'vue';
 import { UseSage } from '@/Pages/Transaction/Components/Index.js';
 
 const transactions = ref([]);
-
+const hasData = (ref(true));
 const fetchTransactions = async () => {
     try {
         const response = await axios.get(route('Transaction'));
@@ -81,8 +81,6 @@ const fetchTransactions = async () => {
 
 const balance = ref('0');
 const selectedMonth = ref('this');
-const iconImage = "/public/assets/img/wallet.jpg";
-const iconName = "H";
 const dayUse = '14';
 const totalFlow = '22';
 
