@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Icon extends Model
+class WalletType extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name', 'path'
-    ];
+    protected $fillable = ['name'];
 
-    public function categories()
+    public function wallets()
     {
-        return $this->hasMany(Category::class);
+        return $this->hasMany(Wallet::class);
     }
 }

@@ -41,8 +41,8 @@ const routes = [
         path: '/account',
         name: 'Account',
         component: Account,
-        meta: { layout: DefaultLayout, title: 'Account', isBack: false }, 
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }), 
+        meta: { layout: DefaultLayout, title: 'Account', isBack: false },
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }),
     },
 ]
 

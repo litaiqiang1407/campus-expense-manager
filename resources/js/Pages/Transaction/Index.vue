@@ -16,7 +16,6 @@
                     <font-awesome-icon icon="ellipsis-vertical" />
                 </span>
             </div>
-
             <!-- Header Bottom -->
             <div
                 class="cursor-pointer transaction-type-container bg-[#F3F3F3] flex justify-center items-center p-2 max-w-max mx-auto mt-4 rounded">
@@ -59,6 +58,7 @@ import NoData from '../../Components/NoData/Index.vue';
 import { ref } from 'vue';
 import { UseSage } from '@/Pages/Transaction/Components/Index.js';
 
+defineProps(['transactions']);
 const hasData = ref(true);
 const balance = '0';
 const selectedMonth = ref('this');
