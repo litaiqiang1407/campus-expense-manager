@@ -47,7 +47,8 @@
                 <NoData message="Tap + to add one" />
             </div>
             <div v-else>
-                <UseSage :totalFlow="totalFlow" :dayUse="dayUse" :iconImage="iconImage" :iconName="iconName" />
+                <UseSage :transactions="transactions"/>
+<!--
                 <ul>
                     <li v-for="transaction in transactions" :key="transaction.id" class="transaction-item">
                         <div>{{ transaction.created_at }} - {{ transaction.amount }} - {{ transaction.note }}</div>
@@ -55,7 +56,7 @@
                             {{ transaction.type }}
                         </div>
                     </li>
-                </ul>
+                </ul> -->
             </div>
         </main>
     </div>
@@ -71,8 +72,8 @@ const transactions = ref([]);
 const fetchTransactions = async () => {
     try {
         const response = await axios.get(route('Transaction'));
-        notifications.value = response.data;
-        console.log('Transactions:', notifications.value);
+        transactions.value = response.data;
+        console.log('Transactions:', transactions.value);
     } catch (error) {
         console.error('Error fetching Transactions:', error);
     }
@@ -80,8 +81,8 @@ const fetchTransactions = async () => {
 
 const balance = ref('0');
 const selectedMonth = ref('this');
-const iconImage = "/assets/img/wallet.jpg";
-const iconName = transactions.iconName;
+const iconImage = "/public/assets/img/wallet.jpg";
+const iconName = "H";
 const dayUse = '14';
 const totalFlow = '22';
 

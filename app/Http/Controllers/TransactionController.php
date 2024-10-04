@@ -27,7 +27,7 @@ class TransactionController extends Controller
             ];
         });
 
-        return response()->json($data);
+        return response()->json($transactions);
     }
 
     public function markAsRead($id)

@@ -1,5 +1,5 @@
 <template>
-    <div class="m-0 mt-2 p-0 bg-white">
+    <!-- <div class="m-0 mt-2 p-0 bg-white">
       <div class="flex items-center justify-between px-4 py-2 relative">
         <div class="flex items-start space-x-2">
           <div class="flex flex-row items-start">
@@ -19,12 +19,15 @@
         <img :src="iconPath" alt="Icon" class="w-8 h-8">
         <span class="ml-2 font-semibold text-[14px]">{{ iconName }}</span>
       </div>
-    </div>
+    </div> -->
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { Transaction } from '../../../Index';
 
-const props = defineProps(['dayUse', 'totalFlow', 'iconName', 'iconPath']);
-//const iconPath = "/assets/icon/box.png";
+//const props = defineProps(['dayUse', 'totalFlow', 'iconName', 'iconPath']);
+const props = defineProps({
+    transactions: Array
+})
+console.log(props.transactions)
 </script>

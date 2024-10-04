@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
 Route::get('/{pathMath}', function () {
     return view('welcome');
 })->where('pathMath', '.*');
