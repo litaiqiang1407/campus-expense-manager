@@ -11,8 +11,8 @@
         <div class="flex items-center pt-16 relative z-40">
             <div class="bg-gray-500 text-white text-xs px-3 py-1 shadow whitespace-nowrap">BASIC ACCOUNT</div>
         </div>
-        <div class=" absolute right-0 pt-8 pr-1 z-50">
-        <font-awesome-icon icon="angle-right" class="text-secondaryText size-5" />
+        <div class=" absolute right-0 pt-8 pr-4 z-50">
+            <font-awesome-icon icon="angle-right" class="text-secondaryText size-5" />
         </div>
         <div class="flex items-center pt-12 absolute z-20">
             <!-- Left Icon -->
