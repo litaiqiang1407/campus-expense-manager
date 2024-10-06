@@ -26,7 +26,8 @@ import {
   faDivide,
   faDeleteLeft,
   faMinus,
-  faPlay
+  faPlay,
+  faCirclePlus
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCalendar, faCircleQuestion as faCircleQuestionRegular, faComment as faCommentRegular } from '@fortawesome/free-regular-svg-icons';
@@ -63,7 +64,8 @@ library.add(
   faDivide,
   faDeleteLeft,
   faMinus,
-  faPlay
+  faPlay,
+  faCirclePlus
 );
 
 export default FontAwesomeIcon;
