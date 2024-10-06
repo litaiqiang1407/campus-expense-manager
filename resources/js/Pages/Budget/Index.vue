@@ -40,7 +40,7 @@
       </div>
 
       <!-- Create Budget Button -->
-      <button @click="createBudget" class="bg-primary text-white text-lg py-2 px-4 rounded-full shadow-lg w-2/4 mb-4 transform -translate-y-2">
+      <button @click="createBudget" class="button-animate bg-primary text-white text-lg py-2 px-4 rounded-full shadow-lg w-2/4 mb-4 transform -translate-y-2">
         Create a Budget
       </button>
     </div>
@@ -50,7 +50,7 @@
       <div class="bg-white rounded-lg p-4 mb-2 w-full">
         <div class="flex justify-between items-center mb-2">
           <div class="flex items-center">
-            <img src="/assets/icon/wallet.png" alt="Wallet Icon" class="rounded-full w-10 h-10" />
+            <img src="/assets/icon/expense/education.png" alt="Wallet Icon" class="rounded-full w-10 h-10" />
             <span class="ml-4 text-lg font-bold">Education</span>
           </div>
           <div class="text-right">
@@ -75,8 +75,8 @@
       <div class="bg-white rounded-lg p-4 mb-2 w-full">
         <div class="flex justify-between items-center mb-2">
           <div class="flex items-center">
-            <img src="/assets/icon/food.png" alt="Food Icon" class="rounded-full w-10 h-10" />
-            <span class="ml-4 text-lg font-bold">Food</span>
+            <img src="/assets/icon/expense/food&drink.png" alt="Food Icon" class="rounded-full w-10 h-10" />
+            <span class="ml-4 text-lg font-bold">Food & Drink</span>
           </div>
           <div class="text-right">
             <p class="font-bold text-lg">3.000</p>

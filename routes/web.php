@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MyWalletController;
 use App\Http\Controllers\NotFoundController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\TransactionController;
@@ -17,6 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
+    Route::get('/my-wallet', [MyWalletController::class, 'index'])->name('MyWallet');
 });
 
 

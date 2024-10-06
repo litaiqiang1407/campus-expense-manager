@@ -19,8 +19,9 @@
             <!-- Header Bottom -->
             <div
                 class="cursor-pointer transaction-type-container bg-[#F3F3F3] flex justify-center items-center p-2 max-w-max mx-auto mt-4 rounded">
-                <img src="/public/assets/img/wallet.jpg" alt="Icon" class="h-6 w-6 mr-2 rounded-full" />
-                <h3 class="transaction-type text-black text-sm mr-2">Cash</h3>
+                <!-- Sử dụng lớp rounded -->
+                <img src="/assets/img/wallet.png" alt="Wallet" class="h-6 w-6 mr-2 rounded-full" />
+                <h3 class="transaction-type text-black text-lg mr-2">Cash</h3>
                 <font-awesome-icon icon="chevron-down" />
             </div>
         </header>
