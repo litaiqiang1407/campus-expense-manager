@@ -130,12 +130,11 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-const account = ref(null); // Thay đổi thành null cho dễ kiểm tra
-
+const account = ref(null); 
 const fetchAccount = async () => {
     try {
         const response = await axios.get(route('Account')); 
-        account.value = response.data; // Giả định response.data chứa tên và email người dùng
+        account.value = response.data; 
         console.log('Account:', account.value);
     } catch (error) {
         console.error('Error fetching Account:', error);
