@@ -199,12 +199,12 @@
 }
 .border-left-half::before {
     content: ''; 
-    position: absolute; /* Đặt vị trí tuyệt đối so với phần tử cha */
-    top: 0; /* Bắt đầu từ trên cùng */
-    left: 0; /* Bắt đầu từ bên trái */
-    width: 1.9px; /* Độ dày của border */
-    height: 50%; /* Chỉ lấy nửa trên của phần tử */
-    background-color: #e5e7eb; /* Màu border */
-    z-index: 1; /* Đảm bảo border nằm trên cùng nếu có nội dung khác */
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 1.9px; 
+    height: 50%; 
+    background-color: #e5e7eb; 
+    z-index: 1; 
 }
 </style>
