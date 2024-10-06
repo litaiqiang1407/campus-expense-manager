@@ -1,5 +1,5 @@
 <template>
-    <div  @click="navigateToPage" class="rounded-full w-full h-full flex items-center justify-center bg-primary">
+    <div  @click="navigateToPage" class="button-animate rounded-full w-full h-full flex items-center justify-center bg-primary">
         <font-awesome-icon v-if="icon" icon="plus" class="text-white" />
         <span v-if="text" class="text-white">{{ text }}</span>
     </div>

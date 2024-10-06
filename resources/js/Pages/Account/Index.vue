@@ -124,3 +124,24 @@
     </div>
 
 </template>
+
+
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const account = ref([])
+
+const fetchAccount = async () => {
+    try {
+        const response = await axios.get(route('Account')); 
+        account.value = response.data;
+        console.log('Account:', account.value);
+    } catch (error) {
+        console.error('Error fetching Account:', error);
+    }
+};
+
+onMounted(() => {
+    fetchAccount();
+});
+</script>
