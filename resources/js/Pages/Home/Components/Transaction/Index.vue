@@ -35,7 +35,7 @@ const transactionItems = [
     {
         id: 2,
         title: 'Rental',
-        icon: '/assets/icon/expense/retails.png',
+        icon: '/assets/icon/expense/rentals.png',
         amount: 1000,
         percentage: 25,
     },

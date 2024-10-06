@@ -41,8 +41,8 @@
         </div>
         <!-- User info -->
         <div class="text-center p-1">
-            <h2 class="text-sm font-semibold text-gray-800">Tranvuca213</h2>
-            <p class="text-xs text-gray-500">tranvuca213@gmail.com</p>
+            <h2 class="text-sm font-semibold text-gray-800">{{account.name}}</h2>
+            <p class="text-xs text-gray-500">{{account.email}}</p>
         </div>
         <!-- Poster -->
         <div class="h-28 bg-gray-200 border border-gray-300 flex items-center justify-center text-center">
@@ -68,7 +68,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-const account = ref([])
+const account = ref({})
 
 const fetchAccount = async () => {
     try {

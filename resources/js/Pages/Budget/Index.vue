@@ -40,7 +40,7 @@
       </div>
 
       <!-- Create Budget Button -->
-      <button @click="createBudget" class="bg-primary text-white text-lg py-2 px-4 rounded-full shadow-lg w-2/4 mb-4 transform -translate-y-2">
+      <button @click="createBudget" class="button-animate bg-primary text-white text-lg py-2 px-4 rounded-full shadow-lg w-2/4 mb-4 transform -translate-y-2">
         Create a Budget
       </button>
     </div>

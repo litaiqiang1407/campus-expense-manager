@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet } from "../Pages/Index";
 
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
@@ -72,6 +72,13 @@ const routes = [
         name: 'CreateBudget',
         component: CreateBudget,
         meta: { layout: HeaderLayout, title: 'Add budget', isBack: false, isCancel: true},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
+    },
+    {
+        path: '/mywallet',
+        name: 'MyWallet',
+        component: MyWallet,
+        meta: { layout: HeaderLayout, title: 'My Wallet', isBack: false, isCancel: true},
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
 
