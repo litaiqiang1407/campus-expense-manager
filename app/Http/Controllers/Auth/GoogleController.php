@@ -26,6 +26,7 @@ class GoogleController extends Controller
             $newUser = User::create([
                 'name' => $user->getName(),
                 'email' => $user->getEmail(),
+                'avatar' => $user->getAvatar(),
                 'google_id' => $user->getId(),
                 'password' => encrypt('123456dummy')               
             ]);

@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Closure;
 use Inertia\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -39,5 +41,13 @@ class HandleInertiaRequests extends Middleware
                 'error' => $request->session()->get('error'),
             ],
         ];
+    }
+    public function handle($request, Closure $next, $guard = null)
+    {
+        if (Auth::guard($guard)->check()) {
+            return redirect()->route('Welcome');
+        }
+
+        return $next($request);
     }
 }
