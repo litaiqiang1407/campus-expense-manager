@@ -1,6 +1,6 @@
 <template>
     <div  @click="navigateToPage" class="button-animate rounded-full w-full h-full flex items-center justify-center bg-primary">
-        <font-awesome-icon v-if="icon" icon="plus" class="text-white" />
+        <font-awesome-icon v-if="icon" :icon="icon" class="text-white" />
         <span v-if="text" class="text-white">{{ text }}</span>
     </div>
 </template>
@@ -11,11 +11,10 @@ import { useRouter } from 'vue-router';
 const props = defineProps({
   destinationPage: {
     type: String,
-    required: true,
   },
   icon: {
     type: String,
-    default: '',
+    default: 'plus',
   },
   text: {
     type: String,

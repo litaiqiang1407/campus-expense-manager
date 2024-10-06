@@ -5,22 +5,32 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Wallet;
+use App\Models\WalletType;
 
 class MyWalletController extends Controller
 {
     public function index(Request $request)
     {
-        // Join with the Icon model to fetch icon fields
-        $wallets = Wallet::select('id', 'name', 'balance', 'icon_id')
-            ->join('icons', 'wallets.icon_id', '=', 'icons.id') // Assuming your icon table is named 'icons'
-            ->select('wallets.id', 'wallets.name', 'wallets.balance', 'icons.path as icon_path', 'icons.name as icon_name')
-            ->get(); // Retrieve the data
+        $wallets = Wallet::select(
+            'wallets.id', 
+            'wallets.name', 
+            'wallets.balance', 
+            'icons.path as icon_path', 
+            'icons.name as icon_name'
+        )
+        ->join('icons', 'wallets.icon_id', '=', 'icons.id') // Join with icons table
+        ->get();
+
+        $walletTypes = WalletType::select('id', 'name')->get();
 
         if ($request->wantsJson()) {
-            return response()->json($wallets);
+            return response()->json([
+                'walletTypes' => $walletTypes,
+                'wallets' => $wallets]);
         }
 
         return Inertia::render('MyWallet/Index', [
+            'walletTypes' => $walletTypes,
             'wallets' => $wallets,
         ]);
     }

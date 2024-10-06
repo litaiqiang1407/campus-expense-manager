@@ -6,7 +6,7 @@ import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notifica
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
-import { Support, Menu, SelectWallet } from "../Components/Header/Components/Index";
+import { Support, Menu, SelectWallet, Search } from "../Components/Header/Components/Index";
 
 const routes = [
     {
@@ -94,8 +94,8 @@ const routes = [
         path: '/my-wallet',
         name: 'MyWallet',
         component: MyWallet,
-        meta: { layout: HeaderLayout, title: 'My Wallet', isBack: true, isCancel: false},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
+        meta: { layout: HeaderLayout, title: 'My Wallet', isBack: true, isCancel: false, headerComponent: [Search]},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel, headerComponent: route.meta.headerComponent }),
     },
     {
         path: '/logout',
