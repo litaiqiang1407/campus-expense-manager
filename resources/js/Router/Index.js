@@ -28,7 +28,9 @@ const routes = [
     {
         path: '/app-info',
         name: 'AppInfo',
-        component: AppInfo
+        component: AppInfo,
+        meta: { layout: HeaderLayout, title: '', isBack: true, isCancel: false},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
     {  
         path: '/transaction',
