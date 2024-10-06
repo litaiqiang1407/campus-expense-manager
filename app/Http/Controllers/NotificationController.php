@@ -20,10 +20,14 @@ class NotificationController extends Controller
         $notifications = Notification::select('id', 'title', 'message', 'type', 'is_read', 'created_at')
             ->orderBy('created_at', 'desc')
             ->get();
-        // return Inertia::render('Notification/Index', [
-        //     'notifications' => $notifications
-        // ]);  
-        return response()->json($notifications);
+
+        if ($request->wantsJson()) {
+            return response()->json($notifications);
+        }
+    
+        return Inertia::render('Notification/Index', [
+            'notifications' => $notifications,
+        ]);
     }
 
     public function markAsRead($id)

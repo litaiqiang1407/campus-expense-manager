@@ -4,11 +4,11 @@
             <h1 class="text-[24px] font-bold my-8">{{ title }}</h1>
 
             <div class="flex flex-col space-y-4 text-center mb-4">
-                <button class="flex items-center space-x-8 rounded border-2 px-8 py-2 text-blueText border-blueText">
+                <button @click="loginWithFacebook" class="flex items-center space-x-8 rounded border-2 px-8 py-2 text-blueText border-blueText">
                     <img src="/assets/img/facebook.png" alt="Facebook" class="h-6 w-6"/>
                     <span class="uppercase font-semibold">Connect with Facebook</span>
                 </button>
-                <button class="flex items-center space-x-8 rounded border-2 px-8 py-2 text-redText border-redText">
+                <button @click="loginWithGoogle" class="flex items-center space-x-8 rounded border-2 px-8 py-2 text-redText border-redText">
                     <img src="/assets/img/google.png" alt="Facebook" class="h-6 w-6"/>
                     <span class="uppercase font-semibold">Connect with Google</span>
                 </button>
@@ -38,4 +38,12 @@ import InputField from '@/Components/Form/InputField.vue';
 const props = defineProps({
     title: String
 });
+
+const loginWithGoogle = () => {
+  window.location.href = '/auth/google'; 
+};
+
+const loginWithFacebook = () => {
+  window.location.href = '/auth/facebook'; 
+};
 </script>
