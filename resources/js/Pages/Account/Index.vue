@@ -1,31 +1,4 @@
 <template>
-    <!-- User info -->
-    <div class=" flex items-center justify-center">
-        <!-- Avatar Circle -->
-        <div
-            class="flex items-center justify-center w-16 h-16 bg-teal-400 text-white text-2xl font-bold rounded-full absolute z-0">
-            T
-        </div>
-
-        <!-- Account Badge -->
-        <div class="flex items-center pt-16 relative z-40">
-            <div class="bg-gray-500 text-white text-xs px-3 py-1 shadow whitespace-nowrap">BASIC ACCOUNT</div>
-        </div>
-        <div class=" absolute right-0 pt-8 pr-3 z-50">
-            <font-awesome-icon icon="angle-right" class="text-secondaryText size-5" />
-        </div>
-        <div class="flex items-center pt-12 absolute z-20">
-            <!-- Left Icon -->
-            <div class="w-6 h-6 mr-12 relative z-40">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full fill-gray-400" viewBox="0 0 24 24">
-                    <rect fill-opacity="0" fill="#FFFFFF" x="0" y="0" width="24" height="24"></rect>
-                    <polygon fill="#999999" points="8 10 0 0 24 0 24 20 0 20"></polygon>
-                    <polygon fill="#606060"
-                        transform="translate(20.000000, 4.000000) scale(1, -1) translate(-20.000000, -4.000000)"
-                        points="16 0 24 8 24 0"></polygon>
-                </svg>
-            </div>
-        </div>
     <div class="bg-white">
         <div class=" flex items-center justify-center" @click="goPage('MyAccount')">
             <!-- Avatar Circle -->
@@ -153,7 +126,6 @@
             </div>
         </div>
     </div>
-</div>
 
 </template>
 
