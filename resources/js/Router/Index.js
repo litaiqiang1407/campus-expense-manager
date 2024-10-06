@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction,} from "../Pages/Index";
 import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget } from "../Pages/Index";
 
 // Import layout components

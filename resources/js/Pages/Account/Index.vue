@@ -43,8 +43,8 @@
    
     <!-- User info -->
     <div class="text-center p-1">
-        <h2 class="text-sm font-semibold text-black">Tranvuca213</h2>
-        <p class="text-xs text-secondaryText">tranvuca213@gmail.com</p>
+        <h2 class="text-sm font-semibold text-black">{{ account ? account.name : 'Loading...' }}</h2>
+        <p class="text-xs text-secondaryText">{{ account ? account.email : 'Loading...' }}</p>
     </div>
     <!-- Poster -->
     <div class="h-28 bg-gray-200 border border-gray-300 flex items-center justify-center text-center">
@@ -128,13 +128,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
-const account = ref([])
+const account = ref(null); // Thay đổi thành null cho dễ kiểm tra
 
 const fetchAccount = async () => {
     try {
         const response = await axios.get(route('Account')); 
-        account.value = response.data;
+        account.value = response.data; // Giả định response.data chứa tên và email người dùng
         console.log('Account:', account.value);
     } catch (error) {
         console.error('Error fetching Account:', error);
