@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col h-screen">
         <!-- Header -->
-        <header class="h-20 px-4 py-2 flex flex-col items-center relative bg-white">
+        <header class="h-13 px-4 py-2 flex flex-col items-center relative bg-white">
             <!-- Header Top -->
             <div
                 class="balance-section flex flex-col items-center justify-center flex-1 absolute left-1/2 transform -translate-x-1/2">
@@ -16,19 +16,17 @@
                     <font-awesome-icon icon="ellipsis-vertical" />
                 </span>
             </div>
-
             <!-- Header Bottom -->
             <div
                 class="cursor-pointer transaction-type-container bg-[#F3F3F3] flex justify-center items-center p-2 max-w-max mx-auto mt-4 rounded">
-                <!-- Sử dụng lớp rounded -->
-                <img src="/assets/icon/wallet.png" alt="Wallet" class="h-6 w-6 mr-2 rounded-full" />
-                <h3 class="transaction-type text-black text-lg mr-2">Cash</h3>
+                <img src="/public/assets/img/wallet.jpg" alt="Icon" class="h-6 w-6 mr-2 rounded-full" />
+                <h3 class="transaction-type text-black text-sm mr-2">Cash</h3>
                 <font-awesome-icon icon="chevron-down" />
             </div>
         </header>
 
         <!-- History Management -->
-        <div class="flex justify-between items-center m-0 pt-5 w-full max-w-md mx-auto px-4 bg-white">
+        <div class="flex justify-between items-center m-0 pt-2 w-full max-w mx-auto px-4 bg-white text-sm">
             <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('last')">
                 LAST MONTH
                 <span v-if="selectedMonth === 'last'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
@@ -44,33 +42,52 @@
         </div>
 
         <!-- Main Content -->
-        <main class="bg-[#EFFBFF] flex flex-1 items-center justify-center">
+        <main class="bg-[#EFFBFF]">
             <div v-if="!hasData">
                 <NoData message="Tap + to add one" />
             </div>
             <div v-else>
-                <p>Your transaction data will appear here.</p>
+                <UseSage :transactions="transactions"/>
+                <!--
+                <ul>
+                    <li v-for="transaction in transactions" :key="transaction.id" class="transaction-item">
+                        <div>{{ transaction.created_at }} - {{ transaction.amount }} - {{ transaction.note }}</div>
+                        <div :class="transaction.type === 'income' ? 'text-green-500' : 'text-red-500'">
+                            {{ transaction.type }}
+                        </div>
+                    </li>
+                </ul> -->
             </div>
         </main>
-
-        <!-- Footer -->
-        <!-- <footer class="flex flex-col items-center">
-            <span class="text-xs">Version 1</span>
-        </footer> -->
     </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
 import NoData from '../../Components/NoData/Index.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { UseSage } from '@/Pages/Transaction/Components/Index.js';
 
-const hasData = ref(false);
-const router = useRouter();
-const balance = '$0';
+const transactions = ref([]);
+const hasData = (ref(true));
+const fetchTransactions = async () => {
+    try {
+        const response = await axios.get(route('Transaction'));
+        transactions.value = response.data;
+        console.log('Transactions:', transactions.value);
+    } catch (error) {
+        console.error('Error fetching Transactions:', error);
+    }
+};
+
+const balance = ref('0');
 const selectedMonth = ref('this');
+const dayUse = '14';
+const totalFlow = '22';
 
 const selectMonth = (month) => {
     selectedMonth.value = month;
 };
+onMounted(() => {
+    fetchTransactions();
+});
 </script>
