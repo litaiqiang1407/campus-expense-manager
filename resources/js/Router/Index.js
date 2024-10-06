@@ -101,7 +101,6 @@ const routes = [
         path: '/logout',
         name: 'Logout',        
     }
-
 ]
 
 const router = createRouter({
