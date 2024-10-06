@@ -40,14 +40,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Expense from './Expense.vue';
 import Income from './Income.vue';
 import DebtLoan from './DebtLoan.vue';
 
 const openComponent = ref('expense');
 
+const categories = ref([]);
+
 const displayComponent = (component) => {
     openComponent.value = component;
 };
+
+const fetchCategories = async () => {
+    try {
+        const response = await axios.get(route('Categories'));
+        categories.value = response.data;
+        console.log('Categories:', categories.value);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+    }
+};
+
+onMounted(() => {
+    fetchCategories();
+});
+
 </script>

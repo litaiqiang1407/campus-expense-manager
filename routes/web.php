@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MyWalletController;
 use App\Http\Controllers\NotFoundController;
@@ -19,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
     Route::get('/my-wallet', [MyWalletController::class, 'index'])->name('MyWallet');
+    Route::get('/categories', [CategoryController::class, 'index'])->name('Categories');
 });
 
 
