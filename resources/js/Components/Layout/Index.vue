@@ -15,6 +15,7 @@ import BottomBar from '@/Components/BottomBar/Index.vue';
 const props = defineProps({
     title: String,
     isBack: Boolean,
+    isCancel: Boolean,
     headerComponent: Array 
 });
 </script>

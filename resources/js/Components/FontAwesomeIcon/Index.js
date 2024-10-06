@@ -48,7 +48,6 @@ library.add(
   faBell,
   faMagnifyingGlass,
   faEllipsisVertical,
-  faChevronDown,
   faAngleRight,
   faCubes,
   faMoneyBill,
@@ -66,7 +65,8 @@ library.add(
   faDivide,
   faDeleteLeft,
   faMinus,
-  faPlay
+  faPlay,
+  faChevronDown
 );
 
 export default FontAwesomeIcon;
