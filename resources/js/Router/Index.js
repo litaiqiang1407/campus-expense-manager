@@ -52,6 +52,7 @@ const routes = [
         path: '/myaccount',
         name: 'MyAccount',
         component: MyAccount,
+        meta: { layout: DefaultLayout, title: 'My Account', isBack: true}, 
         
     },
 ];

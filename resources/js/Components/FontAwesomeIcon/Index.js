@@ -21,7 +21,8 @@ import {
   faXmark,
   faHandHoldingDollar,
   faGear,
-  faCircleInfo
+  faCircleInfo,
+  faRepeat
 
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -51,7 +52,8 @@ library.add(
   faGoogle,
   faHandHoldingDollar,
   faGear,
-  faCircleInfo
+  faCircleInfo,
+  faRepeat
 );
 
 export default FontAwesomeIcon;
