@@ -23,9 +23,10 @@
     <!-- Add button (center) -->
     <button
       class="w-1/5 flex flex-col items-center text-white"
-      @click="setActive('Add')"
     >
-      <div class="w-12 h-12"><AddButton /></div>
+      <div class="w-12 h-12">
+        <AddButton :destinationPage="'CreateTransaction'" :icon="'plus'"/>
+      </div>
     </button>
 
     <!-- Budget button -->

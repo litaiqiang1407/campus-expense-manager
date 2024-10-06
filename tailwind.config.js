@@ -16,6 +16,14 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function({ addComponents }) {
+      addComponents({
+        '.button-animate': {
+          '@apply transition-transform duration-150 ease-in-out active:scale-95 active:opacity-80 focus:outline-none': {},
+        },
+      });
+    }
+  ]
 }
 
