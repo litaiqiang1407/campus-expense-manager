@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet } from "../Pages/Index";
 
+// Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
 import { Support, Menu, SelectWallet } from "../Components/Header/Components/Index";
@@ -87,6 +88,6 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes
-})
+});
 
 export default router;
