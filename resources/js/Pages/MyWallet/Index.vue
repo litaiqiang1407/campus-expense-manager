@@ -21,4 +21,26 @@
       </div>
     </div>
   </template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const wallets = ref([]);
+
+const fetchWallets = async () => {
+    try {
+        const response = await axios.get(route('MyWallet')); 
+        wallets.value = response.data;
+        console.log('Wallets:', wallets.value);
+    } catch (error) {
+        console.error('Error fetching wallets:', error);
+    }
+};
+
+onMounted(() => {
+    fetchWallets();
+});
+
+</script>
+
   

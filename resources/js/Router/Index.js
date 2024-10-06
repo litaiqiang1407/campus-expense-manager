@@ -76,7 +76,7 @@ const routes = [
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
     {
-        path: '/mywallet',
+        path: '/my-wallet',
         name: 'MyWallet',
         component: MyWallet,
         meta: { layout: HeaderLayout, title: 'My Wallet', isBack: false, isCancel: true},
