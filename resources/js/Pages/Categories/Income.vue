@@ -7,10 +7,9 @@
             </button>
             <span class="text-primary font-semibold p-3">NEW CATEGORY</span>
         </div>
-        
 
-        <div class="bg-white shadow  my-2">
-            <div class="flex justify-between items-center py-4 px-4 ">
+        <div class=" bg-white shadow my-2">
+            <div class="flex justify-between items-center pt-4 px-4">
                 <div class="flex items-center space-x-3">
                 <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-10 h-10 rounded-full">
                     <div>
@@ -22,25 +21,7 @@
                     <font-awesome-icon icon="angle-right" class="text-secondaryText size-5" />
                 </button> 
             </div>
-        </div>
-
-            <div class="bg-white shadow my-2">
-                <!-- Main Category Item -->
-                <div class="flex justify-between items-center px-4 pt-4">
-                    <div class="flex items-center space-x-3">
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-10 h-10 rounded-full">
-                        <div>
-                            <p class="font-medium ">Badminton</p>
-                            <p class="text-sm text-secondaryText">Cash</p>
-                        </div>
-                       
-                    </div>
-                    <button class="absolute right-0 pr-3 z-50">
-                        <font-awesome-icon icon="angle-right" class="text-secondaryText size-5" />
-                    </button>
-                </div>
-                <!-- Subcategories (Bills) -->
-                <ul class="pl-8 ">
+            <ul class="pl-8 ">
                     <li class="flex items-center space-x-2 border-l-[2px] py-2">
                         <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                         <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
@@ -52,51 +33,6 @@
                             <font-awesome-icon icon="angle-right" class="text-secondaryText size-4" />
                         </button>
                     </li>
-                    <li class="flex items-center space-x-2 border-l-[2px] py-2">
-                        <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
-                        <div>
-                            <p class="font-medium">Badminton</p>
-                            <p class="text-xs text-secondaryText">Cash</p>
-                        </div>
-                        <button class="absolute right-0 pr-3 z-50">
-                            <font-awesome-icon icon="angle-right" class="text-secondaryText size-4" />
-                        </button>
-                    </li>
-                    <li class="flex items-center space-x-2 border-l-[2px] py-2">
-                        <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
-                        <div>
-                            <p class="font-medium">Badminton</p>
-                            <p class="text-xs text-secondaryText">Cash</p>
-                        </div>
-                        <button class="absolute right-0 pr-3 z-50">
-                            <font-awesome-icon icon="angle-right" class="text-secondaryText size-4" />
-                        </button>
-                    </li>
-                    <li class="flex items-center space-x-2 border-l-[2px] py-2">
-                        <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
-                        <div>
-                            <p class="font-medium">Badminton</p>
-                            <p class="text-xs text-secondaryText">Cash</p>
-                        </div>
-                        <button class="absolute right-0 pr-3 z-50">
-                            <font-awesome-icon icon="angle-right" class="text-secondaryText size-4" />
-                        </button>
-                    </li>
-                    <li class="flex items-center space-x-2 border-l-[2px] py-2">
-                        <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
-                        <div>
-                            <p class="font-medium">Badminton</p>
-                            <p class="text-xs text-secondaryText">Cash</p>
-                        </div>
-                        <button class="absolute right-0 pr-3 z-50">
-                            <font-awesome-icon icon="angle-right" class="text-secondaryText size-4" />
-                        </button>
-                    </li>
-                <!--Last Item-->
                     <li class="flex items-center space-x-2 border-left-half py-2">
                         <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                         <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
@@ -107,13 +43,10 @@
                         <button class="absolute right-0 pr-3 z-50">
                             <font-awesome-icon icon="angle-right" class="text-secondaryText size-4" />
                         </button>
-                    </li>  
-                    
+                    </li>
                 </ul>
-            </div> 
-
-
-            <div class="bg-white shadow my-2">
+            </div>
+        <div class="bg-white shadow my-2">
                 <div class="flex justify-between items-center px-4 pt-4 ">
                     <div class="flex items-center space-x-3">
                     <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-10 h-10 rounded-full">
@@ -153,21 +86,6 @@
                 </ul>
             </div>
             
-            <div class="bg-white shadow my-2">
-                <div class="flex justify-between items-center py-4 px-4 border-b my-2">
-                    <div class="flex items-center space-x-3">
-                    <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-10 h-10 rounded-full">
-                        <div>
-                            <p class="font-medium">Badminton</p>
-                            <p class="text-sm text-secondaryText">Cash</p>
-                        </div>
-                    </div>
-                    <button class="absolute right-0 pr-3 z-50">
-                        <font-awesome-icon icon="angle-right" class="text-secondaryText size-5" />
-                    </button> 
-                </div>
-            </div>
-        
         <div class="flex justify-center items-center bg-white shadow my-2">
             <span class="text-primary font-semibold p-3">Need help? Send us a message?</span>
         </div>
@@ -180,19 +98,3 @@
         </div>
     </div>
 </template>
-
-<style>
-.border-left-half {
-    position: relative; 
-}
-.border-left-half::before {
-    content: ''; 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 1.9px; 
-    height: 50%; 
-    background-color: #e5e7eb; 
-    z-index: 1; 
-}
-</style>

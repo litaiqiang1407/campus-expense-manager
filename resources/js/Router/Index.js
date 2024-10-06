@@ -86,6 +86,7 @@ const routes = [
     {
         path: '/categories',
         name: 'Categories',
+        meta: { layout: DefaultLayout, title: 'Categories', isBack: false, headerComponent: [SelectWallet,Menu] },
         component: Categories
     },
     {
