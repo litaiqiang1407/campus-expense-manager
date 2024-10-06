@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, Categories } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, Categories } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
@@ -63,6 +63,13 @@ const routes = [
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }),
     },
     {
+        path: '/my-account',
+        name: 'MyAccount',
+        component: MyAccount,
+        meta: { layout: DefaultLayout, title: 'My Account', isBack: true}, 
+        
+    },
+{
         path: '/notification',
         name: 'Notification',
         component: Notification,
@@ -100,7 +107,6 @@ const routes = [
         path: '/logout',
         name: 'Logout',        
     }
-
 ]
 
 const router = createRouter({
