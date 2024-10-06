@@ -125,9 +125,6 @@
                 </div>
             </div>
         </div>
-        <button @click="logout" class="bg-red-600 text-white rounded py-2 px-4">
-            Logout
-        </button>
     </div>
 
 </template>
@@ -153,17 +150,6 @@ const fetchAccount = async () => {
         isLoading.value = false; 
     }
 };
-
-const logout = () => {
-    axios.post(route('Logout'))
-        .then(() => {
-            window.location.href = route('Welcome');
-        })
-        .catch((error) => {
-            console.error('Error logging out:', error);
-        });
-};
-
 onMounted(() => {
     fetchAccount();
 });

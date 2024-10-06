@@ -1,9 +1,14 @@
 <template>
-    <div class="flex items-center justify-center">
+    <div class="flex items-center justify-center ">
         <!-- Avatar Circle -->
         <div
-            class="flex items-center justify-center w-16 h-16 bg-teal-400 text-white text-2xl font-bold rounded-full absolute z-0">
-            T
+                class="flex items-center justify-center w-16 h-16 border-[1px] rounded-full absolute z-0">
+                <template v-if="isLoading">
+                    <div class="animate-spin rounded-full border-4 border-primary border-t-transparent w-16 h-16"></div>
+                </template>
+                <template v-else>
+                    <img class="w-full h-full rounded-full" :src="account.avatar" alt="Avatar" referrerPolicy="no-referrer" />
+                </template>
         </div>
 
         <!-- Account Badge -->
@@ -38,13 +43,12 @@
     </div>
    
     <!-- User info -->
-    <div class="text-center p-1">
-        <h2 class="text-sm font-semibold text-black">Tranvuca213</h2>
-        <p class="text-xs text-secondaryText">tranvuca213@gmail.com</p>
+    <div class="text-center p-1 mb-2">
+            <h2 class="text-sm font-semibold text-black">{{  account.name  }}</h2>
+            <p class="text-xs text-secondaryText">{{  account.email  }}</p>
     </div>
 
-    <div class="bg-white w-full max-w-sm p-4">
-    <!-- Categories -->
+    <div class="bg-white w-screen p-4">
     <div class="flex items-center justify-between py-2">
             <div class="flex items-center space-x-3">
                 <font-awesome-icon icon="repeat" class="text-secondaryText size-5 px-2" />
@@ -54,11 +58,51 @@
                 <font-awesome-icon icon="angle-right" class="text-secondaryText size-4 pr-3" />
             </div>
         </div>
-        <!-- Connect to banks (Highlighted Button) -->
+        
         <div class="flex items-center justify-center py-4">
-            <button class="bg-red-100 text-redText font-semibold px-4 py-1 rounded-3xl w-full text-center shadow-sm">
+            <button @click="logout" class="button-animate bg-red-100 text-redText font-semibold px-4 py-1 rounded-3xl w-full text-center shadow-sm">
                 Sign out
             </button>
         </div>
     </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const account = ref({});
+const isLoading = ref(true); 
+
+const fetchAccount = async () => {
+    try {
+        const response = await axios.get(route('Account')); 
+        account.value = response.data; 
+        console.log('Account:', account.value);
+    } catch (error) {
+        console.error('Error fetching Account:', error);
+    } finally {
+        isLoading.value = false; 
+    }
+};
+
+const logout = () => {
+    axios.post(route('Logout'))
+        .then(() => {
+            window.location.href = route('Welcome');
+        })
+        .catch((error) => {
+            console.error('Error logging out:', error);
+        });
+};
+
+onMounted(() => {
+    fetchAccount();
+});
+
+const goPage = (page) => {
+    router.push({ name: page });
+};
+</script>
