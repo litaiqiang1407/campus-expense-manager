@@ -22,11 +22,18 @@ import {
   faHandHoldingDollar,
   faGear,
   faCircleInfo,
-  faRepeat
-
+  faRepeat,
+  faChevronDown, 
+  faXmark,
+  faDollarSign,
+  faDivide,
+  faDeleteLeft,
+  faMinus,
+  faPlay
 } from '@fortawesome/free-solid-svg-icons';
 
-import { faCircleQuestion as faCircleQuestionRegular } from '@fortawesome/free-regular-svg-icons';
+import { faCalendar, faCircleQuestion as faCircleQuestionRegular, faComment as faCommentRegular } from '@fortawesome/free-regular-svg-icons';
+
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 // Add icons to the library
@@ -53,7 +60,15 @@ library.add(
   faHandHoldingDollar,
   faGear,
   faCircleInfo,
-  faRepeat
+  faRepeat,
+  faCircleQuestionRegular,
+  faDollarSign,
+  faCommentRegular,
+  faCalendar,
+  faDivide,
+  faDeleteLeft,
+  faMinus,
+  faPlay
 );
 
 export default FontAwesomeIcon;
