@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget } from "../Pages/Index";
 
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
-import { Support, Menu } from "../Components/Header/Components/Index";
+import { Support, Menu, SelectWallet } from "../Components/Header/Components/Index";
 
 const routes = [
     {
@@ -30,6 +30,13 @@ const routes = [
         meta: { layout: MenuLayout },
     },
     {
+        path: '/transaction/create',
+        name: 'CreateTransaction',
+        component: CreateTransaction,
+        meta: { layout: HeaderLayout, title: 'Add transaction', isBack: false, isCancel: true},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
+    },
+    {
         path: '/signin',
         name: 'Signin',
         component: Signin
@@ -43,22 +50,29 @@ const routes = [
         path: '/account',
         name: 'Account',
         component: Account,
-        meta: { layout: DefaultLayout, title: 'Account', isBack: false, headerComponent: [Support]}, 
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }), 
+        meta: { layout: DefaultLayout, title: 'Account', isBack: false, headerComponent: [Support]},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }),
     },
     {
         path: '/notification',
         name: 'Notification',
         component: Notification,
         meta: { layout: HeaderLayout, title: 'Notifications', isBack: false, isCancel: true},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }), 
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
     {
         path: '/budget',
         name: 'Budget',
         component: Budget,
-        meta: { layout: DefaultLayout, title: 'Budget', isBack: false }, 
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack }), 
+        meta: { layout: DefaultLayout, title: 'Budget', isBack: false, headerComponent: [SelectWallet,Menu] },
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent  }),
+    },
+    {
+        path: '/budget/create',
+        name: 'CreateBudget',
+        component: CreateBudget,
+        meta: { layout: HeaderLayout, title: 'Add budget', isBack: false, isCancel: true},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
 
 ]

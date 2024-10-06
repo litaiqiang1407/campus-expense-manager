@@ -13,17 +13,21 @@ class NotificationController extends Controller
     {
         // $userId = $request->user()->id; 
 
-        // Lấy tất cả thông báo của người dùng theo thứ tự thời gian mới nhất
         // $notifications = Notification::where('user_id', $userId)
         //                             ->orderBy('created_at', 'desc')
         //                             ->get();
 
-        $notifications = Notification::select('id', 'title', 'message')
+        $notifications = Notification::select('id', 'title', 'message', 'type', 'is_read', 'created_at')
+            ->orderBy('created_at', 'desc')
             ->get();
-        // return Inertia::render('Notification/Index', [
-        //     'notifications' => $notifications
-        // ]);  
-        return response()->json($notifications);
+
+        if ($request->wantsJson()) {
+            return response()->json($notifications);
+        }
+    
+        return Inertia::render('Notification/Index', [
+            'notifications' => $notifications,
+        ]);
     }
 
     public function markAsRead($id)

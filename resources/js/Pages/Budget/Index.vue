@@ -101,6 +101,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const createBudget = () => {
+  router.push({ name: 'CreateBudget' });
+};
 
 // Define reactive variables
 const budgetAvailable = ref('5.000');  // Available amount
@@ -112,9 +118,9 @@ const endOfPeriod = ref('2 months');    // End of period
 const emit = defineEmits(['budget-created']);
 
 // Define the method to create a budget
-function createBudget() {
-  emit('budget-created', budgetAvailable.value); // Emit event with the value of budgetAvailable
-}
+// function createBudget() {
+//   emit('budget-created', budgetAvailable.value); // Emit event with the value of budgetAvailable
+// }
 
 // Animation function for moving the circles along the arc
 function animateCircles() {
