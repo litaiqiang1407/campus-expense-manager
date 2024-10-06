@@ -14,18 +14,15 @@ class FacebookController extends Controller
     {
         return Socialite::driver('facebook')->redirect();
     }
-
     public function handleFacebookCallback()
     {
         $user = Socialite::driver('facebook')->user();
-        
-        // Tìm hoặc tạo người dùng
+
         $authUser = User::where('facebook_id', $user->getId())->first();
         
         if ($authUser) {
             Auth::login($authUser, true);
         } else {
-            // Tạo mới người dùng
             $newUser = User::create([
                 'name' => $user->getName(),
                 'email' => $user->getEmail(),
