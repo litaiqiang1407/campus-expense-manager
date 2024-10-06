@@ -40,7 +40,7 @@ const routes = [
     },
     {
         path: '/signin',
-        name: 'Signin',
+        name: 'login',
         component: Signin
     },
     {
@@ -52,7 +52,7 @@ const routes = [
         path: '/account',
         name: 'Account',
         component: Account,
-        meta: { layout: DefaultLayout, title: 'Account', isBack: false, headerComponent: [Support]},
+        meta: { layout: DefaultLayout, title: 'Account', isBack: false, isCancel: false, headerComponent: [Support]},
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }),
     },
     {
@@ -76,6 +76,10 @@ const routes = [
         meta: { layout: HeaderLayout, title: 'Add budget', isBack: false, isCancel: true},
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
+    {
+        path: '/logout',
+        name: 'Logout',        
+    }
 
 ]
 

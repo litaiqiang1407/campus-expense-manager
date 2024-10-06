@@ -14,6 +14,6 @@ import { useRouter } from 'vue-router';
 const router = useRouter(); 
 
 const goToSignin = () => {
-    router.push({ name: 'Signin' });
+    router.push({ name: 'login' });
 };
 </script>

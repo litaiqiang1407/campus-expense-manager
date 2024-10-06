@@ -11,15 +11,12 @@ class AccountController extends Controller
     public function index(Request $request )
     {
         $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('SignIn')->with('error', 'You need to log in.');
-        }
-
+        
         $userInfo = [
             'id' => $user->id,
             'name' => $user->name,
-            'email' => $user->email
+            'email' => $user->email,
+            'avatar' => $user->avatar,
         ];
 
         if ($request->wantsJson()) {

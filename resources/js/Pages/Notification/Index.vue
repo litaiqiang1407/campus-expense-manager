@@ -30,7 +30,6 @@ const fetchNotifications = async () => {
     try {
         const response = await axios.get(route('Notification')); 
         notifications.value = response.data;
-        console.log('Notifications:', notifications.value);
     } catch (error) {
         console.error('Error fetching notifications:', error);
     }
