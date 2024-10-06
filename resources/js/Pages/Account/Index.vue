@@ -59,7 +59,7 @@
     
         <div class=" w-full max-w-md mx-auto p-4 md:p-6 lg:p-8">
             <!-- My Wallets -->
-            <div class="flex items-center justify-between py-2">
+            <div class="flex items-center justify-between py-2" @click="goPage('MyWallet')">
                 <div class="flex items-center space-x-3">
                     <font-awesome-icon icon="wallet" class="text-secondaryText size-5 px-2" />
                     <span class="text-black font-medium text-sm">My Wallets</span>
@@ -115,7 +115,7 @@
                 </div>
             </div>
              <!-- About -->
-            <div class="flex items-center justify-between py-2">
+            <div class="flex items-center justify-between py-2" @click="goPage('AppInfo')">
                 <div class="flex items-center space-x-3">
                     <font-awesome-icon icon="circle-info" class="text-secondaryText size-5 px-2" />
                     <span class="text-black font-medium text-sm">About</span>
@@ -135,6 +135,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const account = ref({});
 const isLoading = ref(true); 
@@ -164,4 +167,8 @@ const logout = () => {
 onMounted(() => {
     fetchAccount();
 });
+
+const goPage = (page) => {
+    router.push({ name: page });
+};
 </script>
