@@ -1,12 +1,12 @@
 <template>
-  <div class="w-full flex flex-col items-center justify-start pt-5">
+  <div class="w-full flex flex-col items-center justify-start pt-5" style="background-color: #EFFBFF;">
     <div class="flex flex-col items-center p-4">
       <img src="/public/assets/img/logo.png" alt="Logo" class="h-24 w-24 rounded-xl" />
       <h3 class="text-black font-semibold text-2xl mt-2">Money Lover</h3>
       <h1 class="text-gray-400 font-semibold text-sm">Version 8.23.0.3</h1>
       <h1 class="text-gray-400 font-semibold text-sm mb-2">by Finsify</h1>
     </div>
-  </div>
+ 
 
   <div class="w-full bg-white flex flex-col items-center">
     <div class="flex justify-center w-full px-6 pt-4">
@@ -45,25 +45,22 @@
     <p class="text-gray-400 text-xs pl-2">© 2024 Finsify. All rights reserved.</p>
   </div>
 
+
   <button @click="goBack" class="fixed top-2 left-2 text-black text-2xl bg-transparent border-none cursor-pointer">
     <i class="fa-solid fa-arrow-left"></i>
   </button>
-</template>
+  </div>
 
+
+</template>
+ 
 <script setup>
 const goBack = () => {
   window.history.back();
 };
 </script>
-
 <style>
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: #effbff;
-  align-items: column;
-}
+  body {
+    background-color: #effbff;
+  }
 </style>
