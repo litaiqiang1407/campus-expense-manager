@@ -28,21 +28,21 @@ const transactionItems = [
     {
         id: 1,
         title: 'Food',
-        icon: '/assets/icon/food.png',
+        icon: '/assets/icon/expense/food.png',
         amount: 2000,
         percentage: 50,
     },
     {
         id: 2,
         title: 'Rental',
-        icon: '/assets/icon/house.png',
+        icon: '/assets/icon/expense/rentals.png',
         amount: 1000,
         percentage: 25,
     },
     {
         id: 3,
         title: 'Shopping',
-        icon: '/assets/icon/shopping.png',
+        icon: '/assets/icon/expense/shopping.png',
         amount: 500,
         percentage: 12.5,
     }

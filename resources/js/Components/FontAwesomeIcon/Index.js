@@ -65,7 +65,8 @@ library.add(
   faDeleteLeft,
   faMinus,
   faPlay,
-  faCirclePlus
+  faCirclePlus,
+  faChevronDown
 );
 
 export default FontAwesomeIcon;

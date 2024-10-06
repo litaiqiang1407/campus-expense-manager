@@ -1,7 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
+<<<<<<< HEAD
 import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, Categories } from "../Pages/Index";
+=======
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo } from "../Pages/Index";
+>>>>>>> f62741b1208299008a5f7a35986bb052c331893c
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
@@ -26,6 +30,13 @@ const routes = [
         component: Signup
     },
     {
+        path: '/app-info',
+        name: 'AppInfo',
+        component: AppInfo,
+        meta: { layout: HeaderLayout, title: '', isBack: true, isCancel: false},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
+    },
+    {  
         path: '/transaction',
         name: 'Transaction',
         component: Transaction,
@@ -40,7 +51,7 @@ const routes = [
     },
     {
         path: '/signin',
-        name: 'Signin',
+        name: 'login',
         component: Signin
     },
     {
@@ -52,10 +63,9 @@ const routes = [
         path: '/account',
         name: 'Account',
         component: Account,
-        meta: { layout: DefaultLayout, title: 'Account', isBack: false, headerComponent: [Support]},
+        meta: { layout: DefaultLayout, title: 'Account', isBack: false, isCancel: false, headerComponent: [Support]},
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }),
     },
-
     {
         path: '/notification',
         name: 'Notification',
@@ -78,10 +88,23 @@ const routes = [
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
     {
+<<<<<<< HEAD
         path: '/categories',
         name: 'Categories',
         component: Categories
     },
+=======
+        path: '/my-wallet',
+        name: 'MyWallet',
+        component: MyWallet,
+        meta: { layout: HeaderLayout, title: 'My Wallet', isBack: true, isCancel: false},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
+    },
+    {
+        path: '/logout',
+        name: 'Logout',        
+    }
+>>>>>>> f62741b1208299008a5f7a35986bb052c331893c
 
 ]
 
