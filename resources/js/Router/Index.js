@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet } from "../Pages/Index";
+// Import pages
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
@@ -25,6 +26,13 @@ const routes = [
         component: Signup
     },
     {
+        path: '/app-info',
+        name: 'AppInfo',
+        component: AppInfo,
+        meta: { layout: HeaderLayout, title: '', isBack: true, isCancel: false},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
+    },
+    {  
         path: '/transaction',
         name: 'Transaction',
         component: Transaction,
