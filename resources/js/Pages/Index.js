@@ -7,3 +7,6 @@ export { default as Account } from './Account/Index.vue';
 export { default as Transaction } from './Transaction/Index.vue';
 export { default as Budget } from './Budget/Index.vue';
 export { default as Notification } from './Notification/Index.vue';
+export { default as CreateTransaction } from './Transaction/Create.vue';
+export { default as CreateBudget } from './Budget/Create.vue';
+
