@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-col h-screen">
         <header class="h-13 px-4 py-2 flex items-center space-x-4">
-            <img src="/public/assets/img/logo.png" alt="Logo" class="h-8 w-8"/>
-            <h1 class="text-[#00BC2A] font-bold">Campus Expense</h1>
+            <img src="/assets/img/logo.png" alt="Logo" class="h-8 w-8"/>
+            <h1 class="text-primary font-bold">Campus Expense</h1>
         </header>
         <main class="flex flex-1 items-center justify-center">
             <swiper
@@ -16,19 +16,19 @@
             >
                 <swiper-slide>
                     <div class="flex flex-col items-center">
-                        <img src="/public/assets/img/welcome-banner1.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
+                        <img src="/assets/img/welcome-banner1.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
                         <span class="font-semibold text-2xl">Simple money tracker</span>
                     </div>
                 </swiper-slide>
                 <swiper-slide>
                     <div class="flex flex-col items-center">
-                        <img src="/public/assets/img/welcome-banner2.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
+                        <img src="/assets/img/welcome-banner2.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
                         <span class="font-semibold text-2xl">Painless budgeting</span>
                     </div>
                 </swiper-slide>
                 <swiper-slide>
                     <div class="flex flex-col items-center">
-                        <img src="/public/assets/img/welcome-banner3.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
+                        <img src="/assets/img/welcome-banner3.png" alt="Welcome Banner 1" class="w-full h-full object-cover" />
                         <span class="font-semibold text-2xl">The whole picture in one place</span>
                     </div>
                 </swiper-slide>
@@ -36,9 +36,9 @@
         </main>
         <footer>
             <div class="flex flex-col items-center">
-                <a @click.prevent="goToSignup" class="w-[80%] bg-[#00BC2A] rounded-full uppercase text-center font-semibold text-white py-2 mb-8 text-[12px]">Sign up for free</a>
-                <a class="uppercase text-[#00BC2A] font-semibold mb-2 text-[12px]">Sign in</a>
-                <span class="text-[8p]">Version 1</span>
+                <a @click.prevent="goToSignup" class="w-[80%] bg-primary rounded-full uppercase text-center font-semibold text-white py-2 mb-8 text-[12px]">Sign up for free</a>
+                <a class="uppercase text-primary font-semibold mb-2 text-[12px]">Sign in</a>
+                <span class="text-[8px]">Version 1</span>
             </div>
         </footer>
     </div>
