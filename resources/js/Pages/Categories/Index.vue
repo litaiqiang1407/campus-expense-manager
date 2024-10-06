@@ -3,7 +3,7 @@
     <!-- Expense/Income/Debt Navigation -->
         <div class="max-w-lg mx-auto py-1">
             <div class="flex justify-around text-xs font-medium bg-[#f8f9fa] pt-2">
-                    <button class="py-2 px-4 text-secondaryText border-b-[3px] border-black">EXPENSE</button>
+                <button class="py-2 px-4 text-secondaryText border-b-[3px] border-black">EXPENSE</button>
                 <button class="py-2 text-secondaryText">INCOME</button>
                 <button class="py-2 text-secondaryText">DEBT/LOAN</button>
             </div>
