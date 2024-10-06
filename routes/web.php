@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotFoundController;
 use App\Http\Controllers\WelcomeController;
@@ -18,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('Home');
     Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
+    Route::get('/account', [AccountController::class, 'index'])->name('Account');
 });
 
 
