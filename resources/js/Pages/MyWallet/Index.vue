@@ -33,19 +33,21 @@
                     v-for="walletType in walletTypes" 
                     :key="walletType.id" 
                     class="button-animate bg-gray-100 p-4 rounded-lg flex items-center justify-center"
-                    @click.stop>
+                    @click.stop="createWallet(walletType.id)">
                         <h3 class="font-bold">{{ walletType.name }}</h3>
                 </button>
             </div>
         </div>
     </div>
-
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { Add } from '@/Components/Button/Index';
+
+const router = useRouter();
 
 const wallets = ref([]);
 const walletTypes = ref([]);
@@ -69,7 +71,9 @@ const closeWalletTypes = () => {
   openWalletTypes.value = false;
 };
 
-onMounted(() => {
-  fetchWallets();
-});
+const createWallet = (walletTypeId) => {
+  router.push({ name: 'CreateWallet', params: { walletTypeId } });
+};
+
+onMounted(fetchWallets);
 </script>

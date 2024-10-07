@@ -18,7 +18,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
-    Route::get('/my-wallet', [MyWalletController::class, 'index'])->name('MyWallet');
+
+    Route::group(['prefix' => 'my-wallet'], function () {
+        Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');
+        Route::get('/{walletTypeId}/create', [MyWalletController::class, 'create'])->name('CreateWallet');
+    });
 });
 
 

@@ -1,7 +1,7 @@
 <template>
     <div class="flex w-full space-x-8 items-center py-4">
-      <div class="w-[32px] flex items-center justify-center">
-        <font-awesome-icon icon="dollar-sign" class="text-black text-[24px]" />
+      <div class="size-[40px] flex items-center justify-center">
+        <font-awesome-icon icon="dollar-sign" class="text-black text-[36px]" />
       </div>
       <input 
         type="text" 

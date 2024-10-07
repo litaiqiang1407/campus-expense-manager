@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
@@ -97,6 +97,13 @@ const routes = [
         meta: { layout: HeaderLayout, title: 'My Wallet', isBack: true, isCancel: false, headerComponent: [Search]},
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel, headerComponent: route.meta.headerComponent }),
     },
+    {
+        path: '/my-wallet/:walletTypeId/create',
+        name: 'CreateWallet',
+        component: CreateWallet,
+        meta: { layout: HeaderLayout, title: 'Add wallet', isBack: false, isCancel: true },
+        props: true,
+    },      
     {
         path: '/logout',
         name: 'Logout',        
