@@ -1,23 +1,32 @@
 <template>
     <div class="max-w-full mx-auto mt-2">
-      <div class="text-gray-500 text-sm text-center mb-2 flex items-center h-12 pl-4 font-bold">
+      <div class="text-sm text-secondaryText text-center mb-2 flex items-center h-12 pl-4 font-bold">
         Included in Total
       </div>
-      <div v-for="wallet in wallets" :key="wallet.id" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2">
-        <img
-          :alt="`${wallet.name} icon`"
-          class="w-10 h-10 rounded-full"
-          :src="wallet.icon_path"
-        />
-        <div class="ml-4 flex-1 flex flex-col justify-between">
-          <div class="text-gray-800 font-medium">
-            {{ wallet.name }}
+      <div v-if="isLoading" class="flex items-center justify-center h-64">
+        <Loading />
+      </div>
+      <div v-for="wallet in wallets" :key="wallet.id" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
+        <div class="w-full flex items-center justify-between" @click="editWallet(wallet.id)">
+          <div class="flex flex-1 items-center">
+            <img
+              :alt="`${wallet.name} icon`"
+              class="w-10 h-10 rounded-full"
+              :src="wallet.icon_path"
+            />
+            <div class="ml-4 flex-1 flex flex-col justify-between">
+              <div class="font-medium">
+                {{ wallet.name }}
+              </div>
+              <div class="text-secondaryText text-sm">
+                ${{ wallet.balance.toFixed(2) }}
+              </div>
+            </div>
           </div>
-          <div class="text-gray-500 text-sm">
-            ${{ wallet.balance.toFixed(2) }}
-          </div>
+          <button class="w-[32px] h-full">
+            <font-awesome-icon icon="circle-minus" class="text-[24px] text-redText" />
+          </button>
         </div>
-        <font-awesome-icon icon="ellipsis-vertical" class="text-[24px]" />
       </div>
       <div class="fixed right-4 bottom-4 w-16 h-16 text-[24px]" @click="displayWalletTypes">
         <Add :icon="'plus'" />
@@ -46,20 +55,25 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Add } from '@/Components/Button/Index';
+import Loading from '@/Components/Loading/Index.vue';
 
 const router = useRouter();
 
+const isLoading = ref(false);
 const wallets = ref([]);
 const walletTypes = ref([]);
 const openWalletTypes = ref(false);
 
 const fetchWallets = async () => {
   try {
+    isLoading.value = true;
     const response = await axios.get(route('MyWallet'));
     walletTypes.value = response.data.walletTypes;
     wallets.value = response.data.wallets;
   } catch (error) {
     console.error('Error fetching wallets:', error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
@@ -73,6 +87,10 @@ const closeWalletTypes = () => {
 
 const createWallet = (walletTypeId) => {
   router.push({ name: 'CreateWallet', params: { walletTypeId } });
+};
+
+const editWallet = (walletId) => {
+  router.push({ name: 'EditWallet', params: { walletId } });
 };
 
 onMounted(fetchWallets);

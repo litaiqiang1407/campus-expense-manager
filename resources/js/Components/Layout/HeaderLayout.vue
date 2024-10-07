@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-primaryBackground">
+    <div class="bg-primaryBackground h-screen">
         <Header :title="title" :isBack="isBack">
             <component v-for="(comp, index) in headerComponent" :key="index" :is="comp" />
         </Header>

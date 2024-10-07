@@ -5,7 +5,8 @@
       </div>
       <input 
         type="text" 
-        v-model="inputValue"
+        :value="inputValue"
+        @input="$emit('update:inputValue', $event.target.value)"
         class="w-full text-primary font-semibold text-[28px] border-b-[3px] border-primary py-1 focus:outline-none"
         @focus="showKeyboard = true"
       />
@@ -61,7 +62,13 @@
 <script setup>
 import { ref } from 'vue';
 
-const inputValue = ref(0);
+const props = defineProps({
+  inputValue: {
+    type: Number,
+    default: 0,
+  },
+});
+
 const showKeyboard = ref(false);
 
 const addNumber = (num) => {

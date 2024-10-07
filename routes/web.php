@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'my-wallet'], function () {
         Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');
         Route::get('/{walletTypeId}/create', [MyWalletController::class, 'create'])->name('CreateWallet');
+        Route::get('/edit/{walletId}', [MyWalletController::class, 'edit'])->name('EditWallet');
     });
 });
 

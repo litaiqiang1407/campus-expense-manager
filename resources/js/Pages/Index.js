@@ -17,3 +17,4 @@ export { default as Notification } from './Notification/Index.vue';
 
 export { default as MyWallet } from './MyWallet/Index.vue';
 export { default as CreateWallet } from './MyWallet/Create.vue';
+export { default as EditWallet } from './MyWallet/Edit.vue';

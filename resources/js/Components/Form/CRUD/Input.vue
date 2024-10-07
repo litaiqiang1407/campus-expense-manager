@@ -1,9 +1,10 @@
 <template>
     <div class="w-full py-4">
-      <label class="text-secondaryText font-medium text-[24px] mb-2">{{ label }}
+      <label class="text-secondaryText font-medium text-[20px] mb-2">{{ label }}
       <input 
         type="text" 
-        v-model="inputValue"
+        :value="inputValue"
+        @input="$emit('update:inputValue', $event.target.value)"
         class="w-full text-primary font-semibold text-[28px] border-b-[3px] border-primary py-1 focus:outline-none"
       />
     </label>
@@ -11,12 +12,12 @@
 </template>
   
 <script setup>
-import { ref } from 'vue';
-
-const inputValue = ref('');
-
 const props = defineProps({
   label: {
+    type: String,
+    default: '',
+  },
+  inputValue: {
     type: String,
     default: '',
   },

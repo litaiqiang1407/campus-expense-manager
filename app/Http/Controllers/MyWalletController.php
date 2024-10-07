@@ -78,5 +78,38 @@ class MyWalletController extends Controller
             'icons' => $icons,
             'walletTypeList' => $walletTypeList,
         ]);
-    }    
+    }
+    
+    public function edit(Request $request, $walletId)
+    {
+        $wallet = Wallet::select(
+            'wallets.id', 
+            'wallets.name', 
+            'wallets.balance', 
+            'wallets.wallet_type_id',
+            'wallet_types.name as walletTypeName',  
+            'wallets.icon_id',
+            'icons.path as icon_path', 
+            'icons.name as icon_name'
+        )
+        ->join('wallet_types', 'wallets.wallet_type_id', '=', 'wallet_types.id') 
+        ->join('icons', 'wallets.icon_id', '=', 'icons.id') 
+        ->findOrFail($walletId); 
+    
+        $walletTypes = WalletType::select('id', 'name')->get();
+    
+        // Check if the request is for JSON response
+        if ($request->wantsJson()) {
+            return response()->json([
+                'wallet' => $wallet,
+                'walletTypes' => $walletTypes,
+            ]);
+        }
+    
+        // Render the Inertia page for edit
+        return Inertia::render('MyWallet/Edit', [
+            'wallet' => $wallet,
+            'walletTypes' => $walletTypes,
+        ]);
+    }
 }

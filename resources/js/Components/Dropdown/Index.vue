@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch, defineEmits } from 'vue';
 
 const props = defineProps({
     itemList: {
@@ -41,8 +41,10 @@ const props = defineProps({
     },
 });
 
+const emit = defineEmits(['update:selectedItem']);
+
 const isOpen = ref(false);
-const selectedItem = ref(null);
+const selectedItem = ref(props.selectedItem);
 
 const toggleDropdown = () => {
     isOpen.value = !isOpen.value;
@@ -50,7 +52,11 @@ const toggleDropdown = () => {
 
 const selectItem = (item) => {
     selectedItem.value = item;
+    emit('update:selectedItem', item);
     isOpen.value = false;
-    console.log('Selected wallet type:', item);
 };
+
+watch(() => props.selectedItem, (newVal) => {
+    selectedItem.value = newVal;
+});
 </script>
