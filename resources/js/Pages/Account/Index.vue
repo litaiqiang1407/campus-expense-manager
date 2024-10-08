@@ -11,7 +11,7 @@
                     <img class="w-full h-full rounded-full" :src="account.avatar" alt="Avatar" referrerPolicy="no-referrer" />
                 </template>
             </div>
-    
+
             <!-- Account Badge -->
             <div class="flex items-center pt-16 relative z-40">
                 <div class="bg-gray-500 text-white text-xs px-3 py-1 shadow whitespace-nowrap">BASIC ACCOUNT</div>
@@ -30,7 +30,7 @@
                             points="16 0 24 8 24 0"></polygon>
                     </svg>
                 </div>
-    
+
                 <!-- Right Icon -->
                 <div class="w-6 h-6 ml-12 relative z-40">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full fill-gray-400" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="text-center p-1 mb-2">
             <h2 class="text-sm font-semibold text-black">{{  account.name  }}</h2>
             <p class="text-xs text-secondaryText">{{  account.email  }}</p>
@@ -54,9 +54,9 @@
             <video class="w-full h-full object-cover" autoplay controls loop>
                 <source src="/assets/video/demovideo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
-            </video>    
+            </video>
         </div>
-    
+
         <div class=" w-full max-w-md mx-auto p-4 md:p-6 lg:p-8">
             <!-- My Wallets -->
             <div class="flex items-center justify-between py-2" @click="goPage('MyWallet')">
@@ -137,17 +137,16 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const account = ref({});
-const isLoading = ref(true); 
+const isLoading = ref(true);
 
 const fetchAccount = async () => {
     try {
-        const response = await axios.get(route('Account')); 
+        const response = await axios.get(route('Account'));
         account.value = response.data; 
-        console.log('Account:', account.value);
     } catch (error) {
         console.error('Error fetching Account:', error);
     } finally {
-        isLoading.value = false; 
+        isLoading.value = false;
     }
 };
 onMounted(() => {

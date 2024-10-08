@@ -7,7 +7,7 @@
         <span>{{ selectedItem ? selectedItem.name : defaultText }}</span>
         <font-awesome-icon :icon="isOpen ? 'chevron-up' : 'chevron-down'" class="text-primary" />
       </button>
-  
+
       <div v-if="isOpen" class="absolute mt-2 w-full bg-white font-semibold shadow-lg rounded-md z-10">
         <ul class="max-h-48 overflow-auto">
           <li
@@ -31,7 +31,7 @@ const props = defineProps({
         type: Array,
         default: [],
     },
-    selectedItem: {
+    modelValue: {
         type: Object,
         default: null,
     },
@@ -41,10 +41,10 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['update:selectedItem']);
+const emit = defineEmits(['update:modelValue']);
 
 const isOpen = ref(false);
-const selectedItem = ref(props.selectedItem);
+const selectedItem = ref(props.modelValue);
 
 const toggleDropdown = () => {
     isOpen.value = !isOpen.value;
@@ -52,11 +52,11 @@ const toggleDropdown = () => {
 
 const selectItem = (item) => {
     selectedItem.value = item;
-    emit('update:selectedItem', item);
+    emit('update:modelValue', item);
     isOpen.value = false;
 };
 
-watch(() => props.selectedItem, (newVal) => {
+watch(() => props.modelValue, (newVal) => {
     selectedItem.value = newVal;
 });
 </script>
