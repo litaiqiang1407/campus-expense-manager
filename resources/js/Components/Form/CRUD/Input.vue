@@ -3,8 +3,8 @@
       <label class="text-secondaryText font-medium text-[20px] mb-2">{{ label }}
       <input 
         type="text" 
-        :value="inputValue"
-        @input="$emit('update:inputValue', $event.target.value)"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
         class="w-full text-primary font-semibold text-[28px] border-b-[3px] border-primary py-1 focus:outline-none"
       />
     </label>
@@ -17,7 +17,7 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  inputValue: {
+  modelValue: {
     type: String,
     default: '',
   },

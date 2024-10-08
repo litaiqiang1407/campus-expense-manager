@@ -66,7 +66,7 @@ const emit = defineEmits(['update:inputValue']);
 
 const props = defineProps({
   inputValue: {
-    type:  String ,
+    type:  String,
     default: '0',
   },
 });
@@ -74,7 +74,6 @@ const props = defineProps({
 const showKeyboard = ref(false);
 
 const addNumber = (num) => {
-  // Check if the current value is '0' and replace it with the entered number
   if (props.inputValue === '0') {
     emit('update:inputValue', num.toString());
   } else {
