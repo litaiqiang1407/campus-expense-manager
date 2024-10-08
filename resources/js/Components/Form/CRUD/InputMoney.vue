@@ -60,14 +60,6 @@
 </template>
 
 <script setup>
-<<<<<<< HEAD
-import { ref } from 'vue';
-
-const props = defineProps({
-  inputValue: {
-    type: Number,
-    default: 0,
-=======
 import { ref, defineEmits } from 'vue';
 
 const emit = defineEmits(['update:inputValue']);
@@ -76,21 +68,12 @@ const props = defineProps({
   inputValue: {
     type:  String,
     default: '0',
->>>>>>> 183d31aaaafd61df19a2e284f94fc128aa669542
   },
 });
 
 const showKeyboard = ref(false);
 
 const addNumber = (num) => {
-<<<<<<< HEAD
-  inputValue.value += num;
-};
-
-const addDecimal = () => {
-  if (!inputValue.value.includes('.')) {
-    inputValue.value += '.';
-=======
   if (props.inputValue === '0') {
     emit('update:inputValue', num.toString());
   } else {
@@ -101,26 +84,10 @@ const addDecimal = () => {
 const addDecimal = () => {
   if (!props.inputValue.toString().includes('.')) {
     emit('update:inputValue', props.inputValue + '.');
->>>>>>> 183d31aaaafd61df19a2e284f94fc128aa669542
   }
 };
 
 const addOperator = (operator) => {
-<<<<<<< HEAD
-  inputValue.value += operator;
-};
-
-const deleteNumber = () => {
-  inputValue.value = inputValue.value.slice(0, -1);
-};
-
-const clearInput = () => {
-  inputValue.value = '';
-};
-
-const hideKeyboard = () => {
-  showKeyboard.value = false;
-=======
   emit('update:inputValue', props.inputValue + operator);
 };
 
@@ -147,7 +114,6 @@ const hideKeyboard = () => {
   } else {
     showKeyboard.value = false;
   }
->>>>>>> 183d31aaaafd61df19a2e284f94fc128aa669542
 };
 </script>
 

@@ -26,8 +26,15 @@ class TransactionController extends Controller
                 'created_at' => $transaction->created_at->toDateTimeString(),
             ];
         });
-       // dd($data);
-        return response()->json($data);
+        if ($request->wantsJson()) {
+            return response()->json([
+                'transactions' => $data,
+            ]);
+        }
+
+        return Inertia::render('Transaction/Index', [
+            'transactions' => $data
+        ]);
     }
 
     public function markAsRead($id)
