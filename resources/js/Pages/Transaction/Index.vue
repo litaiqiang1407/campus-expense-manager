@@ -1,33 +1,10 @@
 <template>
     <div class="flex flex-col h-screen">
         <!-- Header -->
-        <header class="h-13 px-4 py-2 flex flex-col items-center relative bg-white">
-            <!-- Header Top -->
-            <div
-                class="balance-section flex flex-col items-center justify-center flex-1 absolute left-1/2 transform -translate-x-1/2">
-                <h2 class="balance-label text-gray-400 font-bold text-center text-xs">Balance</h2>
-                <p class="balance-amount text-black text-xl font-bold">{{ balance }}</p>
-            </div>
-            <div class="icons-section flex space-x-4 ml-auto">
-                <span class="search-icon cursor-pointer text-black text-lg font-normal">
-                    <font-awesome-icon icon="magnifying-glass" />
-                </span>
-                <span class="menu-icon cursor-pointer text-black text-lg font-normal flex flex-col justify-center">
-                    <font-awesome-icon icon="ellipsis-vertical" />
-                </span>
-            </div>
-
-            <!-- Header Bottom -->
-            <div
-                class="cursor-pointer transaction-type-container bg-[#F3F3F3] flex justify-center items-center p-2 max-w-max mx-auto mt-4 rounded">
-                <img :src="iconImage" alt="Icon" class="h-6 w-6 mr-2 rounded-full" />
-                <h3 class="transaction-type text-black text-sm mr-2">{{ iconName }}</h3>
-                <font-awesome-icon icon="chevron-down" />
-            </div>
-        </header>
-
+        <Header :totalFlow="totalFlow" :wallets="wallets" />
         <!-- History Management -->
         <div class="flex justify-between items-center m-0 pt-2 w-full max-w mx-auto px-4 bg-white text-sm">
+            <!-- Month Selection -->
             <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('last')">
                 LAST MONTH
                 <span v-if="selectedMonth === 'last'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
@@ -43,12 +20,12 @@
         </div>
 
         <!-- Main Content -->
-        <main class="bg-[#EFFBFF]">
+        <main class="bg-primaryBackground">
             <div v-if="!hasData">
                 <NoData message="Tap + to add one" />
             </div>
             <div v-else>
-                <UseSage :totalFlow="totalFlow" :dayUse="dayUse" :iconImage="iconImage" :iconName="iconName" />
+                <UseSage :transactions="transactions" :inflow="inflow" :outflow="outflow" :totalFlow="totalFlow" />
             </div>
         </main>
     </div>
@@ -56,18 +33,56 @@
 
 <script setup>
 import NoData from '../../Components/NoData/Index.vue';
-import { ref } from 'vue';
-import { UseSage } from '@/Pages/Transaction/Components/Index.js';
+import { ref, onMounted } from 'vue';
+import { UseSage, Header } from '@/Pages/Transaction/Components/Index.js';
+import axios from 'axios';
 
-const hasData = ref(true);
-const balance = '0';
+const transactions = ref([]);
+const inflow = ref(0);
+const outflow = ref(0);
+const totalFlow = ref(0);
+const hasData = ref(false);
 const selectedMonth = ref('this');
-const iconImage = "/assets/img/wallet.jpg";
-const iconName = 'Cash';
-const dayUse = '14';
-const totalFlow = '22';
+const wallets = ref([]);
+
+const fetchWallets = async () => {
+    try {
+        const response = await axios.get(route('MyWallet'));
+        wallets.value = response.data.wallets;
+    } catch (error) {
+        console.error('Error fetching wallets:', error);
+    }
+};
+
+const fetchTransactions = async () => {
+    try {
+        const response = await axios.get(route('Transaction'));
+        transactions.value = response.data;
+        hasData.value = transactions.value.length > 0;
+        calculateInflowAndOutflow(transactions.value);
+    } catch (error) {
+        console.error('Error fetching Transactions:', error);
+    }
+};
 
 const selectMonth = (month) => {
     selectedMonth.value = month;
 };
+
+const calculateInflowAndOutflow = (transactions) => {
+    inflow.value = transactions.reduce((total, transaction) => {
+        return transaction.type === 'income' ? total + transaction.amount : total;
+    }, 0);
+
+    outflow.value = transactions.reduce((total, transaction) => {
+        return transaction.type === 'expense' ? total + transaction.amount : total;
+    }, 0);
+
+    totalFlow.value = inflow.value - outflow.value;
+};
+
+onMounted(() => {
+    fetchWallets();
+    fetchTransactions();
+});
 </script>

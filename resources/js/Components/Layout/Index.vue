@@ -1,6 +1,8 @@
 <template>
-    <div style="background-color: #EFFBFF;">
-        <Header :title="title" :isBack="isBack"/>
+    <div class="bg-primaryBackground">
+        <Header :title="title" :isBack="isBack">
+            <component v-for="(comp, index) in headerComponent" :key="index" :is="comp" />
+        </Header>
         <slot></slot>
         <BottomBar/>
     </div>
@@ -12,6 +14,8 @@ import BottomBar from '@/Components/BottomBar/Index.vue';
 
 const props = defineProps({
     title: String,
-    isBack: Boolean
+    isBack: Boolean,
+    isCancel: Boolean,
+    headerComponent: Array 
 });
 </script>

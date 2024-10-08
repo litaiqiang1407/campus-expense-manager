@@ -14,15 +14,31 @@ import {
   faBell, 
   faMagnifyingGlass, 
   faEllipsisVertical, 
-  faChevronDown 
+  faAngleRight,
+  faCubes,
+  faMoneyBill,
+  faHandHoldingDollar,
+  faGear,
+  faCircleInfo,
+  faRepeat,
+  faChevronDown, 
+  faXmark,
+  faDollarSign,
+  faDivide,
+  faDeleteLeft,
+  faMinus,
+  faPlay,
+  faChevronUp,
+  faCircleMinus
 } from '@fortawesome/free-solid-svg-icons';
+
+import { faCalendar, faCircleQuestion as faCircleQuestionRegular, faComment as faCommentRegular } from '@fortawesome/free-regular-svg-icons';
+
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
+// Add icons to the library
 library.add(
   faArrowLeft,
-  faMagnifyingGlass,
-  faEllipsisVertical,
-  faChevronDown,
   faEye,
   faEyeSlash,
   faHome,
@@ -32,7 +48,29 @@ library.add(
   faUser,
   faCircleQuestion,
   faBell,
-  faGoogle 
+  faMagnifyingGlass,
+  faEllipsisVertical,
+  faAngleRight,
+  faCubes,
+  faMoneyBill,
+  faXmark,
+  faCircleQuestionRegular,
+  faGoogle,
+  faHandHoldingDollar,
+  faGear,
+  faCircleInfo,
+  faRepeat,
+  faCircleQuestionRegular,
+  faDollarSign,
+  faCommentRegular,
+  faCalendar,
+  faDivide,
+  faDeleteLeft,
+  faMinus,
+  faPlay,
+  faChevronDown,
+  faChevronUp,
+  faCircleMinus
 );
 
 export default FontAwesomeIcon;

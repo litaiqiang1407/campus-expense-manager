@@ -9,10 +9,12 @@ class Icon extends Model
 {
     use HasFactory;
 
-    protected $table = 'icons';
-
     protected $fillable = [
-        'name',
-        'path',
+        'name', 'path'
     ];
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
 }
