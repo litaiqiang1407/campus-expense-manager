@@ -29,5 +29,4 @@ const dayUse = '14';
 const props = defineProps({
     transactions: Array
 });
-console.log(props.transactions.length)
 </script>

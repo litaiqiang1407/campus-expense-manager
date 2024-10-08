@@ -74,7 +74,6 @@ const fetchTransactions = async () => {
     try {
         const response = await axios.get(route('Transaction'));
         transactions.value = response.data;
-        console.log('Transactions:', transactions.value);
     } catch (error) {
         console.error('Error fetching Transactions:', error);
     }

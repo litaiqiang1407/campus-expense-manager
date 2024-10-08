@@ -6,7 +6,7 @@
       <input 
         type="text" 
         :value="inputValue"
-        @input="$emit('update:inputValue', $event.target.value)"
+        @input="emit('update:inputValue', $event.target.value)"
         class="w-full text-primary font-semibold text-[28px] border-b-[3px] border-primary py-1 focus:outline-none"
         @focus="showKeyboard = true"
       />
@@ -60,41 +60,61 @@
 </template>
   
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
+
+const emit = defineEmits(['update:inputValue']);
 
 const props = defineProps({
   inputValue: {
-    type: Number,
-    default: 0,
+    type:  String ,
+    default: '0',
   },
 });
 
 const showKeyboard = ref(false);
 
 const addNumber = (num) => {
-  inputValue.value += num;
+  // Check if the current value is '0' and replace it with the entered number
+  if (props.inputValue === '0') {
+    emit('update:inputValue', num.toString());
+  } else {
+    emit('update:inputValue', props.inputValue + num);
+  }
 };
 
 const addDecimal = () => {
-  if (!inputValue.value.includes('.')) {
-    inputValue.value += '.';
+  if (!props.inputValue.toString().includes('.')) {
+    emit('update:inputValue', props.inputValue + '.');
   }
 };
 
 const addOperator = (operator) => {
-  inputValue.value += operator;
+  emit('update:inputValue', props.inputValue + operator);
 };
 
 const deleteNumber = () => {
-  inputValue.value = inputValue.value.slice(0, -1);
+  emit('update:inputValue', props.inputValue.toString().slice(0, -1));
 };
 
 const clearInput = () => {
-  inputValue.value = '';
+  emit('update:inputValue', '');
+};
+
+const evaluateExpression = () => {
+  try {
+    const result = eval(props.inputValue);
+    emit('update:inputValue', result.toString());
+  } catch (e) {
+    console.error('Error in expression:', e);
+  }
 };
 
 const hideKeyboard = () => {
-  showKeyboard.value = false;
+  if (/[+\-*/]/.test(props.inputValue)) {
+    evaluateExpression();
+  } else {
+    showKeyboard.value = false; 
+  }
 };
 </script>
 

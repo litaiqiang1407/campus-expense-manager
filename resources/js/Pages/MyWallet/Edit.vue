@@ -3,7 +3,7 @@
     <Form v-else :action="'Update Wallet'">
         <Input :label="'Wallet name'" :inputValue="wallet.name" />
         <Select :selectText="wallet?.icon_name || 'Change icon'" :sizeText="'28'" :iconSrc="wallet.icon_path"/>
-        <InputMoney :inputValue="wallet.balance" />
+        <InputMoney :inputValue="wallet.balance" @update:inputValue="updateBalance" />
         <Dropdown :itemList="walletTypeList" :selectedItem="walletTypeSelected" :defaultText="'Select wallet type'" />
     </Form>
 </template>
@@ -38,6 +38,10 @@ const fetchWalletData = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const updateBalance = (newValue) => {
+  wallet.value.balance = newValue;
 };
 
 onMounted(fetchWalletData);

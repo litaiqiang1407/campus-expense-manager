@@ -143,7 +143,6 @@ const fetchAccount = async () => {
     try {
         const response = await axios.get(route('Account')); 
         account.value = response.data; 
-        console.log('Account:', account.value);
     } catch (error) {
         console.error('Error fetching Account:', error);
     } finally {
