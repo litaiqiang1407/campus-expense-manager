@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IconController;
 use App\Http\Controllers\MyWalletController;
 use App\Http\Controllers\NotFoundController;
 use App\Http\Controllers\WelcomeController;
@@ -24,6 +25,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{walletTypeId}/create', [MyWalletController::class, 'create'])->name('CreateWallet');
         Route::get('/edit/{walletId}', [MyWalletController::class, 'edit'])->name('EditWallet');
     });
+
+        Route::get('/icon', [IconController::class, 'index'])->name('Icon');
 });
 
 

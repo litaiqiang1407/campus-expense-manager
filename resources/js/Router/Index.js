@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
@@ -114,7 +114,14 @@ const routes = [
     {
         path: '/logout',
         name: 'Logout',        
-    }
+    },
+    {
+        path: '/icon',
+        name: 'Icon',
+        component: Icon,
+        meta: { layout: HeaderLayout, title: 'Select icon', isBack: true, isCancel: false },
+        
+    },  
 ]
 
 const router = createRouter({
