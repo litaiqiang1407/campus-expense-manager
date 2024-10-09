@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, Categories } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount,Categories, CreateWallet, EditWallet, Icon } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
 
-import { Support, Menu, SelectWallet } from "../Components/Header/Components/Index";
+import { Support, Menu, SelectWallet, Search } from "../Components/Header/Components/Index";
 
 const routes = [
     {
@@ -32,7 +32,7 @@ const routes = [
         meta: { layout: HeaderLayout, title: '', isBack: true, isCancel: false},
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
-    {  
+    {
         path: '/transaction',
         name: 'Transaction',
         component: Transaction,
@@ -66,8 +66,8 @@ const routes = [
         path: '/my-account',
         name: 'MyAccount',
         component: MyAccount,
-        meta: { layout: DefaultLayout, title: 'My Account', isBack: true}, 
-        
+        meta: { layout: DefaultLayout, title: 'My Account', isBack: true},
+
     },
 {
         path: '/notification',
@@ -100,13 +100,34 @@ const routes = [
         path: '/my-wallet',
         name: 'MyWallet',
         component: MyWallet,
-        meta: { layout: HeaderLayout, title: 'My Wallet', isBack: true, isCancel: false},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
+        meta: { layout: HeaderLayout, title: 'My Wallet', isBack: true, isCancel: false, headerComponent: [Search]},
+        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel, headerComponent: route.meta.headerComponent }),
+    },
+    {
+        path: '/my-wallet/:walletTypeId/create',
+        name: 'CreateWallet',
+        component: CreateWallet,
+        meta: { layout: HeaderLayout, title: 'Add wallet', isBack: false, isCancel: true },
+        props: true,
+    },
+    {
+        path: '/my-wallet/edit/:walletId',
+        name: 'EditWallet',
+        component: EditWallet,
+        meta: { layout: HeaderLayout, title: 'Edit wallet', isBack: false, isCancel: true },
+        props: true,
     },
     {
         path: '/logout',
         name: 'Logout',        
-    }
+    },
+    {
+        path: '/icon',
+        name: 'Icon',
+        component: Icon,
+        meta: { layout: HeaderLayout, title: 'Select icon', isBack: true, isCancel: false },
+        
+    },  
 ]
 
 const router = createRouter({

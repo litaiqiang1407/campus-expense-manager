@@ -2,8 +2,10 @@
   <div class="w-full p-0 bg-blue-50 min-h-screen flex flex-col items-center">
     <!-- Header: Date Range -->
     <div class="w-full bg-white p-4 mb-4">
-      <p class="text-black text-left text-sm font-bold ml-2">01/09/2024 - 31/10/2024</p>
-      <div class="border-b-2 border-black w-2/6 ml-4 mt-0 relative top-4"></div>
+      <p class="text-black text-left text-sm font-bold inline-block ml-2 relative">
+        01/09/2024 - 31/10/2024
+        <span class="absolute border-b-2 border-black w-full left-0 top-9"></span>
+      </p>
     </div>
 
     <div class="bg-white p-4 rounded-none w-full max-w-full text-center mb-2 max-h-[400px] -mt-2">

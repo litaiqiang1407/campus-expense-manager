@@ -17,6 +17,10 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call([
             IconsTableSeeder::class,
+            CategoriesTableSeeder::class,
+            WalletTypesTableSeeder::class,
+            WalletsTableSeeder::class,
+            TransactionSeeder::class
         ]);
     }
 }

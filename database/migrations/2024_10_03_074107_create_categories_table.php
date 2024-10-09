@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id(); // Primary key
             $table->string('name'); // Name of the category (e.g., Food, Entertainment)
-            $table->foreignId('parent_id')->nullable()->constrained('categories'); // ID of the parent category for hierarchical relationships
-            $table->enum('type', ['expense', 'income']); // Category type (either expense or income)
+            $table->string('parent_id');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key to the Users table
             $table->foreignId('icon_id')->constrained('icons')->onDelete('cascade'); // Foreign key to the Icons table
             $table->timestamps();
