@@ -32,7 +32,7 @@ const routes = [
         meta: { layout: HeaderLayout, title: '', isBack: true, isCancel: false},
         props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
-    {  
+    {
         path: '/transaction',
         name: 'Transaction',
         component: Transaction,
@@ -66,8 +66,8 @@ const routes = [
         path: '/my-account',
         name: 'MyAccount',
         component: MyAccount,
-        meta: { layout: DefaultLayout, title: 'My Account', isBack: true}, 
-        
+        meta: { layout: DefaultLayout, title: 'My Account', isBack: true},
+
     },
 {
         path: '/notification',
@@ -110,7 +110,7 @@ const routes = [
         component: EditWallet,
         meta: { layout: HeaderLayout, title: 'Edit wallet', isBack: false, isCancel: true },
         props: true,
-    },    
+    },
     {
         path: '/logout',
         name: 'Logout',        

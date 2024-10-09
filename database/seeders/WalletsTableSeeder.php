@@ -19,7 +19,7 @@ class WalletsTableSeeder extends Seeder
 
         Wallet::create([
             'name' => 'Bank Account',
-            'wallet_type_id' => 5,
+            'wallet_type_id' => 4,
             'balance' => 2000.00,
             'user_id' => 1,
             'icon_id' => 2,

@@ -3,15 +3,15 @@
       <div class="size-[40px] flex items-center justify-center">
         <font-awesome-icon icon="dollar-sign" class="text-black text-[36px]" />
       </div>
-      <input 
-        type="text" 
+      <input
+        type="text"
         :value="inputValue"
-        @input="$emit('update:inputValue', $event.target.value)"
+        @input="emit('update:inputValue', $event.target.value)"
         class="w-full text-primary font-semibold text-[28px] border-b-[3px] border-primary py-1 focus:outline-none"
         @focus="showKeyboard = true"
       />
     </div>
-  
+
     <!-- Bàn phím số -->
     <div v-if="showKeyboard" class="absolute bottom-0 left-0 w-full bg-gray-200 p-1">
       <div class="grid grid-cols-4 gap-1">
@@ -26,7 +26,7 @@
         <button type="button" @click="deleteNumber" class="button-animate bg-slate-50 p-4 rounded text-xl text-primary">
             <font-awesome-icon icon="delete-left" />
         </button>
-  
+
         <!-- Hàng 2: 7, 8, 9, - -->
         <button type="button" @click="addNumber(7)" class="button-animate bg-white p-4 rounded text-xl text-primary ">7</button>
         <button type="button" @click="addNumber(8)" class="button-animate bg-white p-4 rounded text-xl text-primary ">8</button>
@@ -34,7 +34,7 @@
         <button type="button" @click="addOperator('-')" class="button-animate bg-slate-50 p-4 rounded text-xl text-primary">
             <font-awesome-icon icon="minus" />
         </button>
-  
+
         <!-- Hàng 3: 4, 5, 6, + -->
         <button type="button" @click="addNumber(4)" class="button-animate bg-white p-4 rounded text-xl text-primary ">4</button>
         <button type="button" @click="addNumber(5)" class="button-animate bg-white p-4 rounded text-xl text-primary ">5</button>
@@ -55,46 +55,65 @@
         <button type="button" @click="addNumber(0)" class="button-animate bg-white p-4 rounded text-xl text-primary ">0</button>
         <button type="button" @click="addNumber('000')" class="button-animate bg-white p-4 rounded text-xl text-primary ">000</button>
         <button type="button" @click="addDecimal" class="button-animate bg-white p-4 rounded text-xl text-primary ">.</button>
-      </div>   
+      </div>
     </div>
 </template>
-  
+
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
+
+const emit = defineEmits(['update:inputValue']);
 
 const props = defineProps({
   inputValue: {
-    type: Number,
-    default: 0,
+    type:  String,
+    default: '0',
   },
 });
 
 const showKeyboard = ref(false);
 
 const addNumber = (num) => {
-  inputValue.value += num;
+  if (props.inputValue === '0') {
+    emit('update:inputValue', num.toString());
+  } else {
+    emit('update:inputValue', props.inputValue + num);
+  }
 };
 
 const addDecimal = () => {
-  if (!inputValue.value.includes('.')) {
-    inputValue.value += '.';
+  if (!props.inputValue.toString().includes('.')) {
+    emit('update:inputValue', props.inputValue + '.');
   }
 };
 
 const addOperator = (operator) => {
-  inputValue.value += operator;
+  emit('update:inputValue', props.inputValue + operator);
 };
 
 const deleteNumber = () => {
-  inputValue.value = inputValue.value.slice(0, -1);
+  emit('update:inputValue', props.inputValue.toString().slice(0, -1));
 };
 
 const clearInput = () => {
-  inputValue.value = '';
+  emit('update:inputValue', '');
+};
+
+const evaluateExpression = () => {
+  try {
+    const result = eval(props.inputValue);
+    emit('update:inputValue', result.toString());
+  } catch (e) {
+    console.error('Error in expression:', e);
+  }
 };
 
 const hideKeyboard = () => {
-  showKeyboard.value = false;
+  if (/[+\-*/]/.test(props.inputValue)) {
+    evaluateExpression();
+  } else {
+    showKeyboard.value = false;
+  }
 };
 </script>
 

@@ -15,8 +15,39 @@ class TransactionSeeder extends Seeder
             'type' => 'income',
             'wallet_id' => 1,
             'user_id' => 1,
-            'date' => now(),
-            'note' => 'Salary',
+            'note' => 'Salary Luong Ve',
+        ]);
+        Transaction::create([
+            'category_id' => 1,
+            'amount' => 100.50,
+            'type' => 'expense',
+            'wallet_id' => 1,
+            'user_id' => 1,
+            'note' => 'Salary Luong Ve',
+        ]);
+        Transaction::create([
+            'category_id' => 1,
+            'amount' => 100.50,
+            'type' => 'expense',
+            'wallet_id' => 1,
+            'user_id' => 1,
+            'note' => 'Salary Luong Ve',
+        ]);
+        Transaction::create([
+            'category_id' => 2,
+            'amount' => 50,
+            'type' => 'expense',
+            'wallet_id' => 1,
+            'user_id' => 1,
+            'note' => 'Mua Do Shoppe',
+        ]);
+        Transaction::create([
+            'category_id' => 2,
+            'amount' => 50,
+            'type' => 'income',
+            'wallet_id' => 1,
+            'user_id' => 1,
+            'note' => 'Mua Do Shoppe',
         ]);
     }
 }
