@@ -31,16 +31,16 @@
       <div class="fixed right-4 bottom-4 w-16 h-16 text-[24px]" @click="displayWalletTypes">
         <Add :icon="'plus'" />
       </div>
-  
+
       <div v-if="openWalletTypes" class="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50" @click="closeWalletTypes">
         <div class="bg-white w-full rounded-t-lg p-4 z-100" @click.stop>
             <div class="w-full p-2">
                 <h2 class="text-lg font-bold">Add Wallet</h2>
             </div>
             <div class="p-4 grid grid-cols-2 gap-4">
-                <button 
-                    v-for="walletType in walletTypes" 
-                    :key="walletType.id" 
+                <button
+                    v-for="walletType in walletTypes"
+                    :key="walletType.id"
                     class="button-animate bg-gray-100 p-4 rounded-lg flex items-center justify-center"
                     @click.stop="createWallet(walletType.id)">
                         <h3 class="font-bold">{{ walletType.name }}</h3>

@@ -7,6 +7,7 @@
             <Select :icon="'fa-regular fa-calendar'" :selectText="'Today'" />
             <Select :icon="'wallet'" :selectText="'Select wallet'" />
         </Form>
+        
     </div>
 </template>
 

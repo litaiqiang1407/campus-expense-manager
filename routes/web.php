@@ -15,10 +15,14 @@ Route::get('/welcome', [WelcomeController::class, 'index'])->name('Welcome');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('Home');
-    Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
 
+    Route::group(['prefix' => 'Transaction'], function ()
+    {
+        Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
+        //Route::get('/{walletTypeId}/create', [MyWalletController::class, 'create'])->name('CreateWallet');
+    });
     Route::group(['prefix' => 'my-wallet'], function () {
         Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');
         Route::get('/{walletTypeId}/create', [MyWalletController::class, 'create'])->name('CreateWallet');

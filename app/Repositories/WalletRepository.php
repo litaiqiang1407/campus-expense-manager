@@ -52,7 +52,7 @@ class WalletRepository
     {
         $wallet = Wallet::findOrFail($walletId);
         $wallet->update($data);
-        return $wallet; 
+        return $wallet;
     }
 
     public function getIcons()
