@@ -14,19 +14,22 @@
                 <font-awesome-icon icon="ellipsis-vertical" />
             </span>
         </div>
-        <!-- Header Bottom -->
+
+        <!-- Transaction Type Dropdown -->
         <div class="relative cursor-pointer transaction-type-container bg-[#F3F3F3] flex justify-center items-center p-2 max-w-max mx-auto mt-4 rounded"
             @click="toggleDropdown">
-            <img src="/assets/img/wallet.png" alt="Icon" class="h-6 w-6 mr-2 rounded-full" />
-            <h3 class="transaction-type text-black text-sm mr-2">{{ selectedWallet?.name || 'Select Wallet' }}</h3>
+            <img :src="firstWallet?.icon_path || '/assets/img/wallet.png'" alt="Icon"
+                class="h-6 w-6 mr-2 rounded-full" />
+            <h3 class=" transaction-type text-black text-sm mr-2">{{ firstWallet?.name || 'Slect Wallet' }}</h3>
             <font-awesome-icon icon="chevron-down" />
 
             <!-- Dropdown -->
             <div v-if="isDropdownVisible" class="absolute left-0 top-full mt-2 bg-white shadow-md rounded w-full z-10">
                 <ul>
                     <li v-for="wallet in wallets" :key="wallet.id" @click="selectWallet(wallet)"
-                        class="cursor-pointer hover:bg-gray-200 p-2">
-                        {{ wallet.name }}
+                        class="cursor-pointer hover:bg-gray-200 p-2 flex items-center">
+                        <img :src="wallet.icon_path" alt="Wallet Icon" class="h-6 w-6 mr-2 rounded-full" />
+                        <span class="truncate text-[12px]">{{ wallet.name }}</span>
                     </li>
                 </ul>
             </div>
@@ -35,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
     totalFlow: Number,
@@ -43,17 +46,19 @@ const props = defineProps({
 });
 
 const balance = ref(0);
-const selectedWallet = ref(props.wallets.length > 0 ? props.wallets[0] : null);
 const isDropdownVisible = ref(false);
 
-// Cập nhật balance khi totalFlow thay đổi
+const firstWallet = computed(() => props.wallets.length > 0 ? props.wallets[0] : null);
+
 watch(() => props.totalFlow, (newTotalFlow) => {
     balance.value = newTotalFlow;
 }, { immediate: true });
 
-// Chọn ví và ẩn dropdown
 const selectWallet = (wallet) => {
-    selectedWallet.value = wallet;
+    const walletIndex = props.wallets.findIndex(w => w.id === wallet.id);
+    if (walletIndex !== -1) {
+        props.wallets.unshift(props.wallets.splice(walletIndex, 1)[0]);
+    }
     isDropdownVisible.value = false;
 };
 
