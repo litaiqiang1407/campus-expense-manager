@@ -1,11 +1,11 @@
 <template>
-    <Form :action="'Create Wallet'" @submit="submitForm">
-        <Input v-model="walletName" :label="'Wallet name'" />
-        <Select :selectText="'Change icon'" :sizeText="'28'"/>
-        <InputMoney :inputValue="balance" @update:inputValue="balance = $event" />
-        <Dropdown :itemList="walletTypeList" :selectedItem="walletType" v-model="walletType"  :defaultText="'Select wallet type'" />
-        <Submit>Create Wallet</Submit>
-    </Form>
+        <Form :action="'Create Wallet'" @submit="submitForm">
+            <Input v-model="walletName" :label="'Wallet name'" />
+            <Select :selectText="'Change icon'" :sizeText="'28'"/>
+            <InputMoney :inputValue="balance" @update:inputValue="balance = $event" />
+            <Dropdown :itemList="walletTypeList" :selectedItem="walletType" v-model="walletType"  :defaultText="'Select wallet type'" />
+            <Submit>Create Wallet</Submit>
+        </Form>
 </template>
 
 <script setup>

@@ -30,4 +30,8 @@ class TransactionRepository
     {
         return Icon::select('id', 'name', 'path')->get();
     }
+    // public function getCategories()
+    // {
+    //     return Icon::select()
+    // }
 }

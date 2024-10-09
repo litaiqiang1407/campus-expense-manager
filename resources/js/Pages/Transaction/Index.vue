@@ -20,7 +20,7 @@
         </div>
 
         <!-- Main Content -->
-        <main class="bg-primaryBackground">
+        <main class="bg-primaryBackground min-h-screen">
             <div v-if="!hasData">
                 <NoData message="Tap + to add one" />
             </div>

@@ -20,8 +20,9 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'Transaction'], function ()
     {
-        Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
-        //Route::get('/{walletTypeId}/create', [MyWalletController::class, 'create'])->name('CreateWallet');
+        Route::get('/', [TransactionController::class, 'index'])->name('Transaction');
+        Route::get('/transaction/create', [TransactionController::class, 'create'])->name('CreateTransaction');
+        Route::post('/store', [TransactionController::class, 'store'])->name('StoreTransaction');
     });
     Route::group(['prefix' => 'my-wallet'], function () {
         Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');
