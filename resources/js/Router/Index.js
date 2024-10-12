@@ -30,7 +30,6 @@ const routes = [
         name: 'AppInfo',
         component: AppInfo,
         meta: { layout: HeaderLayout, title: '', isBack: true, isCancel: false},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
     {
         path: '/transaction',
@@ -43,7 +42,6 @@ const routes = [
         name: 'CreateTransaction',
         component: CreateTransaction,
         meta: { layout: HeaderLayout, title: 'Add transaction', isBack: false, isCancel: true},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
     {
         path: '/signin',
@@ -60,7 +58,6 @@ const routes = [
         name: 'Account',
         component: Account,
         meta: { layout: DefaultLayout, title: 'Account', isBack: false, isCancel: false, headerComponent: [Support]},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent }),
     },
     {
         path: '/my-account',
@@ -74,28 +71,24 @@ const routes = [
         name: 'Notification',
         component: Notification,
         meta: { layout: HeaderLayout, title: 'Notifications', isBack: false, isCancel: true},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
     {
         path: '/budget',
         name: 'Budget',
         component: Budget,
         meta: { layout: DefaultLayout, title: 'Budget', isBack: false, headerComponent: [SelectWallet,Menu] },
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, headerComponent: route.meta.headerComponent  }),
     },
     {
         path: '/budget/create',
         name: 'CreateBudget',
         component: CreateBudget,
         meta: { layout: HeaderLayout, title: 'Add budget', isBack: false, isCancel: true},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
     },
     {
         path: '/my-wallet',
         name: 'MyWallet',
         component: MyWallet,
         meta: { layout: HeaderLayout, title: 'My Wallet', isBack: true, isCancel: false, headerComponent: [Search]},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel, headerComponent: route.meta.headerComponent }),
     },
     {
         path: '/my-wallet/:walletTypeId/create',
