@@ -1,8 +1,9 @@
-<?php
+    <?php
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IconController;
 use App\Http\Controllers\MyWalletController;
 use App\Http\Controllers\NotFoundController;
 use App\Http\Controllers\WelcomeController;
@@ -19,8 +20,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
-    Route::get('/my-wallet', [MyWalletController::class, 'index'])->name('MyWallet');
+
     Route::get('/categories', [CategoryController::class, 'index'])->name('Categories');
+
+    Route::group(['prefix' => 'my-wallet'], function () {
+        Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');
+        Route::get('/{walletTypeId}/create', [MyWalletController::class, 'create'])->name('CreateWallet');
+        Route::post('/store', [MyWalletController::class, 'store'])->name('StoreWallet');
+        Route::get('/edit/{walletId}', [MyWalletController::class, 'edit'])->name('EditWallet');
+        Route::post('/update/{walletId}', [MyWalletController::class, 'update'])->name('UpdateWallet');
+        Route::post('/delete/{walletId}', [MyWalletController::class, 'delete'])->name('DeleteWallet');
+    });
+
+        Route::get('/icon', [IconController::class, 'index'])->name('Icon');
 });
 
 

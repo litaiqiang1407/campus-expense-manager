@@ -13,7 +13,7 @@
         "postcss": "^8.4.47",
         "tailwindcss": "^3.4.13",
         "vite": "^5.0",
-        "vue": "^3.5.8",
+        "vue": "^3.5.11",
         "vue-loader": "^17.4.2",
         "vue-router": "^4.4.5"
     },
@@ -31,6 +31,8 @@
         "date-fns": "^4.1.0",
         "express": "^4.21.0",
         "sqlite3": "^5.1.7",
-        "swiper": "^11.1.14"
+        "sweetalert2": "^11.14.3",
+        "swiper": "^11.1.14",
+        "vue-toastification": "^2.0.0-rc.5"
     }
 }

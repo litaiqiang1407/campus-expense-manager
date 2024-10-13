@@ -7,6 +7,16 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import FontAwesomeIcon from './Components/FontAwesomeIcon/Index';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import router from './Router/Index';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
+
+const toastOptions = {
+    position: "top-right",
+    timeout: 3000,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+};
 
 createInertiaApp({
     resolve: name => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
@@ -15,24 +25,8 @@ createInertiaApp({
             .use(plugin)
             .use(router)
             .component('font-awesome-icon', FontAwesomeIcon)
-            .use(ZiggyVue)
-            .mount(el);      
+            .use(ZiggyVue, { ziggy: Ziggy })
+            .use(Toast, toastOptions)
+            .mount(el);
     },
 });
-
-
-// import './bootstrap';
-
-// import { createApp } from 'vue';
-
-// import App from "./Components/App.vue";
-
-// import router from "./Router/Index";
-
-// import FontAwesomeIcon from './Components/FontAwesomeIcon/Index'
-
-// const app = createApp(App);
-
-// app.component('font-awesome-icon', FontAwesomeIcon);
-
-// app.use(router).mount('#app');

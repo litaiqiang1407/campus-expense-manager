@@ -10,11 +10,19 @@ class WalletTypesTableSeeder extends Seeder
     public function run()
     {
         WalletType::create([
-            'name' => 'Cash',
+            'name' => 'Basic Wallet',
         ]);
 
         WalletType::create([
-            'name' => 'Bank Account',
+            'name' => 'Linked Wallet',
+        ]);
+
+        WalletType::create([
+            'name' => 'Credit Wallet',
+        ]);
+
+        WalletType::create([
+            'name' => 'Goal Wallet',
         ]);
     }
 }

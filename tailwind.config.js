@@ -23,7 +23,8 @@ export default {
           '@apply transition-transform duration-150 ease-in-out active:scale-95 active:opacity-80 focus:outline-none': {},
         },
       });
-    }
+    },
+    // require('daisyui'),
   ]
 }
 
