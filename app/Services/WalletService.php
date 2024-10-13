@@ -42,4 +42,9 @@ class WalletService
     {
         return $this->walletRepository->getIcons();
     }
+
+    public function deleteWallet($walletId)
+    {
+        return $this->walletRepository->deleteWallet($walletId);
+    }
 }

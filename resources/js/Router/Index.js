@@ -112,8 +112,8 @@ const routes = [
         path: '/icon',
         name: 'Icon',
         component: Icon,
-        meta: { layout: HeaderLayout, title: 'Select icon', isBack: true, isCancel: false },
-        
+        meta: { layout: HeaderLayout, title: 'Icon', isBack: true, isCancel: false },
+        props: true,
     },  
 ]
 

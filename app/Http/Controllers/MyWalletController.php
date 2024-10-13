@@ -108,4 +108,14 @@ class MyWalletController extends Controller
             'message' => 'Wallet updated successfully!',
         ]);
     }
+
+    public function delete(Request $request, $walletId)
+    {
+        $this->walletService->deleteWallet($walletId);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Wallet deleted successfully!',
+        ]);
+    }
 }

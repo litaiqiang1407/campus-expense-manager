@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [MyWalletController::class, 'store'])->name('StoreWallet');
         Route::get('/edit/{walletId}', [MyWalletController::class, 'edit'])->name('EditWallet');
         Route::post('/update/{walletId}', [MyWalletController::class, 'update'])->name('UpdateWallet');
+        Route::post('/delete/{walletId}', [MyWalletController::class, 'delete'])->name('DeleteWallet');
     });
 
         Route::get('/icon', [IconController::class, 'index'])->name('Icon');
