@@ -1,7 +1,7 @@
 <template>
     <div class="absolute w-screen h-screen bg-[#effbff]">
         <!-- Expense/Income/Debt Navigation -->
-        <div class="max-w-lg mx-auto py-1">
+        <div class="max-w-lg mx-auto py-1 sticky top-0 z-50">
             <div class="flex justify-around text-xs font-medium bg-[#f8f9fa] ">
                 <!-- EXPENSE Button -->
                 <button

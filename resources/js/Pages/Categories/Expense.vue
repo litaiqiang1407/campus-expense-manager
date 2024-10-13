@@ -14,7 +14,7 @@
                 <div class="flex items-center space-x-3">
                 <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-10 h-10 rounded-full">
                     <div>
-                        <p class="font-medium">Badminton</p>
+                        <p class="font-medium">Education</p>
                         <p class="text-sm text-secondaryText">Cash</p>
                     </div>
                 </div>
@@ -28,9 +28,9 @@
                 <!-- Main Category Item -->
                 <div class="flex justify-between items-center px-4 pt-4">
                     <div class="flex items-center space-x-3">
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-10 h-10 rounded-full">
+                        <img src="/assets/icon/expense/food.png" alt="Badminton" class="w-10 h-10 rounded-full">
                         <div>
-                            <p class="font-medium ">Badminton</p>
+                            <p class="font-medium ">Bill & Utilities</p>
                             <p class="text-sm text-secondaryText">Cash</p>
                         </div>
                        
@@ -45,7 +45,7 @@
                         <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                         <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
                         <div>
-                            <p class="font-medium">Badminton</p>
+                            <p class="font-medium">Water Bill</p>
                             <p class="text-xs text-secondaryText">Cash</p>
                         </div>
                         <button class="absolute right-0 pr-3 z-50">
@@ -54,9 +54,9 @@
                     </li>
                     <li class="flex items-center space-x-2 border-l-[2px] py-2">
                         <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
+                        <img src="/assets/icon/expense/gasbill.png" alt="Badminton" class="w-8 h-8 rounded-full">
                         <div>
-                            <p class="font-medium">Badminton</p>
+                            <p class="font-medium">Gas Bill</p>
                             <p class="text-xs text-secondaryText">Cash</p>
                         </div>
                         <button class="absolute right-0 pr-3 z-50">
@@ -65,9 +65,9 @@
                     </li>
                     <li class="flex items-center space-x-2 border-l-[2px] py-2">
                         <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
+                        <img src="/assets/icon/expense/electricity_bill.png" alt="Badminton" class="w-8 h-8 rounded-full">
                         <div>
-                            <p class="font-medium">Badminton</p>
+                            <p class="font-medium">Electricity Bill</p>
                             <p class="text-xs text-secondaryText">Cash</p>
                         </div>
                         <button class="absolute right-0 pr-3 z-50">
@@ -76,9 +76,9 @@
                     </li>
                     <li class="flex items-center space-x-2 border-l-[2px] py-2">
                         <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
+                        <img src="/assets/icon/expense/home_services.png" alt="Badminton" class="w-8 h-8 rounded-full">
                         <div>
-                            <p class="font-medium">Badminton</p>
+                            <p class="font-medium">House Bill</p>
                             <p class="text-xs text-secondaryText">Cash</p>
                         </div>
                         <button class="absolute right-0 pr-3 z-50">
@@ -87,9 +87,9 @@
                     </li>
                     <li class="flex items-center space-x-2 border-l-[2px] py-2">
                         <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
-                        <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
+                        <img src="/assets/icon/expense/phone_bill.png" alt="Badminton" class="w-8 h-8 rounded-full">
                         <div>
-                            <p class="font-medium">Badminton</p>
+                            <p class="font-medium">Phone Bill</p>
                             <p class="text-xs text-secondaryText">Cash</p>
                         </div>
                         <button class="absolute right-0 pr-3 z-50">
@@ -101,7 +101,7 @@
                         <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                         <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-8 h-8 rounded-full">
                         <div>
-                            <p class="font-medium">Badminton</p>
+                            <p class="font-medium">Food Bill</p>
                             <p class="text-xs text-secondaryText">Cash</p>
                         </div>
                         <button class="absolute right-0 pr-3 z-50">
@@ -116,9 +116,9 @@
             <div class="bg-white shadow my-2">
                 <div class="flex justify-between items-center px-4 pt-4 ">
                     <div class="flex items-center space-x-3">
-                    <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-10 h-10 rounded-full">
+                    <img src="/assets/icon/expense/game.png" alt="Badminton" class="w-10 h-10 rounded-full">
                         <div>
-                            <p class="font-medium">Badminton</p>
+                            <p class="font-medium">Game</p>
                             <p class="text-sm text-secondaryText">Cash</p>
                         </div>
                     </div>
@@ -156,9 +156,9 @@
             <div class="bg-white shadow my-2">
                 <div class="flex justify-between items-center py-4 px-4 border-b my-2">
                     <div class="flex items-center space-x-3">
-                    <img src="/assets/icon/expense/education.png" alt="Badminton" class="w-10 h-10 rounded-full">
+                    <img src="/assets/icon/expense/house.png" alt="Badminton" class="w-10 h-10 rounded-full">
                         <div>
-                            <p class="font-medium">Badminton</p>
+                            <p class="font-medium">House</p>
                             <p class="text-sm text-secondaryText">Cash</p>
                         </div>
                     </div>
