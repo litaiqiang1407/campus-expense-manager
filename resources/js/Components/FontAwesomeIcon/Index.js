@@ -28,10 +28,7 @@ import {
   faDeleteLeft,
   faMinus,
   faPlay,
-<<<<<<< HEAD
-=======
   faCirclePlus,
->>>>>>> d7a101c45c9755cad2bd2203c8d99278be67c9ce
   faChevronUp,
   faCircleMinus
 } from '@fortawesome/free-solid-svg-icons';
