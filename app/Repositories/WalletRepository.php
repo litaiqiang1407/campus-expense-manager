@@ -59,4 +59,9 @@ class WalletRepository
     {
         return Icon::select('id', 'name', 'path')->get();
     }
+
+    public function deleteWallet($walletId)
+    {
+        return Wallet::destroy($walletId);
+    }
 }

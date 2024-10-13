@@ -7,7 +7,7 @@
         type="text"
         :value="inputValue"
         @input="emit('update:inputValue', $event.target.value)"
-        class="w-full text-primary font-semibold text-[28px] border-b-[3px] border-primary py-1 focus:outline-none"
+        class="w-full text-primary font-semibold text-[20px] border-b-[3px] border-primary py-1 focus:outline-none"
         @focus="showKeyboard = true"
       />
     </div>

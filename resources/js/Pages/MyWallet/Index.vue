@@ -23,7 +23,7 @@
               </div>
             </div>
           </div>
-          <button class="w-[32px] h-full">
+          <button class="w-[32px] h-full" @click.stop="confirmDelete(wallet.id)">
             <font-awesome-icon icon="circle-minus" class="text-[24px] text-redText" />
           </button>
         </div>
@@ -56,6 +56,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 
@@ -91,6 +92,32 @@ const createWallet = (walletTypeId) => {
 
 const editWallet = (walletId) => {
   router.push({ name: 'EditWallet', params: { walletId } });
+};
+
+const confirmDelete = (walletId) => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You won\'t be able to revert this!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#00BC2A',
+    cancelButtonColor: '#FF2121',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'No, cancel!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      deleteWallet(walletId);
+    }
+  });
+};
+
+const deleteWallet = async (walletId) => {
+  try {
+    await axios.post(route('DeleteWallet', { walletId }));
+    wallets.value = wallets.value.filter(wallet => wallet.id !== walletId);
+  } catch (error) {
+    console.error('Error deleting wallet:', error);
+  }
 };
 
 onMounted(fetchWallets);
