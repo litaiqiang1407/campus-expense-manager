@@ -28,6 +28,7 @@ import {
   faDeleteLeft,
   faMinus,
   faPlay,
+  faCirclePlus,
   faChevronUp,
   faCircleMinus
 } from '@fortawesome/free-solid-svg-icons';
@@ -68,6 +69,7 @@ library.add(
   faDeleteLeft,
   faMinus,
   faPlay,
+  faCirclePlus,
   faChevronDown,
   faChevronUp,
   faCircleMinus

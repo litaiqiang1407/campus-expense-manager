@@ -70,7 +70,7 @@
             </div>
             <!-- Categories -->
             <div class="flex items-center justify-between py-2">
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-3" @click="goPage('Categories')">
                     <font-awesome-icon icon="cubes" class="text-secondaryText size-5 px-2" />
                     <span class="text-black font-medium text-sm">Categories</span>
                 </div>
