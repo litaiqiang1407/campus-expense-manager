@@ -36,7 +36,7 @@ Route::middleware(['auth', CheckWallet::class])->group(function () {
         Route::get('/')->name('Budget');
     });
 
-        Route::get('/icon', [IconController::class, 'index'])->name('Icon');
+    Route::get('/icon', [IconController::class, 'index'])->name('Icon');
 });
 
 
