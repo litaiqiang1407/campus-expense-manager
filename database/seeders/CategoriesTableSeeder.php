@@ -12,6 +12,7 @@ class CategoriesTableSeeder extends Seeder
         Category::create([
             'name' => 'Food',
             'parent_id' => 1,
+            'type' => 'income',
             'user_id' => 1,
             'icon_id' => 1,
         ]);
@@ -19,6 +20,7 @@ class CategoriesTableSeeder extends Seeder
         Category::create([
             'name' => 'Salary',
             'parent_id' => 1,
+            'type' => 'expense',
             'user_id' => 1,
             'icon_id' => 2,
         ]);

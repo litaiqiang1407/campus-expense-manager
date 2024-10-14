@@ -18,21 +18,22 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-        $transactions = Transaction::with(['category.icon', 'wallet'])
-            ->select('id', 'amount', 'type', 'note', 'category_id', 'wallet_id', 'user_id', 'created_at')
-            ->orderBy('created_at', 'desc');
+        $transactions = Transaction::with(['category', 'wallet'])
+            ->select('id', 'amount', 'note', 'category_id', 'wallet_id', 'user_id', 'date')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-        $data = $transactions->paginate(10)->map(function ($transaction) {
+        $data = $transactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
                 'amount' => $transaction->amount,
-                'type' => $transaction->type,
+                'type' => optional($transaction->category)->type,
                 'note' => $transaction->note,
                 'iconName' => optional($transaction->category->icon)->name,
                 'iconPath' => optional($transaction->category->icon)->path,
                 'walletName' => optional($transaction->wallet)->name,
                 'walletBalance' => optional($transaction->wallet)->balance,
-                'created_at' => $transaction->created_at->toDateTimeString(),
+                'date' => $transaction->date,
             ];
         });
 
@@ -45,7 +46,6 @@ class TransactionController extends Controller
         ]);
     }
 
-    // Hiển thị form tạo giao dịch mới
     public function create(Request $request)
     {
         //$categories = $this->transactionService->getCategories(); // Giả sử bạn có phương thức này trong TransactionService
