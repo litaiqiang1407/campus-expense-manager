@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories } from "../Pages/Index";
 
 // Import layout components
-import { MenuLayout, HeaderLayout, DefaultLayout } from "../Components/Layout/Index";
+import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
 
 import { Support, Menu, SelectWallet, Search } from "../Components/Header/Components/Index";
 
@@ -126,6 +126,28 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes
+});
+
+router.beforeEach(async (to, from, next) => {
+    if (to.name === 'CreateWallet') {
+        const walletTypeId = to.params.walletTypeId;
+
+        try {
+            const response = await axios.get(route('CreateWallet', { walletTypeId }));
+            const isFirstTime = response.data.isFirstTime;
+
+            if (isFirstTime) {
+                to.meta.layout = NoneLayout;
+                delete to.meta.title;
+                delete to.meta.isBack;
+                delete to.meta.isCancel;
+            }
+        } catch (error) {
+            console.error('Error checking wallet:', error);
+        }
+    }
+
+    next();
 });
 
 export default router;

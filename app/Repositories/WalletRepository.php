@@ -8,7 +8,11 @@ use App\Models\Icon;
 
 class WalletRepository
 {
-    public function getAllWallets()
+    public function userHasWallet($userId)
+    {
+        return Wallet::where('user_id', $userId)->exists();
+    }
+    public function getAllWallets($userId)
     {
         return Wallet::select(
             'wallets.id',
@@ -17,6 +21,7 @@ class WalletRepository
             'icons.path as icon_path',
             'icons.name as icon_name'
         )
+        ->where('user_id', $userId)
         ->join('icons', 'wallets.icon_id', '=', 'icons.id')
         ->get();
     }

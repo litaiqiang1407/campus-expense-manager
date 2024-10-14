@@ -115,6 +115,10 @@ const deleteWallet = async (walletId) => {
   try {
     await axios.post(route('DeleteWallet', { walletId }));
     wallets.value = wallets.value.filter(wallet => wallet.id !== walletId);
+
+    if (wallets.value.length === 0) {
+      window.location.href = route('CreateWallet', { walletTypeId: 1 });
+    }
   } catch (error) {
     console.error('Error deleting wallet:', error);
   }
