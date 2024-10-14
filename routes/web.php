@@ -37,9 +37,12 @@ Route::middleware(['auth', CheckWallet::class])->group(function () {
     });
 
     Route::get('/icon', [IconController::class, 'index'])->name('Icon');
+
+
+    Route::get('/{pathMath}', [NotFoundController::class, 'index'])->where('pathMath', '.*');
 });
 
 
 require __DIR__ . '/auth.php';
 
-Route::get('/{pathMath}', [NotFoundController::class, 'index'])->where('pathMath', '.*');
+
