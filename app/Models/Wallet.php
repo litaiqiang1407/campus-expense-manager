@@ -20,4 +20,9 @@ class Wallet extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function icon()
+    {
+        return $this->belongsTo(Icon::class);
+    }
 }

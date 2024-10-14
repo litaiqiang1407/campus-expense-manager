@@ -17,7 +17,8 @@ class MyWalletController extends Controller
 
     public function index(Request $request)
     {
-        $wallets = $this->walletService->getWallets();
+        $userId = $request->user()->id;
+        $wallets = $this->walletService->getWallets($userId);
         $walletTypes = $this->walletService->getWalletTypes();
 
         if ($request->wantsJson()) {
@@ -40,15 +41,17 @@ class MyWalletController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'wallet_type_id' => 'required|exists:wallet_types,id',
-            'balance' => 'required|numeric|min:0',
+            'balance' => 'numeric|min:0',
             'icon_id' => 'required|exists:icons,id',
         ]);
 
+        $userHasWallet = $this->walletService->userHasWallet($user_id);
         $this->walletService->createWallet($validatedData, $user_id);
 
         return response()->json([
             'success' => true,
             'message' => 'Wallet created successfully!',
+            'userHasWallet' => !$userHasWallet,
         ]);
     }
 
@@ -56,21 +59,27 @@ class MyWalletController extends Controller
     {
         $walletTypeID = $request->walletTypeId;
         $walletType = $this->walletService->getWalletTypes()->find($walletTypeID);
-        $icons = $this->walletService->getIcons();
         $walletTypeList = $this->walletService->getWalletTypes();
+        $icons = $this->walletService->getIcons();
+
+        $user_id = $request->user()->id;
+
+        $isFirstTime = !$this->walletService->userHasWallet($user_id);
 
         if ($request->wantsJson()) {
             return response()->json([
+                'isFirstTime' => $isFirstTime,
                 'walletType' => $walletType,
-                'icons' => $icons,
                 'walletTypeList' => $walletTypeList,
+                'icons' => $icons,
             ]);
         }
 
         return Inertia::render('MyWallet/Create', [
+            'isFirstTime' => $isFirstTime,
             'walletType' => $walletType,
-            'icons' => $icons,
             'walletTypeList' => $walletTypeList,
+            'icons' => $icons,
         ]);
     }
 
