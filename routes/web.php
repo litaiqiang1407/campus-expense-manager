@@ -32,6 +32,10 @@ Route::middleware(['auth', CheckWallet::class])->group(function () {
         Route::post('/delete/{walletId}', [MyWalletController::class, 'delete'])->name('DeleteWallet');
     });
 
+    Route::group(['prefix' => 'budget'], function () {
+        Route::get('/')->name('Budget');
+    });
+
         Route::get('/icon', [IconController::class, 'index'])->name('Icon');
 });
 
