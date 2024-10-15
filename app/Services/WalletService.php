@@ -30,7 +30,11 @@ class WalletService
 
     public function createWallet($data, $userId)
     {
-        return $this->walletRepository->createWallet($data, $userId);
+        $wallet = $this->walletRepository->createWallet($data, $userId);
+
+        $this->walletRepository->recalculateTotalWalletBalance($userId);
+
+        return $wallet;
     }
 
     public function getWalletById($walletId)
@@ -38,9 +42,13 @@ class WalletService
         return $this->walletRepository->getWalletById($walletId);
     }
 
-    public function updateWallet($walletId, $data)
+    public function updateWallet($walletId, $data, $userId)
     {
-        return $this->walletRepository->updateWallet($walletId, $data);
+        $wallet = $this->walletRepository->updateWallet($walletId, $data);
+
+        $this->walletRepository->recalculateTotalWalletBalance($userId);
+
+        return $wallet;
     }
 
     public function getIcons()
@@ -48,8 +56,15 @@ class WalletService
         return $this->walletRepository->getIcons();
     }
 
-    public function deleteWallet($walletId)
+    public function deleteWallet($walletId, $userId)
     {
-        return $this->walletRepository->deleteWallet($walletId);
+        $this->walletRepository->deleteWallet($walletId);
+
+        $this->walletRepository->recalculateTotalWalletBalance($userId);
+    }
+
+    public function recalculateTotalWalletBalance($userId)
+    {
+        return $this->walletRepository->recalculateTotalWalletBalance($userId);
     }
 }

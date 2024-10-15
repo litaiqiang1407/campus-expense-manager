@@ -1,7 +1,10 @@
 <template>
     <div class="bg-primaryBackground">
         <Header :title="title" :isBack="isBack">
-            <component v-for="(comp, index) in headerComponent" :key="index" :is="comp" />
+            <component v-for="(comp, index) in headerComponent" 
+            :key="index" 
+            :is="comp" 
+            />
         </Header>
         <slot></slot>
         <BottomBar/>

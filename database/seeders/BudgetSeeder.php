@@ -19,18 +19,17 @@ class BudgetSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Fetch valid foreign key IDs from the database
-        $categoryIds = Category::pluck('id')->toArray();  // Get all category IDs
-        $walletIds = Wallet::pluck('id')->toArray();      // Get all wallet IDs
-        $userIds = User::pluck('id')->toArray();          // Get all user IDs
+        $categoryIds = Category::pluck('id')->toArray();  
+        $walletIds = Wallet::pluck('id')->toArray();      
+        $userIds = User::pluck('id')->toArray();          
 
         for ($i = 0; $i < 50; $i++) {
             Budget::create([
-                'category_id' => $faker->randomElement($categoryIds), // Select a random valid category ID
-                'amount' => $faker->randomFloat(2, 100, 10000),       // Random amount
+                'category_id' => $faker->randomElement($categoryIds), 
+                'amount' => $faker->randomFloat(2, 100, 10000),       
                 'time_range' => $faker->randomElement(['week', 'month', 'quarter', 'year', 'custom']),
-                'wallet_id' => $faker->randomElement($walletIds),     // Select a random valid wallet ID
-                'user_id' => $faker->randomElement($userIds),         // Select a random valid user ID
+                'wallet_id' => $faker->randomElement($walletIds), 
+                'user_id' => $faker->randomElement($userIds),         
             ]);
         }
     }

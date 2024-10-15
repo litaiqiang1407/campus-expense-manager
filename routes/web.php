@@ -1,6 +1,7 @@
     <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IconController;
@@ -33,16 +34,14 @@ Route::middleware(['auth', CheckWallet::class])->group(function () {
     });
 
     Route::group(['prefix' => 'budget'], function () {
-        Route::get('/')->name('Budget');
+        Route::get('/', [BudgetController::class, 'index'])->name('Budget');
     });
 
     Route::get('/icon', [IconController::class, 'index'])->name('Icon');
-
-
-    Route::get('/{pathMath}', [NotFoundController::class, 'index'])->where('pathMath', '.*');
 });
 
-
 require __DIR__ . '/auth.php';
+
+Route::get('/{pathMath}', [NotFoundController::class, 'index'])->where('pathMath', '.*');
 
 
