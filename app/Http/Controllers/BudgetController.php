@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Budget;
-use App\Models\Wallet; 
+use App\Models\Wallet; // Import Wallet model
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -32,7 +32,7 @@ class BudgetController extends Controller
             ])
             ->where('user_id', $userId)
             ->where('wallet_id', $wallet->id) 
-            ->get(['id', 'category_id', 'amount', 'created_at']);
+            ->get(['id', 'category_id', 'amount', 'time_range', 'created_at']);
     
         } else {
             $wallet = Wallet::where('user_id', $userId)
@@ -53,7 +53,7 @@ class BudgetController extends Controller
             ])
             ->where('user_id', $userId)
             ->where('wallet_id', $wallet->id) 
-            ->get(['id', 'category_id', 'amount', 'created_at']);
+            ->get(['id', 'category_id', 'amount', 'time_range', 'created_at']);
         }
     
         $walletData = [
@@ -65,6 +65,7 @@ class BudgetController extends Controller
             return [
                 'id' => $budget->id,
                 'amount' => $budget->amount,
+                'time_range' => $budget->time_range,
                 'created_at' => $budget->created_at,
                 'category' => [
                     'id' => $budget->category->id,

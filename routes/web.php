@@ -12,12 +12,12 @@ use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
 use App\Http\Middleware\CheckWallet;
+use App\Http\Middleware\HandleInertiaRequests;
 
 
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('Welcome');
 
-
-Route::middleware(['auth', CheckWallet::class])->group(function () {
+Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('Home');
     Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
