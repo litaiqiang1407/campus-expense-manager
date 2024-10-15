@@ -20,17 +20,20 @@ class MyWalletController extends Controller
         $userId = $request->user()->id;
         $wallets = $this->walletService->getWallets($userId);
         $walletTypes = $this->walletService->getWalletTypes();
+        $totalWalletBalance = $this->walletService->recalculateTotalWalletBalance($userId);
 
         if ($request->wantsJson()) {
             return response()->json([
                 'walletTypes' => $walletTypes,
-                'wallets' => $wallets
+                'wallets' => $wallets,
+                'totalWalletBalance' => $totalWalletBalance,
             ]);
         }
 
         return Inertia::render('MyWallet/Index', [
             'walletTypes' => $walletTypes,
             'wallets' => $wallets,
+            'totalWalletBalance' => $totalWalletBalance,
         ]);
     }
 
@@ -103,6 +106,7 @@ class MyWalletController extends Controller
 
     public function update(Request $request, $walletId)
     {
+        $user_id = $request->user()->id;
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'wallet_type_id' => 'required|exists:wallet_types,id',
@@ -110,7 +114,7 @@ class MyWalletController extends Controller
             'icon_id' => 'required|exists:icons,id',
         ]);
 
-        $this->walletService->updateWallet($walletId, $validatedData);
+        $this->walletService->updateWallet($walletId, $validatedData, $user_id);
 
         return response()->json([
             'success' => true,
@@ -120,7 +124,8 @@ class MyWalletController extends Controller
 
     public function delete(Request $request, $walletId)
     {
-        $this->walletService->deleteWallet($walletId);
+        $user_id = $request->user()->id;
+        $this->walletService->deleteWallet($walletId, $user_id);
 
         return response()->json([
             'success' => true,

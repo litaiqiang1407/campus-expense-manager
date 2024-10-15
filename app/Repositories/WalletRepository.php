@@ -33,7 +33,11 @@ class WalletRepository
 
     public function createWallet($data, $userId)
     {
-        return Wallet::create(array_merge($data, ['user_id' => $userId]));
+        $wallet = Wallet::create(array_merge($data, ['user_id' => $userId]));
+
+        $this->recalculateTotalWalletBalance($userId);
+
+        return $wallet;
     }
 
     public function getWalletById($walletId)
@@ -57,7 +61,10 @@ class WalletRepository
     {
         $wallet = Wallet::findOrFail($walletId);
         $wallet->update($data);
-        return $wallet; 
+
+        $this->recalculateTotalWalletBalance($wallet->user_id);
+
+        return $wallet;
     }
 
     public function getIcons()
@@ -67,6 +74,44 @@ class WalletRepository
 
     public function deleteWallet($walletId)
     {
-        return Wallet::destroy($walletId);
+        $wallet = Wallet::findOrFail($walletId);
+
+        $userId = $wallet->user_id;
+
+        Wallet::destroy($walletId);
+
+        $this->recalculateTotalWalletBalance($userId);
+
+        return true;
+    }
+
+    public function recalculateTotalWalletBalance($userId)
+    {
+        $totalBalance = Wallet::where('user_id', $userId)
+            ->where('name', '!=', Wallet::TOTAL_WALLET_NAME)
+            ->sum('balance');
+
+        $totalWallet = Wallet::where('user_id', $userId)
+            ->where('name', Wallet::TOTAL_WALLET_NAME)
+            ->first();
+
+        if (!$totalWallet) {
+            $totalWallet = Wallet::create([
+                'name' => Wallet::TOTAL_WALLET_NAME,
+                'balance' => $totalBalance,
+                'user_id' => $userId,
+                'icon_id' => Icon::where('path', Wallet::TOTAL_WALLET_ICON)->first()->id,
+                'wallet_type_id' => $this->getDefaultWalletTypeId(),
+            ]);
+        } else {
+            $totalWallet->update(['balance' => $totalBalance]);
+        }
+
+        return $totalWallet;
+    }
+    private function getDefaultWalletTypeId()
+    {
+        $defaultWalletType = WalletType::first(); 
+        return $defaultWalletType ? $defaultWalletType->id : null; 
     }
 }
