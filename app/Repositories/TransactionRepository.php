@@ -28,8 +28,17 @@ class TransactionRepository
     }
     public function getWalletsByUser($userId)
     {
-        return Wallet::where('user_id', $userId)->get();
-    }    
+        return Wallet::select(
+            'wallets.id',
+            'wallets.name',
+            'wallets.balance',
+            'icons.path as icon_path',
+            'icons.name as icon_name'
+        )
+        ->where('user_id', $userId)
+        ->join('icons', 'wallets.icon_id', '=', 'icons.id')
+        ->get();
+    }
 
     public function getCategories()
     {

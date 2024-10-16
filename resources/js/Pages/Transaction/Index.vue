@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col h-screen">
+    <div class="flex flex-col">
         <!-- Header -->
         <Header :totalFlow="totalFlow" :wallets="wallets" />
         <!-- History Management -->
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Main Content -->
-        <main class="bg-primaryBackground min-h-screen">
+        <main class="bg-primaryBackground">
             <div v-if="!hasData">
                 <NoData message="Tap + to add one" />
             </div>
@@ -48,8 +48,9 @@ const wallets = ref([]);
 const fetchTransactions = async () => {
     try {
         const response = await axios.get(route('Transaction'));
-        transactions.value = response.data;
-        console.log('Fetched Transactions:', transactions.value);
+        transactions.value = response.data.transactions;
+        wallets.value = response.data.wallets;
+        console.log('Fetched Transactions:', wallets.value);
         hasData.value = transactions.value.length > 0;
         calculateInflowAndOutflow(transactions.value);
     } catch (error) {

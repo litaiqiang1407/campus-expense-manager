@@ -16,7 +16,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { InputMoney, Select, Note, Form, DateTimePicker} from '@/Components/Form/Index';
+import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
 
@@ -25,8 +25,7 @@ const categories = ref([]);
 const wallets = ref([]);
 const amount = ref('0');
 const note = ref([]);
-const today = new Date()
-const date = ref([today]);
+const date = ref([]);
 const selectedWallet = ref(null);
 const selectedCategory = ref(null);
 
@@ -35,8 +34,6 @@ const fetchCreateTransactionData = async () => {
         const response = await axios.get(route('CreateTransaction'));
         categories.value = response.data.categories;
         wallets.value = response.data.wallets;
-        console.log("wallets", response.data.wallets);
-        console.log("categories", response.data.categories);
     } catch (error) {
         console.error('Error creating wallet:', error);
     }
@@ -49,8 +46,10 @@ const submitForm = async () => {
             amount: amount.value,
             wallet_id: selectedWallet.value.id,
             note: note.value,
-            date: date.value,
+            date: date.value && date.value.length > 0 ? date.value : new Date().toISOString().split('T')[0]
         };
+
+        console.log(formData.date);  
 
         const response = await axios.post(route('StoreTransaction'), formData);
 
@@ -64,6 +63,5 @@ const submitForm = async () => {
         toast.error('Error creating Transaction: ' + error.response?.data?.message || error.message);
     }
 };
-
 onMounted(fetchCreateTransactionData);
 </script>

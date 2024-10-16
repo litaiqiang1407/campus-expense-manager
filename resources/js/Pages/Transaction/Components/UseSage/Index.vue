@@ -46,7 +46,7 @@
                 class="flex items-center px-4 py-2 relative">
                 <img :src="transaction.iconPath" alt="Icon" class="w-8 h-8">
                 <div class="flex justify-between w-full ml-2">
-                    <span class="font-semibold text-[14px]">{{ transaction.iconName }}</span>
+                    <span class="font-semibold text-[14px]">{{ transaction.name }}</span>
                     <span :class="transaction.type === 'income' ? 'text-blue-500' : 'text-red-500'">{{
                         transaction.amount }}</span>
                 </div>
