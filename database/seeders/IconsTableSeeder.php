@@ -97,7 +97,7 @@ class IconsTableSeeder extends Seeder
 
         Icon::create([
             'name' => 'Medical Check-up',
-            'path' => '/assets/icon/expense/medical-checkup.png',
+            'path' => '/assets/icon/expense/medical_checkup.png',
         ]);
 
         Icon::create([
@@ -166,8 +166,8 @@ class IconsTableSeeder extends Seeder
         ]);
 
         Icon::create([
-            'name' => 'Watter Bill',
-            'path' => '/assets/icon/expense/watter_bill.png',
+            'name' => 'Water Bill',
+            'path' => '/assets/icon/expense/water_bill.png',
         ]);
 
         Icon::create([
@@ -177,6 +177,7 @@ class IconsTableSeeder extends Seeder
 
         Icon::create([
             'name' => 'Salary',
+            'path' => '/assets/icon/income/salary.png',
             'path' => '/assets/icon/income/salary.png',
         ]);
 

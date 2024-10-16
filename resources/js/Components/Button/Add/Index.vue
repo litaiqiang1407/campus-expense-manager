@@ -1,7 +1,7 @@
 <template>
-    <div  @click="navigateToPage" class="button-animate rounded-full w-full h-full flex items-center justify-center bg-primary">
+    <div  @click="navigateToPage" class="button-animate rounded-full w-full h-full flex items-center justify-center bg-primary space-x-2">
         <font-awesome-icon v-if="icon" :icon="icon" class="text-white" />
-        <span v-if="text" class="text-white">{{ text }}</span>
+        <span v-if="text" class="text-white text-[16px]">{{ text }}</span>
     </div>
 </template>
 
