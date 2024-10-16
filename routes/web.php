@@ -18,10 +18,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
 
-    Route::group(['prefix' => 'Transaction'], function ()
+    Route::group(['prefix' => 'transaction'], function ()
     {
         Route::get('/', [TransactionController::class, 'index'])->name('Transaction');
-        Route::get('/transaction/create', [TransactionController::class, 'create'])->name('CreateTransaction');
+        Route::get('/create', [TransactionController::class, 'create'])->name('CreateTransaction');
         Route::post('/store', [TransactionController::class, 'store'])->name('StoreTransaction');
     });
     Route::group(['prefix' => 'my-wallet'], function () {

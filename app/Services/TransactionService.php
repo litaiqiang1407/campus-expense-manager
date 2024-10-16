@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\TransactionRepository;
-
+use Illuminate\Http\Request;
 class TransactionService
 {
     protected $transactionRepository;
@@ -24,5 +24,14 @@ class TransactionService
     public function updateTransaction($transactionId, $data)
     {
         return $this->transactionRepository->updateTransaction($transactionId, $data);
+    }
+
+    public function getCategories()
+    {
+        return $this->transactionRepository->getCategories();
+    }
+    public function getWalletsByUser($userId)
+    {
+        return $this->transactionRepository->getWalletsByUser($userId);
     }
 }

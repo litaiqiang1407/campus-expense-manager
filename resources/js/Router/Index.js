@@ -42,8 +42,7 @@ const routes = [
         path: '/transaction/create',
         name: 'CreateTransaction',
         component: CreateTransaction,
-        meta: { layout: HeaderLayout, title: 'Add transaction', isBack: false, isCancel: true},
-        props: (route) => ({ title: route.meta.title, isBack: route.meta.isBack, isCancel: route.meta.isCancel }),
+        meta: { layout: HeaderLayout, title: 'Add transaction', isBack: false, isCancel: true}, 
     },
     {
         path: '/signin',

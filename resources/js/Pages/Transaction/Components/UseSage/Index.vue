@@ -68,7 +68,8 @@ const totalFlow = ref(0);
 const dayUse = ref('');
 const currentMonth = ref('');
 const groupedTransactions = ref([]);
-
+const today = new Date();
+console.log(today)
 const parseDate = (dateString) => {
     const isoFormatted = dateString.replace(" ", "T");
     return new Date(isoFormatted);
@@ -79,7 +80,8 @@ const formatDay = (day) => {
 };
 const formatDate = (dateString) => {
     const today = new Date();
-    console.log("daytest", today);
+
+    console.log(today)
 
     const date = new Date(dateString);
 

@@ -3,7 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Transaction;
-use App\Models\Icon;
+use App\Models\Category;
+use App\Models\Wallet;
 
 class TransactionRepository
 {
@@ -25,13 +26,13 @@ class TransactionRepository
     {
         return Transaction::findOrFail($transactionId);
     }
-    // Lấy các biểu tượng (có thể không liên quan đến giao dịch)
-    public function getIcons()
+    public function getWalletsByUser($userId)
     {
-        return Icon::select('id', 'name', 'path')->get();
+        return Wallet::where('user_id', $userId)->get();
+    }    
+
+    public function getCategories()
+    {
+        return Category::all();
     }
-    // public function getCategories()
-    // {
-    //     return Icon::select()
-    // }
 }

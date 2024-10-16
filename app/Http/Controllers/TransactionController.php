@@ -40,27 +40,26 @@ class TransactionController extends Controller
         if ($request->wantsJson()) {
             return response()->json($data);
         }
-
         return Inertia::render('Transaction/Index', [
-            'transactions' => $data,
+            'transaction' => $data,
         ]);
     }
 
     public function create(Request $request)
     {
-        //$categories = $this->transactionService->getCategories(); // Giả sử bạn có phương thức này trong TransactionService
-        //$wallets = $this->transactionService->getWallets(); // Giả sử bạn có phương thức này trong TransactionService
+        $categories = $this->transactionService->getCategories();
+        $user = $request->user();
+        $wallets = $this->transactionService->getWalletsByUser($user->id);
 
         if ($request->wantsJson()) {
             return response()->json([
-                // 'categories' => $categories,
-                // 'wallets' => $wallets,
+                'categories' => $categories,
+                'wallets' => $wallets,
             ]);
         }
-
         return Inertia::render('Transaction/Create', [
-            // 'categories' => $categories,
-            // 'wallets' => $wallets,
+            'categories' => $categories,
+            'wallets' => $wallets,
         ]);
     }
 
@@ -69,10 +68,10 @@ class TransactionController extends Controller
     {
         $validatedData = $request->validate([
             'amount' => 'required|numeric|min:0',
-            'type' => 'required|in:expense,income',
             'category_id' => 'required|exists:categories,id',
             'wallet_id' => 'required|exists:wallets,id',
             'note' => 'nullable|string',
+            'date' => 'required|date',
         ]);
 
         $transaction = $this->transactionService->createTransaction($validatedData, $request->user()->id);

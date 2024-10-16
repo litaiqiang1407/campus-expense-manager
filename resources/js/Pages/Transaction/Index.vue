@@ -74,7 +74,6 @@ const calculateInflowAndOutflow = (transactions) => {
 };
 
 onMounted(() => {
-    fetchWallets();
     fetchTransactions();
 });
 </script>
