@@ -3,54 +3,125 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
+    protected $transactionService;
+
+    public function __construct(TransactionService $transactionService)
+    {
+        $this->transactionService = $transactionService;
+    }
+
     public function index(Request $request)
     {
-        $transactions = Transaction::with(['category.icon', 'wallet'])
-            ->select('id', 'amount', 'type', 'note', 'category_id', 'wallet_id', 'user_id', 'created_at')
-            ->orderBy('created_at', 'desc');
+        $transactions = Transaction::with(['category', 'wallet'])
+            ->select('id', 'amount', 'note', 'category_id', 'wallet_id', 'user_id', 'date')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-        $data = $transactions->paginate(10)->map(function ($transaction) {
+        $data = $transactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
                 'amount' => $transaction->amount,
-                'type' => $transaction->type,
+                'type' => optional($transaction->category)->type,
                 'note' => $transaction->note,
                 'iconName' => optional($transaction->category->icon)->name,
                 'iconPath' => optional($transaction->category->icon)->path,
                 'walletName' => optional($transaction->wallet)->name,
                 'walletBalance' => optional($transaction->wallet)->balance,
-                'created_at' => $transaction->created_at->toDateTimeString(),
+                'date' => $transaction->date,
             ];
         });
+
         if ($request->wantsJson()) {
             return response()->json($data);
         }
-
         return Inertia::render('Transaction/Index', [
-            'transactions' => $data,
+            'transaction' => $data,
         ]);
     }
 
-    public function markAsRead($id)
+    public function create(Request $request)
     {
-        return response()->json(['message' => 'This method is not applicable for transactions'], 405);
+        $categories = $this->transactionService->getCategories();
+        $user = $request->user();
+        $wallets = $this->transactionService->getWalletsByUser($user->id);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'categories' => $categories,
+                'wallets' => $wallets,
+            ]);
+        }
+        return Inertia::render('Transaction/Create', [
+            'categories' => $categories,
+            'wallets' => $wallets,
+        ]);
     }
 
-    public function destroy($id)
+    // Lưu giao dịch mới
+    public function store(Request $request)
     {
-        $transaction = Transaction::find($id);
+        $validatedData = $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'wallet_id' => 'required|exists:wallets,id',
+            'note' => 'nullable|string',
+            'date' => 'required|date',
+        ]);
 
-        if (!$transaction) {
-            return response()->json(['message' => 'Transaction not found'], 404);
+        $transaction = $this->transactionService->createTransaction($validatedData, $request->user()->id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaction created successfully!',
+            'transaction' => $transaction,
+        ]);
+    }
+
+    // Hiển thị form chỉnh sửa giao dịch
+    public function edit(Request $request, $transactionId)
+    {
+        $transaction = $this->transactionService->getTransactionById($transactionId);
+        // $categories = $this->transactionService->getCategories(); // Giả sử bạn có phương thức này
+        // $wallets = $this->transactionService->getWallets(); // Giả sử bạn có phương thức này
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'transaction' => $transaction,
+                // 'categories' => $categories,
+                // 'wallets' => $wallets,
+            ]);
         }
 
-        $transaction->delete();
+        return Inertia::render('Transaction/Edit', [
+            'transaction' => $transaction,
+            // 'categories' => $categories,
+            // 'wallets' => $wallets,
+        ]);
+    }
 
-        return response()->json(['message' => 'Transaction deleted successfully']);
+    // Cập nhật giao dịch
+    public function update(Request $request, $transactionId)
+    {
+        $validatedData = $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'type' => 'required|in:expense,income',
+            'category_id' => 'required|exists:categories,id',
+            'wallet_id' => 'required|exists:wallets,id',
+            'note' => 'nullable|string',
+        ]);
+
+        $transaction = $this->transactionService->updateTransaction($transactionId, $validatedData);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaction updated successfully!',
+            'transaction' => $transaction,
+        ]);
     }
 }

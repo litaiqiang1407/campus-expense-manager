@@ -6,7 +6,7 @@
         </div>
         <div v-else>
             <div class="">
-                <div v-for="notification in notifications" :key="notification.id" 
+                <div v-for="notification in notifications" :key="notification.id"
                     :class="['p-4 border', notification.is_read ? 'bg-gray-100' : 'bg-white']">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-semibold">{{ notification.title }}</h3>
@@ -28,13 +28,13 @@ import { ref, onMounted } from 'vue';
 import { format } from 'date-fns';
 import Loading from '@/Components/Loading/Index.vue';
 
-const notifications = ref([]); 
+const notifications = ref([]);
 const loading = ref(false);
 
 const fetchNotifications = async () => {
     try {
         loading.value = true;
-        const response = await axios.get(route('Notification')); 
+        const response = await axios.get(route('Notification'));
         notifications.value = response.data;
     } catch (error) {
         console.error('Error fetching notifications:', error);

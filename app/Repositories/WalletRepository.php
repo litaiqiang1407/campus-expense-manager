@@ -111,7 +111,7 @@ class WalletRepository
     }
     private function getDefaultWalletTypeId()
     {
-        $defaultWalletType = WalletType::first(); 
-        return $defaultWalletType ? $defaultWalletType->id : null; 
+        $defaultWalletType = WalletType::first();
+        return $defaultWalletType ? $defaultWalletType->id : null;
     }
 }

@@ -112,7 +112,7 @@ const routes = [
     },
     {
         path: '/logout',
-        name: 'Logout',        
+        name: 'Logout',
     },
     {
         path: '/icon',
@@ -120,7 +120,7 @@ const routes = [
         component: Icon,
         meta: { layout: HeaderLayout, title: 'Icon', isBack: true, isCancel: false },
         props: true,
-    },  
+    },
     {
         path: '/select-wallet',
         name: 'SelectWallet',

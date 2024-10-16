@@ -178,16 +178,17 @@ class IconsTableSeeder extends Seeder
         Icon::create([
             'name' => 'Salary',
             'path' => '/assets/icon/income/salary.png',
+            'path' => '/assets/icon/income/salary.png',
         ]);
 
         Icon::create([
             'name' => 'Other Income',
-            'path' => '/assets/icon/income/incoming_transfer.png',
+            'path' => '/assets/icon/income/other_income.png',
         ]);
 
         Icon::create([
             'name' => 'Incoming transfer',
-            'path' => '/assets/icon/income/other_income.png',
+            'path' => '/assets/icon/income/incoming_transfer.png',
         ]);
     }
 }
