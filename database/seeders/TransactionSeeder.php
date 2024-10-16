@@ -2,53 +2,35 @@
 
 namespace Database\Seeders;
 
-use App\Models\Transaction;
 use Illuminate\Database\Seeder;
+use App\Models\Transaction; // Model Transaction
+use App\Models\Category; // Model Category
+use App\Models\Wallet; // Model Wallet
+use App\Models\User; // Model User
+use Faker\Factory as Faker;
 
 class TransactionSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        Transaction::create([
-            'category_id' => 1,
-            'amount' => 100.50,
-            'type' => 'income',
-            'wallet_id' => 1,
-            'user_id' => 1,
-            'note' => 'Salary Luong Ve',
-        ]);
-        Transaction::create([
-            'category_id' => 1,
-            'amount' => 100.50,
-            'type' => 'expense',
-            'wallet_id' => 1,
-            'user_id' => 1,
-            'note' => 'Salary Luong Ve',
-        ]);
-        Transaction::create([
-            'category_id' => 1,
-            'amount' => 100.50,
-            'type' => 'expense',
-            'wallet_id' => 1,
-            'user_id' => 1,
-            'note' => 'Salary Luong Ve',
-        ]);
-        Transaction::create([
-            'category_id' => 2,
-            'amount' => 50,
-            'type' => 'expense',
-            'wallet_id' => 1,
-            'user_id' => 1,
-            'note' => 'Mua Do Shoppe',
-        ]);
-        Transaction::create([
-            'category_id' => 2,
-            'amount' => 50,
-            'type' => 'income',
-            'wallet_id' => 1,
-            'user_id' => 1,
-            'note' => 'Mua Do Shoppe',
-        ]);
+        $faker = Faker::create();
+
+        $categoryIds = Category::pluck('id')->toArray();
+        $walletIds = Wallet::pluck('id')->toArray();
+        $userIds = User::pluck('id')->toArray();
+
+        for ($i = 0; $i < 100; $i++) {
+            Transaction::create([
+                'category_id' => $faker->randomElement($categoryIds),
+                'amount' => $faker->randomFloat(2, 10, 1000),
+                'wallet_id' => $faker->randomElement($walletIds),
+                'user_id' => $faker->randomElement($userIds),
+                'note' => $faker->sentence(),
+                'date' => $faker->dateTimeBetween('2024-10-01', '2024-10-31')->format('Y-m-d'),
+            ]);
+        }
     }
 }
-
