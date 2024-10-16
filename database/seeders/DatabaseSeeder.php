@@ -16,9 +16,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
         $this->call([
-            IconsTableSeeder::class,
-            CategoriesTableSeeder::class,
-            WalletTypesTableSeeder::class,
+            IconsTableSeeder::class,            WalletTypesTableSeeder::class,
             WalletsTableSeeder::class,
             TransactionSeeder::class
         ]);
