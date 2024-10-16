@@ -86,6 +86,5 @@ class BudgetController extends Controller
             'wallet' => $walletData,
             'budgets' => $budgetsData,
         ]);
-    }
-    
+    }  
 }
