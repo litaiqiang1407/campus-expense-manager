@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col h-screen">
+    <div class="flex flex-col">
         <!-- Header -->
         <Header :totalFlow="totalFlow" :wallets="wallets" />
         <!-- History Management -->
@@ -45,19 +45,12 @@ const hasData = ref(false);
 const selectedMonth = ref('this');
 const wallets = ref([]);
 
-const fetchWallets = async () => {
-    try {
-        const response = await axios.get(route('MyWallet'));
-        wallets.value = response.data.wallets;
-    } catch (error) {
-        console.error('Error fetching wallets:', error);
-    }
-};
-
 const fetchTransactions = async () => {
     try {
         const response = await axios.get(route('Transaction'));
-        transactions.value = response.data;
+        transactions.value = response.data.transactions;
+        wallets.value = response.data.wallets;
+        console.log('Fetched Transactions:', wallets.value);
         hasData.value = transactions.value.length > 0;
         calculateInflowAndOutflow(transactions.value);
     } catch (error) {
@@ -82,7 +75,6 @@ const calculateInflowAndOutflow = (transactions) => {
 };
 
 onMounted(() => {
-    fetchWallets();
     fetchTransactions();
 });
 </script>
