@@ -5,7 +5,8 @@
         type="text"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
-        class="w-full text-primary font-semibold text-[28px] border-b-[3px] border-primary py-1 focus:outline-none"
+        :placeholder="placeholder"
+        class="w-full text-primary font-semibold text-[20px] border-b-[3px] border-primary py-1 focus:outline-none"
       />
     </label>
     </div>
@@ -18,6 +19,10 @@ const props = defineProps({
     default: '',
   },
   modelValue: {
+    type: String,
+    default: '',
+  },
+  placeholder: {
     type: String,
     default: '',
   },

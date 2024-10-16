@@ -1,13 +1,13 @@
 <template>
-    <div class="flex w-full space-x-8 items-center py-4">
-      <div class="size-[40px] flex items-center justify-center">
+    <div class="flex w-full space-x-6 items-center py-4">
+      <div class="size-[60px] flex items-center justify-center">
         <font-awesome-icon icon="dollar-sign" class="text-black text-[36px]" />
       </div>
       <input
         type="text"
         :value="inputValue"
         @input="emit('update:inputValue', $event.target.value)"
-        class="w-full text-primary font-semibold text-[28px] border-b-[3px] border-primary py-1 focus:outline-none"
+        class="w-full text-primary font-semibold text-[20px] border-b-[3px] border-primary py-1 focus:outline-none"
         @focus="showKeyboard = true"
       />
     </div>

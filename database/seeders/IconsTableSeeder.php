@@ -97,7 +97,7 @@ class IconsTableSeeder extends Seeder
 
         Icon::create([
             'name' => 'Medical Check-up',
-            'path' => '/assets/icon/expense/medical-checkup.png',
+            'path' => '/assets/icon/expense/medical_checkup.png',
         ]);
 
         Icon::create([
@@ -166,8 +166,8 @@ class IconsTableSeeder extends Seeder
         ]);
 
         Icon::create([
-            'name' => 'Watter Bill',
-            'path' => '/assets/icon/expense/watter_bill.png',
+            'name' => 'Water Bill',
+            'path' => '/assets/icon/expense/water_bill.png',
         ]);
 
         Icon::create([
@@ -177,17 +177,17 @@ class IconsTableSeeder extends Seeder
 
         Icon::create([
             'name' => 'Salary',
-            'path' => '/assets/icon/incom/salary.png',
+            'path' => '/assets/icon/income/salary.png',
         ]);
 
         Icon::create([
             'name' => 'Other Income',
-            'path' => '/assets/icon/incom/other_income.png',
+            'path' => '/assets/icon/income/incoming_transfer.png',
         ]);
 
         Icon::create([
             'name' => 'Incoming transfer',
-            'path' => '/assets/icon/incom/incoming_transfer.png',
+            'path' => '/assets/icon/income/other_income.png',
         ]);
     }
 }

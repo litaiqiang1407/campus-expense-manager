@@ -1,3 +1,47 @@
 <template>
-    This is the icon component
+    <div class="bg-white min-h-screen">
+        <div v-if="isLoading" class="flex items-center justify-center h-64">
+        <Loading />
+      </div>
+        <div class="grid grid-cols-5 gap-4 p-6">
+            <div v-for="(ic, index) in icon" :key="index" class="h-full w-full rounded-full flex 
+            items-center justify-center"
+            @click="selectIcon(ic)"
+            >
+                <img :src="ic?.path || '/assets/icon/box.png'" :alt="ic.name" class="object-cover" />
+            </div>
+        </div>
+    </div>
+        
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import  Loading  from '@/Components/Loading/Index.vue'; 
+
+const icon = ref([]); 
+const router = useRouter();
+const isLoading = ref(false);
+
+const fetchIcon = async () => {
+    try {
+        isLoading.value = true;
+        const response = await axios.get(route('Icon'));
+        icon.value = response.data.icons; 
+    } catch (error) {
+        console.error('Error fetching icons:', error); 
+    }  finally {
+        isLoading.value = false;
+    }
+};
+
+const selectIcon = (icon) => {
+    const walletTypeId = router.currentRoute.value.query.walletTypeId;
+
+    router.push({ name: 'CreateWallet', params: { walletTypeId }, query: { icon: JSON.stringify(icon)} }); 
+};
+
+onMounted(fetchIcon);
+
+</script>
