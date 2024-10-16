@@ -22,6 +22,7 @@
                 ${{ wallet.balance.toFixed(2) }}
               </div>
             </div>
+            <font-awesome-icon v-if="wallet.id == walletIdSelected || !walletIdSelected" icon="check" class="text-primary" />
           </div>
         </div>
       </div>
@@ -55,6 +56,7 @@ import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 
 const router = useRouter();
+const walletIdSelected = router.currentRoute.value.query.walletId;
 
 const isLoading = ref(false);
 const wallets = ref([]);
