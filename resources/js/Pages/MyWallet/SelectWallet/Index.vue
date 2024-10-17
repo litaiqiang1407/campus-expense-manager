@@ -1,28 +1,52 @@
 <template>
-    <div class="max-w-full mx-auto mt-2">
+    <div class="max-w-full mx-auto mt-4">
+      <div v-for="wallet in wallets" :key="wallet.id">
+        <div v-if="wallet.name == 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
+          <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
+            <div class="flex flex-1 items-center">
+              <img
+                :alt="`${wallet.name} icon`"
+                class="w-10 h-10 rounded-full"
+                :src="wallet.icon_path"
+              />
+              <div class="ml-4 flex-1 flex flex-col justify-between">
+                <div class="font-medium">
+                  {{ wallet.name }}
+                </div>
+                <div class="text-secondaryText text-sm">
+                  ${{ wallet.balance.toFixed(2) }}
+                </div>
+              </div>
+              <font-awesome-icon v-if="wallet.id == walletIdSelected" icon="check" class="text-primary" />
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="text-sm text-secondaryText text-center mb-2 flex items-center h-12 pl-4 font-bold">
         Included in Total
       </div>
       <div v-if="isLoading" class="flex items-center justify-center h-64">
         <Loading />
       </div>
-      <div v-for="wallet in wallets" :key="wallet.id" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
-        <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
-          <div class="flex flex-1 items-center">
-            <img
-              :alt="`${wallet.name} icon`"
-              class="w-10 h-10 rounded-full"
-              :src="wallet.icon_path"
-            />
-            <div class="ml-4 flex-1 flex flex-col justify-between">
-              <div class="font-medium">
-                {{ wallet.name }}
+      <div v-for="wallet in wallets" :key="wallet.id" >
+        <div v-if="wallet.name != 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
+          <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
+            <div class="flex flex-1 items-center">
+              <img
+                :alt="`${wallet.name} icon`"
+                class="w-10 h-10 rounded-full"
+                :src="wallet.icon_path"
+              />
+              <div class="ml-4 flex-1 flex flex-col justify-between">
+                <div class="font-medium">
+                  {{ wallet.name }}
+                </div>
+                <div class="text-secondaryText text-sm">
+                  ${{ wallet.balance.toFixed(2) }}
+                </div>
               </div>
-              <div class="text-secondaryText text-sm">
-                ${{ wallet.balance.toFixed(2) }}
-              </div>
+              <font-awesome-icon v-if="wallet.id == walletIdSelected" icon="check" class="text-primary" />
             </div>
-            <font-awesome-icon v-if="wallet.id == walletIdSelected || !walletIdSelected" icon="check" class="text-primary" />
           </div>
         </div>
       </div>

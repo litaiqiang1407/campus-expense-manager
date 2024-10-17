@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
 
-import { Support, Menu, Search, SelectWallet } from "../Components/Header/Components/Index";
+import { Support, Menu, Search, SelectWallet as SelectComponent } from "../Components/Header/Components/Index";
 
 const routes = [
     {
@@ -87,7 +87,7 @@ const routes = [
     {
         path: '/categories',
         name: 'Categories',
-        meta: { layout: DefaultLayout, title: 'Categories', isBack: false, headerComponent: [SelectWallet,Menu] },
+        meta: { layout: DefaultLayout, title: 'Categories', isBack: false, headerComponent: [SelectComponent,Menu] },
         component: Categories
     },
     {
