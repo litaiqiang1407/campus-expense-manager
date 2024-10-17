@@ -6,26 +6,28 @@
       <div v-if="isLoading" class="flex items-center justify-center h-64">
         <Loading />
       </div>
-      <div v-for="wallet in wallets" :key="wallet.id" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
-        <div class="w-full flex items-center justify-between" @click="editWallet(wallet.id)">
-          <div class="flex flex-1 items-center">
-            <img
-              :alt="`${wallet.name} icon`"
-              class="w-10 h-10 rounded-full"
-              :src="wallet.icon_path"
-            />
-            <div class="ml-4 flex-1 flex flex-col justify-between">
-              <div class="font-medium">
-                {{ wallet.name }}
-              </div>
-              <div class="text-secondaryText text-sm">
-                ${{ wallet.balance.toFixed(2) }}
+      <div v-for="wallet in wallets" :key="wallet.id" >
+        <div v-if="wallet.name != 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
+          <div class="w-full flex items-center justify-between" @click="editWallet(wallet.id)">
+            <div class="flex flex-1 items-center">
+              <img
+                :alt="`${wallet.name} icon`"
+                class="w-10 h-10 rounded-full"
+                :src="wallet.icon_path"
+              />
+              <div class="ml-4 flex-1 flex flex-col justify-between">
+                <div class="font-medium">
+                  {{ wallet.name }}
+                </div>
+                <div class="text-secondaryText text-sm">
+                  ${{ wallet.balance.toFixed(2) }}
+                </div>
               </div>
             </div>
+            <button class="w-[32px] h-full" @click.stop="confirmDelete(wallet.id)">
+              <font-awesome-icon icon="circle-minus" class="text-[24px] text-redText" />
+            </button>
           </div>
-          <button class="w-[32px] h-full" @click.stop="confirmDelete(wallet.id)">
-            <font-awesome-icon icon="circle-minus" class="text-[24px] text-redText" />
-          </button>
         </div>
       </div>
       <div class="fixed right-4 bottom-4 w-16 h-16 text-[24px]" @click="displayWalletTypes">
