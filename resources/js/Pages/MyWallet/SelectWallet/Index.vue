@@ -22,8 +22,9 @@
           </div>
         </div>
       </div>
-      <div class="text-sm text-secondaryText text-center mb-2 flex items-center h-12 pl-4 font-bold">
-        Included in Total
+      <div class="text-sm  mb-2 flex items-center justify-between h-12 px-4">
+        <span class="text-secondaryText font-bold">Included in Total</span>
+        <span @click="goToMyWallet" class="text-primary font-semibold">View Details</span>
       </div>
       <div v-if="isLoading" class="flex items-center justify-center h-64">
         <Loading />
@@ -95,7 +96,6 @@ const fetchWallets = async () => {
     walletTypes.value = response.data.walletTypes;
     wallets.value = response.data.wallets;
     totalWalletBalance.value = response.data.totalWalletBalance;
-    console.log(totalWalletBalance.value);
   } catch (error) {
     console.error('Error fetching wallets:', error);
   } finally {
@@ -118,5 +118,10 @@ const closeWalletTypes = () => {
 const createWallet = (walletTypeId) => {
   router.push({ name: 'CreateWallet', params: { walletTypeId } });
 };
+
+const goToMyWallet = () => {
+  router.push({ name: 'MyWallet' });
+};
+
 onMounted(fetchWallets);
 </script>
