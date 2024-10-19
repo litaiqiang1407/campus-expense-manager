@@ -51,41 +51,24 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue';
+<script setup>
+import { computed } from 'vue';
 
-export default defineComponent({
-    props: {
-        debts: {
-            type: Array as () => Array<{
-                id: number;
-                name: string;
-                icon_path: string;
-                type: string;
-                subcategories?: Array<{
-                    id: number;
-                    name: string;
-                    icon_path: string;
-                    type: string;
-                }>;
-            }>,
-            required: true,
-        },
-    },
-    setup(props) {
-        // Kiểm tra nếu debts có giá trị hợp lệ
-        const filteredDebts = computed(() => {
-            if (!props.debts) {
-                return []; // Trả về mảng rỗng nếu debts không hợp lệ
-            }
-            return props.debts.filter(debt => debt.type === 'debt'); // Thay đổi điều kiện lọc nếu cần
-        });
-
-        console.log('Debts:', filteredDebts.value); // Log dữ liệu nợ để kiểm tra
-
-        return { filteredDebts };
+const props = defineProps({
+    debts: {
+        type: Array,
+        required: true,
     },
 });
+
+const filteredDebts = computed(() => {
+    if (!props.debts) {
+        return []; 
+    }
+    return props.debts.filter(debt => debt.type === 'debt'); 
+});
+
+console.log('Filtered Debts:', filteredDebts.value);
 </script>
 
 <style>

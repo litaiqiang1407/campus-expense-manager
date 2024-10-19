@@ -59,31 +59,15 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-    props: {
-        categories: {
-            type: Array as () => Array<{
-                id: number;
-                name: string;
-                icon_path: string;
-                type: string;
-                subcategories?: Array<{
-                    id: number;
-                    name: string;
-                    icon_path: string;
-                    type: string;
-                }>;
-            }>,
-            required: true,
-        },
-    },
-    setup(props) {
-        console.log('Categories:', props.categories); 
+<script setup>
+const props = defineProps({
+    categories: {
+        type: Array,
+        required: true,
     },
 });
+
+console.log('Categories:', props.categories);
 </script>
 
 <style>

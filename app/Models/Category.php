@@ -22,4 +22,15 @@ class Category extends Model
     {
         return $this->hasMany(Transaction::class); 
     }
+    // Mối quan hệ với subcategories
+    public function subcategories()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    // Mối quan hệ với category cha
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
 }

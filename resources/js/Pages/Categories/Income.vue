@@ -58,38 +58,24 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue';
+<script setup>
+import { computed } from 'vue';
 
-export default defineComponent({
-    props: {
-        incomes: {
-            type: Array as () => Array<{
-                id: number;
-                name: string;
-                icon_path: string;
-                type: string;
-                subcategories?: Array<{
-                    id: number;
-                    name: string;
-                    icon_path: string;
-                    type: string;
-                }>
-            }>,
-            required: true,
-        },
-    },
-    setup(props) {
-        const filteredIncomes = computed(() => {
-            if (!props.incomes) {
-                return [];
-            }
-            return props.incomes.filter(income => income.type === 'income');
-        });
-
-        return { filteredIncomes };
+const props = defineProps({
+    incomes: {
+        type: Array,
+        required: true,
     },
 });
+
+const filteredIncomes = computed(() => {
+    if (!props.incomes) {
+        return [];
+    }
+    return props.incomes.filter(income => income.type === 'income');
+});
+
+console.log('Filtered Incomes:', filteredIncomes.value);
 </script>
 
 <style>
