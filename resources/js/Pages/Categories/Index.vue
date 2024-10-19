@@ -33,38 +33,46 @@
         </div>
 
         <!-- Component Display -->
-        <Expense v-if="openComponent === 'expense'" />
-        <Income v-if="openComponent === 'income'" />
-        <DebtLoan v-if="openComponent === 'debtloan'" />
+        <Expense v-if="openComponent === 'expense'" :categories="categories" />
+        <Income v-if="openComponent === 'income'" :incomes="categories" /> <!-- Truyền incomes vào đây -->
+        <DebtLoan v-if="openComponent === 'debtloan'" :debts="filteredDebts" /> <!-- Truyền dữ liệu nợ vào đây -->
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import Expense from './Expense.vue';
 import Income from './Income.vue';
 import DebtLoan from './DebtLoan.vue';
+import axios from 'axios';
 
 const openComponent = ref('expense');
-
 const categories = ref([]);
 
+// Hàm hiển thị component tương ứng
 const displayComponent = (component) => {
     openComponent.value = component;
+    fetchCategories(component); // Gọi lại fetchCategories với component được chọn
 };
 
-const fetchCategories = async () => {
+// Hàm lấy danh mục
+const fetchCategories = async (componentType) => {
     try {
-        const response = await axios.get(route('Categories'));
-        categories.value = response.data;
-        console.log('Categories:', categories.value);
+        const response = await axios.get(route('Categories')); 
+        categories.value = response.data; // Lưu tất cả danh mục
+        console.log('All Categories:', categories.value); // Kiểm tra dữ liệu
     } catch (error) {
         console.error('Error fetching categories:', error);
     }
 };
 
-onMounted(() => {
-    fetchCategories();
+// Hàm lọc danh sách nợ
+const filteredDebts = computed(() => {
+    return categories.value.filter(category => category.type === 'debt'); // Lọc danh sách nợ từ categories
 });
 
+// Gọi hàm khi component được mount
+onMounted(() => {
+    fetchCategories('expense'); // Mặc định là expense
+});
 </script>
