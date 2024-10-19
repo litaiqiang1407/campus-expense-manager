@@ -21,9 +21,9 @@
     </div>
     <div v-if="budgetList.length > 0 && !isLoading" class="w-full  flex flex-col items-center">
       <div class="flex items-center w-full min-w-screen overflow-x-auto bg-white mb-2">
-        <div v-for="(range, index) in timeRanges" 
-          :key="index" 
-          class="w-1/4 flex-shrink-0 pt-2 px-4 flex flex-col items-center" 
+        <div v-for="(range, index) in timeRanges"
+          :key="index"
+          class="w-1/4 flex-shrink-0 pt-2 px-4 flex flex-col items-center"
           @click="selectRange(range)">
           <span class="text-[12px] font-bold w-full"
             :class="{ 'text-black': activeTimeRange === range, 'text-secondaryText': activeTimeRange !== range }">
@@ -39,7 +39,7 @@
           <span class="absolute border-b-2 border-black w-full left-0 top-9"></span>
         </p>
       </div> -->
-  
+
       <div class="bg-white p-4 rounded-none w-full max-w-full text-center mb-2">
         <div class="relative w-96 h-[260px] mx-auto overflow-hidden">
           <!-- Background circle with SVG -->
@@ -48,14 +48,14 @@
             <circle id="greenCircle" cx="3" cy="40" r="2" fill="#00BC2A" />
             <circle id="whiteCircle" cx="3" cy="40" r="1" fill="white" />
           </svg>
-  
+
           <!-- Budget amount in the center -->
           <div class="absolute inset-0 flex flex-col justify-center items-center">
             <p class="text-secondaryText text-xs mb-2">Amount you can spend</p>
             <p class="text-primary text-2xl font-bold tracking-normal">{{ totalAmount }}</p>
           </div>
         </div>
-  
+
         <div class="flex item-center text-gray-500 mb-6 w-full">
           <div class="text-center w-1/3  py-2">
             <p class="text-sm font-bold">{{ formatTotalBudget(totalAmount) }}</p>
@@ -70,12 +70,12 @@
             <p class="text-xs mt-2">End of period</p>
           </div>
         </div>
-  
+
         <div class="w-[240px] h-10 px-[20px] my-4 mx-auto">
           <Add :text="'Create Budget'" :icon="''" :destinationPage="'CreateBudget'" />
         </div>
       </div>
-  
+
       <div class="w-full">
         <!-- First Budget Card (Not Overspent) -->
         <div v-for="(budget, index) in timeRangeBudgetList" :index="index" class="bg-white rounded-lg p-4 mb-2 w-full">
@@ -85,7 +85,7 @@
             </div>
             <div class="flex flex-col flex-1 space-y-2">
               <div class="flex items-start w-full">
-                <div class="flex items-center flex-1">             
+                <div class="flex items-center flex-1">
                   <h3 class="text-[16px] font-bold line-clamp-1">{{ budget?.category?.name || "Budget" }}</h3>
                 </div>
                 <div class="text-right">
@@ -110,10 +110,10 @@
       <div class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[5px] border-b-white mx-auto"></div>
     </div>
   </div>
-            </div>       
-          </div>         
+            </div>
+          </div>
         </div>
-  
+
 
       </div>
     </div>
@@ -172,11 +172,11 @@ const emit = defineEmits(['budget-created']);
 //       const point = path.getPointAtLength(distance);
 //       greenCircle.setAttribute('cx', point.x);
 //       greenCircle.setAttribute('cy', point.y);
-      
+
 //       // Position the white circle relative to the green circle
 //       whiteCircle.setAttribute('cx', point.x);
 //       whiteCircle.setAttribute('cy', point.y);
-      
+
 //       requestAnimationFrame(animate);
 //     } else {
 //       const endPoint = path.getPointAtLength(pathLength);
@@ -195,11 +195,12 @@ const fetchBudgets = async () => {
     isLoading.value = true;
     const response = await axios.get(route('Budget'), {
       params: {
-        walletId: walletId, 
+        walletId: walletId,
       },
     });
     budgetList.value = response.data.budgets;
     wallet.value = response.data.wallet;
+    console.log("wallet value",wallet)
     timeRanges.value = [...new Set(budgetList.value.map(budget => budget.time_range))];
     activeTimeRange.value = timeRanges.value[0];
     remainingTime.value = calculateRemainingTime(activeTimeRange.value);
@@ -218,10 +219,10 @@ const selectWallet = () => {
 const timeRangeBudgets = () => {
   if (activeTimeRange.value) {
     timeRangeBudgetList.value = budgetList.value.filter(budget => budget.time_range === activeTimeRange.value);
-    totalAmount.value = timeRangeBudgetList.value.reduce((sum, budget) => sum + budget.amount, 0).toFixed(2); 
+    totalAmount.value = timeRangeBudgetList.value.reduce((sum, budget) => sum + budget.amount, 0).toFixed(2);
   } else {
-    timeRangeBudgetList.value = budgetList.value; 
-    totalAmount.value = timeRangeBudgetList.value.reduce((sum, budget) => sum + budget.amount, 0).toFixed(2); 
+    timeRangeBudgetList.value = budgetList.value;
+    totalAmount.value = timeRangeBudgetList.value.reduce((sum, budget) => sum + budget.amount, 0).toFixed(2);
   }
 };
 
@@ -233,17 +234,17 @@ const selectRange = (range) => {
 
 const formatTotalBudget = (num) => {
   if (num === null || num === undefined) return '0';
-  
+
   const absNum = Math.abs(num);
-  
+
   if (absNum >= 1e9) {
     return (num / 1e9).toFixed(1) + 'B';
   } else if (absNum >= 1e6) {
-    return (num / 1e6).toFixed(1) + 'M'; 
+    return (num / 1e6).toFixed(1) + 'M';
   } else if (absNum >= 1e3) {
-    return (num / 1e3).toFixed(1) + 'K'; 
+    return (num / 1e3).toFixed(1) + 'K';
   } else {
-    return num.toString(); 
+    return num.toString();
   }
 };
 
@@ -266,26 +267,26 @@ const calculateRemainingTime = (activeRange) => {
       const month = today.getMonth();
       let endOfQuarter;
 
-      if (month < 2) { 
-        endOfQuarter = new Date(today.getFullYear(), 2, 31); 
-      } else if (month < 5) { 
-        endOfQuarter = new Date(today.getFullYear(), 5, 30); 
-      } else if (month < 8) { 
-        endOfQuarter = new Date(today.getFullYear(), 8, 30); 
-      } else { 
-        endOfQuarter = new Date(today.getFullYear(), 11, 31); 
+      if (month < 2) {
+        endOfQuarter = new Date(today.getFullYear(), 2, 31);
+      } else if (month < 5) {
+        endOfQuarter = new Date(today.getFullYear(), 5, 30);
+      } else if (month < 8) {
+        endOfQuarter = new Date(today.getFullYear(), 8, 30);
+      } else {
+        endOfQuarter = new Date(today.getFullYear(), 11, 31);
       }
 
       remainingTime = Math.ceil((endOfQuarter - today) / (1000 * 60 * 60 * 24)) + ' days';
       break;
 
     case 'year':
-      const monthsLeft = 12 - today.getMonth() - 1; 
+      const monthsLeft = 12 - today.getMonth() - 1;
       remainingTime = monthsLeft + ' months';
       break;
 
     default:
-      remainingTime = null; 
+      remainingTime = null;
       break;
   }
 
@@ -295,31 +296,31 @@ const calculateRemainingTime = (activeRange) => {
 const totalParts = computed(() => {
   switch (activeTimeRange.value) {
     case 'week':
-      return 7; 
+      return 7;
     case 'month':
-      return new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate(); 
+      return new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
     case 'quarter':
-      return 90; 
+      return 90;
     case 'year':
-      return 365; 
+      return 365;
     default:
-      return 0; 
+      return 0;
   }
 });
 
 const todayPosition = computed(() => {
   switch (activeTimeRange.value) {
     case 'week':
-      return today.getDay(); 
+      return today.getDay();
     case 'month':
       return today.getDate();
     case 'quarter':
       const startOfQuarter = new Date(today.getFullYear(), Math.floor(today.getMonth() / 3) * 3, 1);
-      return Math.floor((today - startOfQuarter) / (1000 * 60 * 60 * 24)) + 1; 
+      return Math.floor((today - startOfQuarter) / (1000 * 60 * 60 * 24)) + 1;
     case 'year':
-      return Math.floor((today - new Date(today.getFullYear(), 0, 1)) / (1000 * 60 * 60 * 24)) + 1; 
+      return Math.floor((today - new Date(today.getFullYear(), 0, 1)) / (1000 * 60 * 60 * 24)) + 1;
     default:
-      return 0; 
+      return 0;
   }
 });
 
@@ -331,7 +332,7 @@ const todayIndicatorStyle = computed(() => {
   return {
     left: `calc(${(todayPosition.value / totalParts.value) * 100}%)`,
     height: '4px',
-    width: '2px', 
+    width: '2px',
   };
 });
 

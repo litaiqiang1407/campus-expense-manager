@@ -26,6 +26,7 @@ class TransactionRepository
     {
         return Transaction::findOrFail($transactionId);
     }
+
     public function getWalletsByUser($userId)
     {
         return Wallet::select(
@@ -43,5 +44,13 @@ class TransactionRepository
     public function getCategories()
     {
         return Category::all();
+    }
+
+    // Cập nhật số dư của ví
+    public function updateWalletBalance($walletId, $amount)
+    {
+        $wallet = Wallet::findOrFail($walletId);
+        $wallet->balance -= $amount; // Giảm số dư
+        $wallet->save();
     }
 }

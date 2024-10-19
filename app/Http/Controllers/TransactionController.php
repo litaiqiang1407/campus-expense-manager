@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -53,30 +54,36 @@ class TransactionController extends Controller
         // Trả về giao diện với dữ liệu
         return Inertia::render('Transaction/Index', [
             'transaction' => $data,
-            'wallets' => $wallets, // Gửi dữ liệu wallets đến giao diện
+            'wallets' => $wallets,
         ]);
     }
     public function create(Request $request)
     {
         $categories = $this->transactionService->getCategories();
         $user = $request->user();
-        $wallets = $this->transactionService->getWalletsByUser($user->id);
-
+        $walletId = $request->input('walletId');
+        $wallet = Wallet::with('icon')
+            ->select('id', 'user_id', 'name')
+            ->where('id', $walletId)
+            ->where('user_id', $user->id)
+            ->first();
         if ($request->wantsJson()) {
             return response()->json([
                 'categories' => $categories,
-                'wallets' => $wallets,
+                'wallet' => $wallet,
             ]);
         }
+
         return Inertia::render('Transaction/Create', [
             'categories' => $categories,
-            'wallets' => $wallets,
+            'wallet' => $wallet,
         ]);
     }
 
     // Lưu giao dịch mới
     public function store(Request $request)
     {
+        dd($request->all());
         $validatedData = $request->validate([
             'amount' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
@@ -94,7 +101,6 @@ class TransactionController extends Controller
         ]);
     }
 
-    // Hiển thị form chỉnh sửa giao dịch
     public function edit(Request $request, $transactionId)
     {
         $transaction = $this->transactionService->getTransactionById($transactionId);
