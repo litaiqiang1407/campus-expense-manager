@@ -6,7 +6,7 @@ import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notifica
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
 
-import { Support, Menu, Search } from "../Components/Header/Components/Index";
+import { Support, Menu, Search, SelectWallet as SelectComponent } from "../Components/Header/Components/Index";
 
 const routes = [
     {
@@ -87,7 +87,7 @@ const routes = [
     {
         path: '/categories',
         name: 'Categories',
-        meta: { layout: DefaultLayout, title: 'Categories', isBack: false, headerComponent: [SelectWallet,Menu] },
+        meta: { layout: DefaultLayout, title: 'Categories', isBack: false, headerComponent: [SelectComponent,Menu] },
         component: Categories
     },
     {
