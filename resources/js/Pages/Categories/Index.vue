@@ -1,11 +1,11 @@
 <template>
     <div class="absolute w-screen h-screen bg-[#effbff]">
         <!-- Expense/Income/Debt Navigation -->
-        <div class="max-w-lg mx-auto py-1 sticky top-0 z-50">
-            <div class="flex justify-around text-xs font-medium bg-[#f8f9fa] ">
+        <div class="max-w-full mx-auto py-1 sticky top-0 z-50">
+            <div class="flex justify-between text-xs font-medium bg-[#f8f9fa] px-4">
                 <!-- EXPENSE Button -->
                 <button
-                    class="py-2 px-4"
+                    class="py-2 flex-1 mx-1"
                     :class="openComponent === 'expense' ? 'text-black border-b-2 border-black' : 'text-secondaryText'"
                     @click="displayComponent('expense')"
                 >
@@ -14,7 +14,7 @@
 
                 <!-- INCOME Button -->
                 <button
-                    class="py-2 px-4"
+                    class="py-2 flex-1 mx-1"
                     :class="openComponent === 'income' ? 'text-black border-b-2 border-black' : 'text-secondaryText'"
                     @click="displayComponent('income')"
                 >
@@ -23,7 +23,7 @@
 
                 <!-- DEBT/LOAN Button -->
                 <button
-                    class="py-2 px-4"
+                    class="py-2 flex-1 mx-1"
                     :class="openComponent === 'debtloan' ? 'text-black border-b-2 border-black' : 'text-secondaryText'"
                     @click="displayComponent('debtloan')"
                 >
