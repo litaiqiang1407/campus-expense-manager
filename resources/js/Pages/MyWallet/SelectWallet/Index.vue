@@ -105,7 +105,7 @@ const fetchWallets = async () => {
 
 const formatBalance = (balance) => {
   return balance === 0 
-    ? '0' 
+    ? '$0' 
     : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
 }
 
