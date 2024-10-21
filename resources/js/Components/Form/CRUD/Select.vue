@@ -1,7 +1,7 @@
 <template>
     <div>
         <button type="button" class="flex w-full space-x-8 items-center">
-            <div class="size-[60px] flex items-center justify-center">
+            <div class="size-[60px] flex items-center justify-start">
                 <img v-if="iconSrc" :src="iconSrc" class="size-[44px]" />
                 <font-awesome-icon v-if="!iconSrc" :icon="icon" class="text-black text-[36px]" />
             </div>

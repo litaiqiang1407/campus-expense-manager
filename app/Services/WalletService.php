@@ -18,9 +18,9 @@ class WalletService
         return $this->walletRepository->userHasWallet($userId);
     }
 
-    public function getWallets($userId)
+    public function getWallets($userId, $limit = null)
     {
-        return $this->walletRepository->getAllWallets($userId);
+        return $this->walletRepository->getAllWallets($userId, $limit);
     }
 
     public function getWalletTypes()
