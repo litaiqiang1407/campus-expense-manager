@@ -1,14 +1,56 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Models\Transaction;
+use App\Models\Category;
+use App\Models\Wallet;
 
 class TransactionRepository
 {
-    public function getTransactionsByWallet($userId, $walletId)
+    // Tạo giao dịch mới
+    public function createTransaction($data, $userId)
     {
-        return Transaction::where('user_id', $userId)
-            ->where('wallet_id', $walletId)
-            ->get(['id', 'category_id', 'amount', 'date']);
+        return Transaction::create(array_merge($data, ['user_id' => $userId]));
+    }
+
+    // Cập nhật giao dịch
+    public function updateTransaction($transactionId, $data)
+    {
+        $transaction = Transaction::findOrFail($transactionId);
+        $transaction->update($data);
+        return $transaction;
+    }
+
+    public function getTransactionById($transactionId)
+    {
+        return Transaction::findOrFail($transactionId);
+    }
+
+    public function getWalletsByUser($userId)
+    {
+        return Wallet::select(
+            'wallets.id',
+            'wallets.name',
+            'wallets.balance',
+            'icons.path as icon_path',
+            'icons.name as icon_name'
+        )
+        ->where('user_id', $userId)
+        ->join('icons', 'wallets.icon_id', '=', 'icons.id')
+        ->get();
+    }
+
+    public function getCategories()
+    {
+        return Category::all();
+    }
+
+    // Cập nhật số dư của ví
+    public function updateWalletBalance($walletId, $amount)
+    {
+        $wallet = Wallet::findOrFail($walletId);
+        $wallet->balance -= $amount; // Giảm số dư
+        $wallet->save();
     }
 }

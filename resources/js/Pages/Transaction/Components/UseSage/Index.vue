@@ -29,10 +29,11 @@
                     <div class="flex flex-row items-start">
                         <h1 class="text-3xl">{{ formatDay(new Date(group.date).getDate()) }}</h1>
                         <div class="flex flex-col items-start pt-1 pl-2">
-                            <p class="text-[10px]">Today</p>
+                            <p class="text-[10px]">{{ formatDate(group.date) }}</p>
                             <p class="text-[10px]">{{ new Date(group.date).toLocaleString('en-US', {
                                 month: 'long',
-                                year: 'numeric' }) }}</p>
+                                year: 'numeric'
+                            }) }}</p>
                         </div>
                     </div>
                 </div>
@@ -45,7 +46,7 @@
                 class="flex items-center px-4 py-2 relative">
                 <img :src="transaction.iconPath" alt="Icon" class="w-8 h-8">
                 <div class="flex justify-between w-full ml-2">
-                    <span class="font-semibold text-[14px]">{{ transaction.iconName }}</span>
+                    <span class="font-semibold text-[14px]">{{ transaction.name }}</span>
                     <span :class="transaction.type === 'income' ? 'text-blue-500' : 'text-red-500'">{{
                         transaction.amount }}</span>
                 </div>
@@ -67,7 +68,8 @@ const totalFlow = ref(0);
 const dayUse = ref('');
 const currentMonth = ref('');
 const groupedTransactions = ref([]);
-
+const today = new Date();
+console.log(today)
 const parseDate = (dateString) => {
     const isoFormatted = dateString.replace(" ", "T");
     return new Date(isoFormatted);
@@ -75,6 +77,34 @@ const parseDate = (dateString) => {
 
 const formatDay = (day) => {
     return day < 10 ? `0${day}` : day.toString();
+};
+const formatDate = (dateString) => {
+    const today = new Date();
+
+    console.log(today)
+
+    const date = new Date(dateString);
+
+    const isToday = today.toDateString() === date.toDateString();
+
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    const isYesterday = yesterday.toDateString() === date.toDateString();
+
+    const timeDiff = today.getTime() - date.getTime();
+    const daysDiff = timeDiff / (1000 * 3600 * 24);
+
+    const isThisWeek = daysDiff <= 7 && today.getDay() >= date.getDay();
+
+    if (isToday) {
+        return "Today";
+    } else if (isYesterday) {
+        return "Yesterday";
+    } else if (isThisWeek) {
+        return date.toLocaleDateString('en-US', { weekday: 'long' });
+    } else {
+        return date.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
 };
 
 const calculateTotalFlow = (transactions) => {
@@ -101,7 +131,7 @@ watch(
         if (newTransactions.length > 0) {
             const transactionsByDate = {};
             newTransactions.forEach(transaction => {
-                const date = parseDate(transaction.created_at).toDateString();
+                const date = parseDate(transaction.date).toDateString();
                 if (!transactionsByDate[date]) {
                     transactionsByDate[date] = [];
                 }
@@ -117,7 +147,7 @@ watch(
 
             calculateInflowAndOutflow(newTransactions);
 
-            const firstTransactionDate = parseDate(newTransactions[0].created_at);
+            const firstTransactionDate = parseDate(newTransactions[0].date);
             if (!isNaN(firstTransactionDate.getTime())) {
                 dayUse.value = firstTransactionDate.getDate();
                 currentMonth.value = firstTransactionDate.toLocaleString('en-US', { month: 'long' });

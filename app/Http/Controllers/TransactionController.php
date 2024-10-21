@@ -3,54 +3,141 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\Wallet;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
+    protected $transactionService;
+
+    public function __construct(TransactionService $transactionService)
+    {
+        $this->transactionService = $transactionService;
+    }
+
     public function index(Request $request)
     {
-        $transactions = Transaction::with(['category.icon', 'wallet'])
-            ->select('id', 'amount', 'type', 'note', 'category_id', 'wallet_id', 'user_id', 'created_at')
-            ->orderBy('created_at', 'desc');
+        // Lấy thông tin người dùng từ request
+        $user = $request->user();
 
-        $data = $transactions->paginate(10)->map(function ($transaction) {
+        // Lấy danh sách ví theo user
+        $wallets = $this->transactionService->getWalletsByUser($user->id);
+
+        // Lấy các giao dịch và liên kết với category và icon
+        $transactions = Transaction::with(['category.icon'])
+            ->select('id', 'amount', 'note', 'category_id', 'user_id', 'date')
+            ->orderBy('date', 'desc')
+            ->get();
+
+        $data = $transactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
                 'amount' => $transaction->amount,
-                'type' => $transaction->type,
+                'type' => optional($transaction->category)->type,
                 'note' => $transaction->note,
-                'iconName' => optional($transaction->category->icon)->name,
                 'iconPath' => optional($transaction->category->icon)->path,
-                'walletName' => optional($transaction->wallet)->name,
-                'walletBalance' => optional($transaction->wallet)->balance,
-                'created_at' => $transaction->created_at->toDateTimeString(),
+                'name' => optional($transaction->category)->name,
+                'date' => $transaction->date,
             ];
         });
+
+        // Trả về JSON nếu yêu cầu là dạng JSON
         if ($request->wantsJson()) {
-            return response()->json($data);
+            return response()->json([
+                'transactions' => $data,
+                'wallets' => $wallets, // Trả về ví của người dùng
+            ]);
         }
 
+        // Trả về giao diện với dữ liệu
         return Inertia::render('Transaction/Index', [
-            'transactions' => $data,
+            'transaction' => $data,
+            'wallets' => $wallets,
+        ]);
+    }
+    public function create(Request $request)
+    {
+        $categories = $this->transactionService->getCategories();
+        $user = $request->user();
+        $walletId = $request->input('walletId');
+        $wallet = Wallet::with('icon')
+            ->select('id', 'user_id', 'name')
+            ->where('id', $walletId)
+            ->where('user_id', $user->id)
+            ->first();
+        if ($request->wantsJson()) {
+            return response()->json([
+                'categories' => $categories,
+                'wallet' => $wallet,
+            ]);
+        }
+
+        return Inertia::render('Transaction/Create', [
+            'categories' => $categories,
+            'wallet' => $wallet,
         ]);
     }
 
-    public function markAsRead($id)
+    // Lưu giao dịch mới
+    public function store(Request $request)
     {
-        return response()->json(['message' => 'This method is not applicable for transactions'], 405);
+        $validatedData = $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'wallet_id' => 'required|exists:wallets,id',
+            'note' => 'nullable|string',
+            'date' => 'required|date',
+        ]);
+
+        $transaction = $this->transactionService->createTransaction($validatedData, $request->user()->id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaction created successfully!',
+            'transaction' => $transaction,
+        ]);
     }
 
-    public function destroy($id)
+    public function edit(Request $request, $transactionId)
     {
-        $transaction = Transaction::find($id);
+        $transaction = $this->transactionService->getTransactionById($transactionId);
+        // $categories = $this->transactionService->getCategories(); // Giả sử bạn có phương thức này
+        // $wallets = $this->transactionService->getWallets(); // Giả sử bạn có phương thức này
 
-        if (!$transaction) {
-            return response()->json(['message' => 'Transaction not found'], 404);
+        if ($request->wantsJson()) {
+            return response()->json([
+                'transaction' => $transaction,
+                // 'categories' => $categories,
+                // 'wallets' => $wallets,
+            ]);
         }
 
-        $transaction->delete();
+        return Inertia::render('Transaction/Edit', [
+            'transaction' => $transaction,
+            // 'categories' => $categories,
+            // 'wallets' => $wallets,
+        ]);
+    }
 
-        return response()->json(['message' => 'Transaction deleted successfully']);
+    // Cập nhật giao dịch
+    public function update(Request $request, $transactionId)
+    {
+        $validatedData = $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'type' => 'required|in:expense,income',
+            'category_id' => 'required|exists:categories,id',
+            'wallet_id' => 'required|exists:wallets,id',
+            'note' => 'nullable|string',
+        ]);
+
+        $transaction = $this->transactionService->updateTransaction($transactionId, $validatedData);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaction updated successfully!',
+            'transaction' => $transaction,
+        ]);
     }
 }

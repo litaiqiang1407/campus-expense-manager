@@ -20,7 +20,7 @@
             @click="toggleDropdown">
             <img :src="firstWallet?.icon_path || '/assets/img/wallet.png'" alt="Icon"
                 class="h-6 w-6 mr-2 rounded-full" />
-            <h3 class=" transaction-type text-black text-sm mr-2">{{ firstWallet?.name || 'Slect Wallet' }}</h3>
+            <h3 class="transaction-type text-black text-sm mr-2">{{ firstWallet?.name || 'Select Wallet' }}</h3>
             <font-awesome-icon icon="chevron-down" />
 
             <!-- Dropdown -->
@@ -38,23 +38,26 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
-    totalFlow: Number,
     wallets: Array
 });
 
-const balance = ref(0);
 const isDropdownVisible = ref(false);
+const selectedWallet = ref(null);
 
-const firstWallet = computed(() => props.wallets.length > 0 ? props.wallets[0] : null);
+const firstWallet = computed(() => {
+    return props.wallets.length > 0 ? props.wallets[0] : null;
+});
 
-watch(() => props.totalFlow, (newTotalFlow) => {
-    balance.value = newTotalFlow;
-}, { immediate: true });
+const balance = computed(() => {
+    return selectedWallet.value ? selectedWallet.value.balance : (firstWallet.value ? firstWallet.value.balance : 0);
+});
 
 const selectWallet = (wallet) => {
+    selectedWallet.value = wallet;
+
     const walletIndex = props.wallets.findIndex(w => w.id === wallet.id);
     if (walletIndex !== -1) {
         props.wallets.unshift(props.wallets.splice(walletIndex, 1)[0]);
@@ -66,6 +69,7 @@ const toggleDropdown = () => {
     isDropdownVisible.value = !isDropdownVisible.value;
 };
 
+// Đóng dropdown khi click ra ngoài
 document.addEventListener('click', (event) => {
     if (!event.target.closest('.transaction-type-container')) {
         isDropdownVisible.value = false;

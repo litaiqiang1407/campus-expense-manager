@@ -1,7 +1,19 @@
 <template>
-    <div class="flex flex-col h-screen">
+    <!-- Loading state -->
+    <div v-if="isLoading" class="min-h-screen bg-white">
+        <Loading />
+    </div>
+
+    <!-- No data state -->
+    <div v-else-if="!hasData">
+        <NoData message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
+    </div>
+
+    <!-- Data loaded state -->
+    <div v-else class="flex flex-col">
         <!-- Header -->
         <Header :totalFlow="totalFlow" :wallets="wallets" />
+
         <!-- History Management -->
         <div class="flex justify-between items-center m-0 pt-2 w-full max-w mx-auto px-4 bg-white text-sm">
             <!-- Month Selection -->
@@ -21,10 +33,7 @@
 
         <!-- Main Content -->
         <main class="bg-primaryBackground">
-            <div v-if="!hasData">
-                <NoData message="Tap + to add one" />
-            </div>
-            <div v-else>
+            <div>
                 <UseSage :transactions="transactions" :inflow="inflow" :outflow="outflow" :totalFlow="totalFlow" />
             </div>
         </main>
@@ -35,33 +44,31 @@
 import NoData from '../../Components/NoData/Index.vue';
 import { ref, onMounted } from 'vue';
 import { UseSage, Header } from '@/Pages/Transaction/Components/Index.js';
+import Loading from '@/Components/Loading/Index.vue';
 import axios from 'axios';
 
 const transactions = ref([]);
 const inflow = ref(0);
 const outflow = ref(0);
 const totalFlow = ref(0);
-const hasData = ref(false);
+const hasData = ref(false);  // Kiểm tra nếu có dữ liệu giao dịch
 const selectedMonth = ref('this');
 const wallets = ref([]);
-
-const fetchWallets = async () => {
-    try {
-        const response = await axios.get(route('MyWallet'));
-        wallets.value = response.data.wallets;
-    } catch (error) {
-        console.error('Error fetching wallets:', error);
-    }
-};
+const isLoading = ref(false);
 
 const fetchTransactions = async () => {
     try {
+        isLoading.value = true;
         const response = await axios.get(route('Transaction'));
-        transactions.value = response.data;
-        hasData.value = transactions.value.length > 0;
+        transactions.value = response.data.transactions;
+        wallets.value = response.data.wallets;
+        console.log('Fetched Transactions:', wallets.value);
+        hasData.value = transactions.value.length > 0;  // Cập nhật trạng thái dữ liệu
         calculateInflowAndOutflow(transactions.value);
     } catch (error) {
-        console.error('Error fetching Transactions:', error);
+        console.error(error);
+    } finally {
+        isLoading.value = false;  // Đảm bảo tắt trạng thái loading sau khi tải xong
     }
 };
 
@@ -82,7 +89,6 @@ const calculateInflowAndOutflow = (transactions) => {
 };
 
 onMounted(() => {
-    fetchWallets();
     fetchTransactions();
 });
 </script>

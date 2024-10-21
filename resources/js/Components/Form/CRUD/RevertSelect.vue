@@ -3,7 +3,7 @@
         <button
             type="button"
             class="flex w-full space-x-8 items-center py-4"
-            @click="toggleDropdown"
+            @click="selectWallet"
         >
             <div class="size-[40px] flex items-center justify-center">
                 <img v-if="iconSrc" :src="iconSrc" class="size-[36px]" />
@@ -32,7 +32,8 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
     selectText: {
@@ -61,16 +62,16 @@ const props = defineProps({
     },
 });
 
+const emit = defineEmits(['update:selectText']);
 const isDropdownOpen = ref(false);
+const router = useRouter();
 
-const toggleDropdown = () => {
-    isDropdownOpen.value = !isDropdownOpen.value;
+const selectWallet = () => {
+    router.push({ name: 'SelectWallet' });
 };
 
 const selectItem = (item) => {
     emit('update:selectText', item);
     isDropdownOpen.value = false;
 };
-
-const emit = defineEmits(['update:selectText']);
 </script>
