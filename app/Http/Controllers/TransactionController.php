@@ -83,7 +83,6 @@ class TransactionController extends Controller
     // Lưu giao dịch mới
     public function store(Request $request)
     {
-        dd($request->all());
         $validatedData = $request->validate([
             'amount' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',

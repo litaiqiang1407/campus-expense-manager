@@ -5,48 +5,40 @@
             <Select :selectText="selectedCategory ? selectedCategory.name : 'Select category'" :sizeText="'24'"
                 :items="categories" :getItemLabel="item => item.name" @update:selectText="selectedCategory = $event" />
             <Note v-model="note" />
-            <!-- Date Picker Input -->
-            <DateTimePicker :icons="'fa-calendar'" />
-            <!-- Chỗ này hiển thị tên ví được chọn hoặc 'Chọn ví' -->
+            <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
             <RevertSelect :icon="'wallet'" :selectText="selectedWallet ? selectedWallet.name : 'Chọn ví'"
                 :items="[wallets]" :getItemLabel="item => item.name" @update:selectText="selectedWallet = $event" />
             <Submit> Save</Submit>
         </Form>
     </div>
 </template>
+
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted , watch } from 'vue';
 import { InputMoney, Select, Note, Form, DateTimePicker, RevertSelect } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
-import { useRoute } from 'vue-router'; // Import useRoute để lấy query params
+import { useRoute } from 'vue-router';
 import axios from 'axios';
 
 const toast = useToast();
-const route = useRoute(); // Sử dụng useRoute để truy xuất query params
-const walletId = ref(route.query.walletId); // Lấy walletId từ query params và lưu vào ref
+const route = useRoute();
+const walletId = ref(route.query.walletId);
 const categories = ref([]);
-const wallets = ref({}); // Lưu thông tin của ví
-const amount = ref('0');
-const note = ref('');
-const date = ref(new Date());
-const selectedWallet = ref(null); // Thêm selectedWallet để lưu ví đã chọn
-const selectedCategory = ref(null);
+const wallets = ref({});
+const amount = ref(localStorage.getItem('amount') || '0');
+const note = ref(localStorage.getItem('note') || '');
+const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) || null);
+const selectedCategory = ref(JSON.parse(localStorage.getItem('selectedCategory')) || null)
+const transactionDate = ref(new Date());
 
-// Fetch dữ liệu khi component mounted
 const fetchCreateTransactionData = async () => {
     try {
-        const response = await axios.get('/transaction/create', {
-            params: {
-                walletId: walletId.value,
-            },
-        });
-
-        categories.value = response.data.categories; 
-        wallets.value = response.data.wallet;
+        const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
+        categories.value = data.categories;
+        wallets.value = data.wallet;
         selectedWallet.value = wallets.value;
     } catch (error) {
-        console.error('Error fetching create transaction data:', error);
         toast.error('Failed to load data. Please try again.');
     }
 };
@@ -54,24 +46,42 @@ const fetchCreateTransactionData = async () => {
 const submitForm = async () => {
     try {
         const formData = {
-            category_id: 2,
-            amount: 10,
-            wallet_id: 4,
-            note: 'hieu',
-            date: '2024-10-04'
+            category_id: selectedCategory.value.id,
+            amount: amount.value,
+            wallet_id: selectedWallet.value.id,
+            note: note.value,
+            date: transactionDate.value
         };
-        const response = await axios.post(route('StoreTransaction'), formData);
+        console.log(formData)
+        const response = await axios.post('/transaction/store', formData);
 
         if (response.data.success) {
             toast.success(response.data.message);
-            window.location.href = route('Transaction');
+
+            localStorage.removeItem('amount');
+            localStorage.removeItem('note');
+            localStorage.removeItem('selectedWallet');
+            localStorage.removeItem('selectedCategory');
+            localStorage.removeItem('transactionDate');
+
+            
+            window.location.href = '/transaction';
         } else {
             toast.error('Failed to create Transaction.');
         }
     } catch (error) {
-        toast.error('Error creating Transaction: ' + error.response?.data?.message || error.message);
+        const message = error.response?.data?.message || error.message || 'An unknown error occurred';
+        toast.error('Error creating Transaction: ' + message);
     }
 };
+
+watch([amount, note, selectedWallet, selectedCategory, transactionDate], () => {
+    localStorage.setItem('amount', amount.value);
+    localStorage.setItem('note', note.value);
+    localStorage.setItem('selectedWallet', JSON.stringify(selectedWallet.value));
+    localStorage.setItem('selectedCategory', JSON.stringify(selectedCategory.value));
+    localStorage.setItem('transactionDate', transactionDate.value);
+});
 
 onMounted(fetchCreateTransactionData);
 </script>

@@ -1,26 +1,52 @@
 <template>
-    <div class="max-w-full mx-auto mt-2">
-      <div class="text-sm text-secondaryText text-center mb-2 flex items-center h-12 pl-4 font-bold">
-        Included in Total
+    <div class="max-w-full mx-auto mt-4">
+      <div v-for="wallet in wallets" :key="wallet.id">
+        <div v-if="wallet.name == 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
+          <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
+            <div class="flex flex-1 items-center">
+              <img
+                :alt="`${wallet.name} icon`"
+                class="w-10 h-10 rounded-full"
+                :src="wallet.icon_path"
+              />
+              <div class="ml-4 flex-1 flex flex-col justify-between">
+                <div class="font-medium">
+                  {{ wallet.name }}
+                </div>
+                <div class="text-secondaryText text-sm">
+                  ${{ wallet.balance.toFixed(2) }}
+                </div>
+              </div>
+              <font-awesome-icon v-if="wallet.id == walletIdSelected" icon="check" class="text-primary" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-sm  mb-2 flex items-center justify-between h-12 px-4">
+        <span class="text-secondaryText font-bold">Included in Total</span>
+        <span @click="goToMyWallet" class="text-primary font-semibold">View Details</span>
       </div>
       <div v-if="isLoading" class="flex items-center justify-center h-64">
         <Loading />
       </div>
-      <div v-for="wallet in wallets" :key="wallet.id" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
-        <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
-          <div class="flex flex-1 items-center">
-            <img
-              :alt="`${wallet.name} icon`"
-              class="w-10 h-10 rounded-full"
-              :src="wallet.icon_path"
-            />
-            <div class="ml-4 flex-1 flex flex-col justify-between">
-              <div class="font-medium">
-                {{ wallet.name }}
+      <div v-for="wallet in wallets" :key="wallet.id" >
+        <div v-if="wallet.name != 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
+          <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
+            <div class="flex flex-1 items-center">
+              <img
+                :alt="`${wallet.name} icon`"
+                class="w-10 h-10 rounded-full"
+                :src="wallet.icon_path"
+              />
+              <div class="ml-4 flex-1 flex flex-col justify-between">
+                <div class="font-medium">
+                  {{ wallet.name }}
+                </div>
+                <div class="text-secondaryText text-sm">
+                  ${{ wallet.balance.toFixed(2) }}
+                </div>
               </div>
-              <div class="text-secondaryText text-sm">
-                ${{ wallet.balance.toFixed(2) }}
-              </div>
+              <font-awesome-icon v-if="wallet.id == walletIdSelected" icon="check" class="text-primary" />
             </div>
           </div>
         </div>
@@ -55,6 +81,7 @@ import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 
 const router = useRouter();
+const walletIdSelected = router.currentRoute.value.query.walletId;
 
 const isLoading = ref(false);
 const wallets = ref([]);
@@ -69,7 +96,6 @@ const fetchWallets = async () => {
     walletTypes.value = response.data.walletTypes;
     wallets.value = response.data.wallets;
     totalWalletBalance.value = response.data.totalWalletBalance;
-    console.log(totalWalletBalance.value);
   } catch (error) {
     console.error('Error fetching wallets:', error);
   } finally {
@@ -92,5 +118,10 @@ const closeWalletTypes = () => {
 const createWallet = (walletTypeId) => {
   router.push({ name: 'CreateWallet', params: { walletTypeId } });
 };
+
+const goToMyWallet = () => {
+  router.push({ name: 'MyWallet' });
+};
+
 onMounted(fetchWallets);
 </script>

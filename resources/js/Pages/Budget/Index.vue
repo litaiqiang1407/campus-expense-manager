@@ -6,14 +6,14 @@
         </div>
         <div class="flex items-center space-x-4">
           <button @click="selectWallet">
-            <img :src="wallet?.icon_path || '/assets/img/earth.png'" alt="Wallet" class="w-6 h-6">
+            <img :src="wallet?.icon_path || '/assets/img/earth.png'" alt="Wallet" class="size-8">
           </button>
-          <button>
+          <button class="flex items-center">
             <font-awesome-icon icon="ellipsis-vertical" class="text-[24px]" />
           </button>
         </div>
     </header>
-    <div v-if="isLoading" class="min-h-screen bg-white">
+    <div v-if="isLoading">
       <Loading />
     </div>
     <div v-if="budgetList.length === 0 && !isLoading">
@@ -25,7 +25,7 @@
           :key="index"
           class="w-1/4 flex-shrink-0 pt-2 px-4 flex flex-col items-center"
           @click="selectRange(range)">
-          <span class="text-[12px] font-bold w-full"
+          <span class="text-[12px] font-bold w-full text-center"
             :class="{ 'text-black': activeTimeRange === range, 'text-secondaryText': activeTimeRange !== range }">
           This {{ range }}
           </span>
@@ -95,10 +95,10 @@
               </div>
                 <!-- Progress Bar -->
                 <div class="w-full relative">
-    <div class="h-1.5 bg-gray-100 rounded-full w-full relative">
-      <div class="absolute h-1.5 border-l border-black left-1/2 transform -translate-x-1/2"></div>
-      <div class="bg-primary h-full rounded-full" :style="{ width: progressBarWidth }"></div>
-    </div>
+                  <div class="h-1.5 bg-gray-100 rounded-full w-full relative">
+                    <div class="absolute h-1.5 border-l border-black left-1/2 transform -translate-x-1/2"></div>
+                    <div class="bg-primary h-full rounded-full" :style="{ width: progressBarWidth }"></div>
+                  </div>
 
     <!-- Today Indicator -->
     <div
@@ -110,6 +110,14 @@
       <div class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[5px] border-b-white mx-auto"></div>
     </div>
   </div>
+            </div>
+          </div>
+                  <div :style="todayIndicatorStyle" class="absolute border-l border-black top-2"></div>
+                  <div class="text-center mt-1">
+                    <span class="bg-white p-1 rounded border border-gray-200 text-black text-xs font-bold">Today</span>
+                    <div class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[5px] border-b-white mx-auto"></div>
+                  </div>
+                </div>
             </div>
           </div>
         </div>
@@ -140,6 +148,8 @@ const timeRangeBudgetList = ref([]);
 const totalAmount = ref(0);
 const remainingTime = ref('');
 const today = new Date();
+const transactionList = ref([]);
+const transactions = ref([]);
 
 // Define reactive variables
 const budgetAvailable = ref('5.000');  // Available amount
@@ -203,6 +213,9 @@ const fetchBudgets = async () => {
     console.log("wallet value",wallet)
     timeRanges.value = [...new Set(budgetList.value.map(budget => budget.time_range))];
     activeTimeRange.value = timeRanges.value[0];
+    transactions.value = response.data.transactions;
+    transactionList.value = transactionsByRange(transactions.value , activeTimeRange.value);
+    console.log(transactionList.value);
     remainingTime.value = calculateRemainingTime(activeTimeRange.value);
     timeRangeBudgets()
   } catch (error) {
@@ -213,7 +226,7 @@ const fetchBudgets = async () => {
 }
 
 const selectWallet = () => {
-  router.push({ name: 'SelectWallet' });
+  router.push({ name: 'SelectWallet', query: { walletId: walletId }  });
 };
 
 const timeRangeBudgets = () => {
@@ -230,6 +243,9 @@ const selectRange = (range) => {
   activeTimeRange.value = range;
   timeRangeBudgets();
   remainingTime.value = calculateRemainingTime(range);
+  transactionList.value = transactionsByRange(transactions.value , activeTimeRange.value);
+  console.log("Transaction: ", transactionList.value);
+  console.log("Budget: ", timeRangeBudgetList.value);
 };
 
 const formatTotalBudget = (num) => {
@@ -335,6 +351,63 @@ const todayIndicatorStyle = computed(() => {
     width: '2px',
   };
 });
+
+const transactionsByRange = (transactions, activeRange) => {
+  const today = new Date();
+
+  return transactions.filter(transaction => {
+    const transactionDate = new Date(transaction.date);
+
+    switch (activeRange) {
+      case 'week':
+        const startOfWeek = startOfCurrentWeek(today);
+        const endOfWeek = endOfCurrentWeek(today);
+        return transactionDate >= startOfWeek && transactionDate <= endOfWeek;
+
+      case 'month':
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        return transactionDate >= startOfMonth && transactionDate <= endOfMonth;
+
+      case 'quarter':
+        const quarterDates = getQuarterDates(today);
+        return transactionDate >= quarterDates.start && transactionDate <= quarterDates.end;
+
+      case 'year':
+        const startOfYear = new Date(today.getFullYear(), 0, 1);
+        const endOfYear = new Date(today.getFullYear(), 11, 31);
+        return transactionDate >= startOfYear && transactionDate <= endOfYear;
+
+      default:
+        return false;
+    }
+  });
+};
+
+// Hàm tính ngày bắt đầu và kết thúc của tuần hiện tại
+const startOfCurrentWeek = (date) => {
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Điều chỉnh nếu ngày là Chủ Nhật
+  return new Date(date.setDate(diff));
+};
+
+const endOfCurrentWeek = (date) => {
+  const startOfWeek = startOfCurrentWeek(date);
+  return new Date(startOfWeek.setDate(startOfWeek.getDate() + 6));
+};
+
+// Hàm lấy ngày bắt đầu và kết thúc của quý hiện tại
+const getQuarterDates = (date) => {
+  const currentMonth = date.getMonth();
+  const quarter = Math.floor(currentMonth / 3);
+  const startMonth = quarter * 3;
+  const endMonth = startMonth + 2;
+
+  return {
+    start: new Date(date.getFullYear(), startMonth, 1),
+    end: new Date(date.getFullYear(), endMonth + 1, 0)
+  };
+};
 
 onMounted(() => {
   // animateCircles();
