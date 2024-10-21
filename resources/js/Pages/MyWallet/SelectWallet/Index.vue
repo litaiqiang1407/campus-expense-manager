@@ -26,8 +26,8 @@
         <span class="text-secondaryText font-bold">Included in Total</span>
         <span @click="goToMyWallet" class="text-primary font-semibold">View Details</span>
       </div>
-      <div v-if="isLoading" class="flex items-center justify-center h-64">
-        <Loading />
+      <div v-if="isLoading" class="flex w-screen items-center justify-center h-64">
+        <Loading class="size-16"/>
       </div>
       <div v-for="wallet in wallets" :key="wallet.id" >
         <div v-if="wallet.name != 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
@@ -51,27 +51,28 @@
           </div>
         </div>
       </div>
-      <div class="fixed right-4 bottom-4 w-16 h-16 text-[24px]" @click="displayWalletTypes">
+      <div class="fixed right-4 bottom-4 size-12 text-[20px]" @click="displayWalletTypes">
         <Add :icon="'plus'" />
       </div>
   
       <div v-if="openWalletTypes" class="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50" @click="closeWalletTypes">
         <div class="bg-white w-full rounded-t-lg p-4 z-100" @click.stop>
-            <div class="w-full p-2">
-                <h2 class="text-lg font-bold">Add Wallet</h2>
+            <div class="w-full p-2 flex items-center justify-between">
+                <h2 class="text-[16px] font-bold">Add Wallet</h2>
+                <div class="button-animate size-7 flex items-center justify-center rounded-full border-[1px] border-primary" @click="closeWalletTypes"><font-awesome-icon icon="xmark" class="text-[16px]" /></div>
             </div>
-            <div class="p-4 grid grid-cols-2 gap-4">
+            <div class="px-2 py-4 grid grid-cols-2 gap-4">
                 <button 
                     v-for="walletType in walletTypes" 
                     :key="walletType.id" 
-                    class="button-animate bg-gray-100 p-4 rounded-lg flex items-center justify-center"
+                    class="button-animate border-[2px] border-primary p-4 rounded-lg flex items-center justify-center"
                     @click.stop="createWallet(walletType.id)">
-                        <h3 class="font-bold">{{ walletType.name }}</h3>
+                        <h3 class="font-semibold text-[16px]">{{ walletType.name }}</h3>
                 </button>
             </div>
         </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script setup>

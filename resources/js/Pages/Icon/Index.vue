@@ -1,14 +1,14 @@
 <template>
     <div class="bg-white min-h-screen">
-        <div v-if="isLoading" class="flex items-center justify-center h-64">
-        <Loading />
-      </div>
+        <div v-if="isLoading" class="flex w-screen items-center justify-center h-64">
+            <Loading class="size-16"/>
+        </div>
         <div class="grid grid-cols-5 gap-4 p-6">
             <div v-for="(ic, index) in icon" :key="index" class="h-full w-full rounded-full flex 
             items-center justify-center"
             @click="selectIcon(ic)"
             >
-                <img :src="ic?.path || '/assets/icon/box.png'" :alt="ic.name" class="object-cover" />
+                <img v-if="ic.name != 'Total Icon'" :src="ic?.path || '/assets/icon/box.png'" :alt="ic.name" class="object-cover" />
             </div>
         </div>
     </div>
@@ -38,8 +38,15 @@ const fetchIcon = async () => {
 
 const selectIcon = (icon) => {
     const walletTypeId = router.currentRoute.value.query.walletTypeId;
+    const walletId = router.currentRoute.value.query.walletId;
 
-    router.push({ name: 'CreateWallet', params: { walletTypeId }, query: { icon: JSON.stringify(icon)} }); 
+    if (walletId) {
+        router.push({ name: 'EditWallet', params: { walletId }, query: { icon: JSON.stringify(icon)} }); 
+    }
+
+    if (walletTypeId) {
+        router.push({ name: 'CreateWallet', params: { walletTypeId }, query: { icon: JSON.stringify(icon)} }); 
+    }
 };
 
 onMounted(fetchIcon);
