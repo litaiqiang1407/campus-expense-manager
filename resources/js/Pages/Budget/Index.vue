@@ -1,36 +1,34 @@
 <template>
-<div class="min-h-screen bg-primaryBackground">
-  <header class="sticky h-13 flex items-center justify-between px-4 py-2 bg-white z-50">
-        <div class="flex items-center">
-            <h1 class="text-[20px] font-bold">Budgets</h1>
-        </div>
-        <div class="flex items-center space-x-4">
-          <button @click="selectWallet">
-            <img :src="wallet?.icon_path || '/assets/img/earth.png'" alt="Wallet" class="size-8">
-          </button>
-          <button class="flex items-center">
-            <font-awesome-icon icon="ellipsis-vertical" class="text-[24px]" />
-          </button>
-        </div>
+  <div class="min-h-screen bg-primaryBackground">
+    <header class="sticky h-13 flex items-center justify-between px-4 py-2 bg-white z-50">
+      <div class="flex items-center">
+        <h1 class="text-[20px] font-bold">Budgets</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button @click="selectWallet">
+          <img :src="wallet?.icon_path || '/assets/img/earth.png'" alt="Wallet" class="size-8">
+        </button>
+        <button class="flex items-center">
+          <font-awesome-icon icon="ellipsis-vertical" class="text-[24px]" />
+        </button>
+      </div>
     </header>
     <div v-if="isLoading">
       <Loading />
     </div>
     <div v-if="budgetList.length === 0 && !isLoading">
-      <NoData message="You don't have any budgets yet" :action="true" :actionText="'Create a budget'" :destinationPage="'CreateBudget'"/>
+      <NoData message="You don't have any budgets yet" :action="true" :actionText="'Create a budget'"
+        :destinationPage="'CreateBudget'" />
     </div>
     <div v-if="budgetList.length > 0 && !isLoading" class="w-full  flex flex-col items-center">
       <div class="flex items-center w-full min-w-screen overflow-x-auto bg-white mb-2">
-        <div v-for="(range, index) in timeRanges"
-          :key="index"
-          class="w-1/4 flex-shrink-0 pt-2 px-4 flex flex-col items-center"
-          @click="selectRange(range)">
+        <div v-for="(range, index) in timeRanges" :key="index"
+          class="w-1/4 flex-shrink-0 pt-2 px-4 flex flex-col items-center" @click="selectRange(range)">
           <span class="text-[12px] font-bold w-full text-center"
             :class="{ 'text-black': activeTimeRange === range, 'text-secondaryText': activeTimeRange !== range }">
-          This {{ range }}
+            This {{ range }}
           </span>
-          <div class="h-[2px] w-[80%] mt-2 rounded-t-full"
-          :class="{ 'bg-black': activeTimeRange === range }"></div>
+          <div class="h-[2px] w-[80%] mt-2 rounded-t-full" :class="{ 'bg-black': activeTimeRange === range }"></div>
         </div>
       </div>
       <!-- <div class="w-full bg-white p-4 mb-4">
@@ -44,7 +42,8 @@
         <div class="relative w-96 h-[260px] mx-auto overflow-hidden">
           <!-- Background circle with SVG -->
           <svg class="w-full h-full" viewBox="0 0 100 50">
-            <path id="arcPath" d="M 3,40 A 40,40 0 0,1 97,40" fill="none" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round" />
+            <path id="arcPath" d="M 3,40 A 40,40 0 0,1 97,40" fill="none" stroke="#e5e7eb" stroke-width="2"
+              stroke-linecap="round" />
             <circle id="greenCircle" cx="3" cy="40" r="2" fill="#00BC2A" />
             <circle id="whiteCircle" cx="3" cy="40" r="1" fill="white" />
           </svg>
@@ -81,7 +80,8 @@
         <div v-for="(budget, index) in timeRangeBudgetList" :index="index" class="bg-white rounded-lg p-4 mb-2 w-full">
           <div class="flex justify-start mb-2 space-x-4">
             <div class="size-[40px]">
-              <img :src="budget?.category?.icon_path || '/assets/icon/expense/education.png'" alt="Wallet Icon" class="rounded-full w-full h-full" />
+              <img :src="budget?.category?.icon_path || '/assets/icon/expense/education.png'" alt="Wallet Icon"
+                class="rounded-full w-full h-full" />
             </div>
             <div class="flex flex-col flex-1 space-y-2">
               <div class="flex items-start w-full">
@@ -93,43 +93,39 @@
                   <p class="text-[14px] text-secondaryText">Left 3.000</p>
                 </div>
               </div>
-                <!-- Progress Bar -->
-                <div class="w-full relative">
-                  <div class="h-1.5 bg-gray-100 rounded-full w-full relative">
-                    <div class="absolute h-1.5 border-l border-black left-1/2 transform -translate-x-1/2"></div>
-                    <div class="bg-primary h-full rounded-full" :style="{ width: progressBarWidth }"></div>
-                  </div>
+              <!-- Progress Bar -->
+              <div class="w-full relative">
+                <div class="h-1.5 bg-gray-100 rounded-full w-full relative">
+                  <div class="absolute h-1.5 border-l border-black left-1/2 transform -translate-x-1/2"></div>
+                  <div class="bg-primary h-full rounded-full" :style="{ width: progressBarWidth }"></div>
+                </div>
 
-    <!-- Today Indicator -->
-    <div
-      :style="todayIndicatorStyle"
-      class="absolute border-l border-black top-2"
-    ></div>
-    <div class="text-center mt-1">
-      <span class="bg-white p-1 rounded border border-gray-200 text-black text-xs font-bold">Today</span>
-      <div class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[5px] border-b-white mx-auto"></div>
-    </div>
-  </div>
-            </div>
-          </div>
-                  <div :style="todayIndicatorStyle" class="absolute border-l border-black top-2"></div>
-                  <div class="text-center mt-1">
-                    <span class="bg-white p-1 rounded border border-gray-200 text-black text-xs font-bold">Today</span>
-                    <div class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[5px] border-b-white mx-auto"></div>
+                <!-- Today Indicator -->
+                <div :style="todayIndicatorStyle" class="absolute border-l border-black top-2"></div>
+                <div class="text-center mt-1">
+                  <span class="bg-white p-1 rounded border border-gray-200 text-black text-xs font-bold">Today</span>
+                  <div
+                    class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[5px] border-b-white mx-auto">
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div :style="todayIndicatorStyle" class="absolute border-l border-black top-2"></div>
+          <div class="text-center mt-1">
+            <span class="bg-white p-1 rounded border border-gray-200 text-black text-xs font-bold">Today</span>
+            <div
+              class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[5px] border-b-white mx-auto">
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed  } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import NoData from '@/Components/NoData/Index.vue';
 import Loading from '@/Components/Loading/Index.vue';
 import { Add } from '@/Components/Button/Index';
@@ -210,11 +206,11 @@ const fetchBudgets = async () => {
     });
     budgetList.value = response.data.budgets;
     wallet.value = response.data.wallet;
-    console.log("wallet value",wallet)
+    console.log("wallet value", wallet)
     timeRanges.value = [...new Set(budgetList.value.map(budget => budget.time_range))];
     activeTimeRange.value = timeRanges.value[0];
     transactions.value = response.data.transactions;
-    transactionList.value = transactionsByRange(transactions.value , activeTimeRange.value);
+    transactionList.value = transactionsByRange(transactions.value, activeTimeRange.value);
     console.log(transactionList.value);
     remainingTime.value = calculateRemainingTime(activeTimeRange.value);
     timeRangeBudgets()
@@ -226,7 +222,7 @@ const fetchBudgets = async () => {
 }
 
 const selectWallet = () => {
-  router.push({ name: 'SelectWallet', query: { walletId: walletId }  });
+  router.push({ name: 'SelectWallet', query: { walletId: walletId } });
 };
 
 const timeRangeBudgets = () => {
@@ -243,7 +239,7 @@ const selectRange = (range) => {
   activeTimeRange.value = range;
   timeRangeBudgets();
   remainingTime.value = calculateRemainingTime(range);
-  transactionList.value = transactionsByRange(transactions.value , activeTimeRange.value);
+  transactionList.value = transactionsByRange(transactions.value, activeTimeRange.value);
   console.log("Transaction: ", transactionList.value);
   console.log("Budget: ", timeRangeBudgetList.value);
 };
