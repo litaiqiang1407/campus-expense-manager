@@ -14,7 +14,7 @@
                   {{ wallet.name }}
                 </div>
                 <div class="text-secondaryText text-sm">
-                  ${{ wallet.balance.toFixed(2) }}
+                  {{ formatBalance(wallet.balance) }}
                 </div>
               </div>
               <font-awesome-icon v-if="wallet.id == walletIdSelected" icon="check" class="text-primary" />
@@ -43,7 +43,7 @@
                   {{ wallet.name }}
                 </div>
                 <div class="text-secondaryText text-sm">
-                  ${{ wallet.balance.toFixed(2) }}
+                  {{ formatBalance(wallet.balance) }}
                 </div>
               </div>
               <font-awesome-icon v-if="wallet.id == walletIdSelected" icon="check" class="text-primary" />
@@ -102,6 +102,12 @@ const fetchWallets = async () => {
     isLoading.value = false;
   }
 };
+
+const formatBalance = (balance) => {
+  return balance === 0 
+    ? '0' 
+    : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
+}
 
 const selectWallet = (walletId) => {
   router.push({ name: 'Budget', query: { walletId } });
