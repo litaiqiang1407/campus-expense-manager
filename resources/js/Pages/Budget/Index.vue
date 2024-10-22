@@ -1,20 +1,23 @@
 <template>
-  <div class="min-h-screen bg-primaryBackground">
-    <header class="sticky h-13 flex items-center justify-between px-4 py-2 bg-white z-50">
-      <div class="flex items-center">
-        <h1 class="text-[20px] font-bold">Budgets</h1>
-      </div>
-      <div class="flex items-center space-x-4">
-        <button @click="selectWallet">
-          <img :src="wallet?.icon_path || '/assets/img/earth.png'" alt="Wallet" class="size-8">
-        </button>
-        <button class="flex items-center">
-          <font-awesome-icon icon="ellipsis-vertical" class="text-[24px]" />
-        </button>
-      </div>
+<div class="min-h-screen bg-primaryBackground">
+  <header class="sticky h-13 flex items-center justify-between px-4 py-2 bg-white z-50">
+        <div class="flex items-center">
+            <h1 class="text-[20px] font-bold">Budgets</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button @click="selectWallet" class="size-8 flex items-center justify-center">
+            <div v-if="isLoading" class="size-8 flex items-center justify-center">
+              <Loading class="size-8"/>
+            </div>
+            <img :src="wallet?.icon_path || '/assets/img/earth.png'" alt="Wallet" class="size-8">
+          </button>
+          <button class="flex items-center">
+            <font-awesome-icon icon="ellipsis-vertical" class="text-[24px]" />
+          </button>
+        </div>
     </header>
-    <div v-if="isLoading">
-      <Loading />
+    <div v-if="isLoading" class="h-screen w-screen flex items-center justify-center">
+      <Loading class="size-16"/>
     </div>
     <div v-if="budgetList.length === 0 && !isLoading">
       <NoData message="You don't have any budgets yet" :action="true" :actionText="'Create a budget'"
@@ -22,13 +25,16 @@
     </div>
     <div v-if="budgetList.length > 0 && !isLoading" class="w-full  flex flex-col items-center">
       <div class="flex items-center w-full min-w-screen overflow-x-auto bg-white mb-2">
-        <div v-for="(range, index) in timeRanges" :key="index"
-          class="w-1/4 flex-shrink-0 pt-2 px-4 flex flex-col items-center" @click="selectRange(range)">
+        <div v-for="(range, index) in timeRanges"
+          :key="index"
+          class="min-w-1/4 flex-shrink-0 pt-2 px-4 flex flex-col items-center"
+          @click="selectRange(range)">
           <span class="text-[12px] font-bold w-full text-center"
             :class="{ 'text-black': activeTimeRange === range, 'text-secondaryText': activeTimeRange !== range }">
             This {{ range }}
           </span>
-          <div class="h-[2px] w-[80%] mt-2 rounded-t-full" :class="{ 'bg-black': activeTimeRange === range }"></div>
+          <div class="h-[3px] w-[90%] mt-2 rounded-t-full"
+          :class="{ 'bg-black': activeTimeRange === range }"></div>
         </div>
       </div>
       <!-- <div class="w-full bg-white p-4 mb-4">
@@ -39,7 +45,7 @@
       </div> -->
 
       <div class="bg-white p-4 rounded-none w-full max-w-full text-center mb-2">
-        <div class="relative w-96 h-[260px] mx-auto overflow-hidden">
+        <div class="relative w-full h-[260px] mx-auto overflow-hidden">
           <!-- Background circle with SVG -->
           <svg class="w-full h-full" viewBox="0 0 100 50">
             <path id="arcPath" d="M 3,40 A 40,40 0 0,1 97,40" fill="none" stroke="#e5e7eb" stroke-width="2"
@@ -61,11 +67,11 @@
             <p class="text-xs mt-2">Total budgets</p>
           </div>
           <div class="text-center w-1/3  py-2 border-l-[2px] border-r-[2px] border-primary">
-            <p class="text-sm font-bold">{{ totalSpent }}</p>
+            <p class="text-sm font-bold">{{ totalSpent || '0'}}</p>
             <p class="text-xs mt-2">Total spent</p>
           </div>
           <div class="text-center w-1/3  py-2">
-            <p class="text-sm font-bold">{{ remainingTime }}</p>
+            <p class="text-sm font-bold">{{ remainingTime || '0' }}</p>
             <p class="text-xs mt-2">End of period</p>
           </div>
         </div>

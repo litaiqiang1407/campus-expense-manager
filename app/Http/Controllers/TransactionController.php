@@ -22,39 +22,21 @@ class TransactionController extends Controller
         // Lấy thông tin người dùng từ request
         $user = $request->user();
 
-        // Lấy danh sách ví theo user
-        $wallets = $this->transactionService->getWalletsByUser($user->id);
-
-        // Lấy các giao dịch và liên kết với category và icon
-        $transactions = Transaction::with(['category.icon'])
-            ->select('id', 'amount', 'note', 'category_id', 'user_id', 'date')
-            ->orderBy('date', 'desc')
-            ->get();
-
-        $data = $transactions->map(function ($transaction) {
-            return [
-                'id' => $transaction->id,
-                'amount' => $transaction->amount,
-                'type' => optional($transaction->category)->type,
-                'note' => $transaction->note,
-                'iconPath' => optional($transaction->category->icon)->path,
-                'name' => optional($transaction->category)->name,
-                'date' => $transaction->date,
-            ];
-        });
+        // Sử dụng service để lấy ví và giao dịch của user
+        $data = $this->transactionService->getTransactionsAndWalletsByUser($user->id);
 
         // Trả về JSON nếu yêu cầu là dạng JSON
         if ($request->wantsJson()) {
             return response()->json([
-                'transactions' => $data,
-                'wallets' => $wallets, // Trả về ví của người dùng
+                'transactions' => $data['transactions'],
+                'wallets' => $data['wallets'], // Trả về ví của người dùng
             ]);
         }
 
         // Trả về giao diện với dữ liệu
         return Inertia::render('Transaction/Index', [
-            'transaction' => $data,
-            'wallets' => $wallets,
+            'transactions' => $data['transactions'],
+            'wallets' => $data['wallets'],
         ]);
     }
     public function create(Request $request)
@@ -96,7 +78,6 @@ class TransactionController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Transaction created successfully!',
-            'transaction' => $transaction,
         ]);
     }
 

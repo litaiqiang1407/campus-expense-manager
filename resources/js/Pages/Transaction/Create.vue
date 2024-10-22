@@ -6,7 +6,7 @@
                 :items="categories" :getItemLabel="item => item.name" @update:selectText="selectedCategory = $event" />
             <Note v-model="note" />
             <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <RevertSelect :icon="'wallet'" :selectText="selectedWallet ? selectedWallet.name : 'Chọn ví'"
+            <RevertSelect :icon="'wallet'" :selectText="selectedWallet ? selectedWallet.name : 'Select Wallet'"
                 :items="[wallets]" :getItemLabel="item => item.name" @update:selectText="selectedWallet = $event" />
             <Submit> Save</Submit>
         </Form>
@@ -64,7 +64,7 @@ const submitForm = async () => {
             localStorage.removeItem('selectedCategory');
             localStorage.removeItem('transactionDate');
 
-            
+
             window.location.href = '/transaction';
         } else {
             toast.error('Failed to create Transaction.');

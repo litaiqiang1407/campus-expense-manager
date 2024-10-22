@@ -24,7 +24,7 @@ class WalletRepository
     {
         return Wallet::where('user_id', $userId)->exists();
     }
-    public function getAllWallets($userId)
+    public function getAllWallets($userId,  $limit = null)
     {
         return Wallet::select(
             'wallets.id',
@@ -35,6 +35,7 @@ class WalletRepository
         )
         ->where('user_id', $userId)
         ->join('icons', 'wallets.icon_id', '=', 'icons.id')
+        ->limit($limit)
         ->get();
     }
 
