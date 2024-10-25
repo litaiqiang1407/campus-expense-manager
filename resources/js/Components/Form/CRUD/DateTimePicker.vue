@@ -1,26 +1,29 @@
 <template>
-    <div class="relative">
-        <button type="button" class="flex w-full space-x-8 items-center py-4" @click="toggleDropdown">
+    <div class="relative w-full">
+        <!-- Button hiển thị ngày và tích hợp Datepicker -->
+        <button type="button" class="flex w-full space-x-8 items-center py-4">
             <div class="size-[40px] flex items-center justify-center">
                 <font-awesome-icon :icon="icon" class="text-black text-[36px]" />
             </div>
-            <span class="text-secondaryText font-medium" :style="{ fontSize: sizeText + 'px' }">{{ formattedDate }}</span>
+            <span class="text-secondaryText font-medium" :style="{ fontSize: sizeText + 'px' }">
+                <Datepicker
+                    v-model="internalDate"
+                    :format="formatDateForPicker"
+                    @close="isDropdownOpen = false"
+                />
+            </span>
         </button>
-
-        <!-- Dropdown List -->
-        <div v-if="isDropdownOpen" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-2">
-            <input type="date" @change="onDateChange" class="border border-gray-300 rounded-md p-2 w-full" />
-        </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, watch } from 'vue';
+import Datepicker from 'vue3-datepicker';
 
 const props = defineProps({
     icon: {
         type: String,
-        default: 'calendar', // Default icon name
+        default: 'calendar',
     },
     sizeText: {
         type: Number,
@@ -28,52 +31,23 @@ const props = defineProps({
     },
     modelValue: {
         type: String,
-        default: '', // Default value for the selected date
+        default: '',
     },
 });
 
 const emit = defineEmits(['update:modelValue']);
+const internalDate = ref(props.modelValue || ''); // Quản lý ngày nội bộ
 
-const isDropdownOpen = ref(false);
+// Hàm định dạng ngày
+const formatDateForPicker = (date) => {
+    const parsedDate = new Date(date);
+    return isNaN(parsedDate.getTime())
+        ? 'Select Date'
+        : parsedDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+};
 
-const formattedDate = computed(() => {
-    if (!props.modelValue || (Array.isArray(props.modelValue) && props.modelValue.length === 0)) {
-        const date = new Date();
-        return formatDate(date);
-    } else {
-        const date = new Date(props.modelValue);
-        return isNaN(date.getTime()) ? 'Invalid Date' : formatDate(date);
-    }
+// Theo dõi sự thay đổi của internalDate và phát sự kiện cập nhật giá trị cho parent
+watch(internalDate, (newDate) => {
+    emit('update:modelValue', newDate);
 });
-
-// Utility function to format the date as needed
-const formatDate = (date) => {
-    const today = new Date();
-    const isToday = today.toDateString() === date.toDateString();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-    const isYesterday = yesterday.toDateString() === date.toDateString();
-    const daysDiff = Math.floor((today - date) / (1000 * 3600 * 24));
-    const isThisWeek = daysDiff <= 7 && today.getDay() >= date.getDay();
-
-    if (isToday) {
-        return "Today";
-    } else if (isYesterday) {
-        return "Yesterday";
-    } else if (isThisWeek) {
-        return date.toLocaleDateString('en-US', { weekday: 'long' });
-    } else {
-        return date.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-    }
-};
-
-const toggleDropdown = () => {
-    isDropdownOpen.value = !isDropdownOpen.value;
-};
-
-const onDateChange = (event) => {
-    const selectedDate = event.target.value;
-    emit('update:modelValue', selectedDate); 
-    isDropdownOpen.value = false;
-};
 </script>
