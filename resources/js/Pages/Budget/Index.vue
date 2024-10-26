@@ -81,7 +81,7 @@
   
       <div class="w-full">
         <!-- First Budget Card (Not Overspent) -->
-        <div v-for="(budget, index) in timeRangeBudgetList" :index="index" class="bg-white rounded-lg p-4 mb-2 w-full">
+        <div v-for="(budget, index) in timeRangeBudgetList" :index="index" class="bg-white rounded-lg p-4 pb-10 mb-2 w-full">
           <div class="flex justify-start mb-2 space-x-4">
             <div class="size-[40px]">
               <img :src="budget?.category?.icon_path || '/assets/icon/expense/education.png'" alt="Wallet Icon" class="rounded-full w-full h-full" />
@@ -99,14 +99,13 @@
                 <!-- Progress Bar -->
                 <div class="w-full relative">
                   <div class="h-1.5 bg-gray-100 rounded-full w-full relative">
-                    <div class="absolute h-1.5 border-l border-black left-1/2 transform -translate-x-1/2"></div>
                     <div class="bg-primary h-full rounded-full" :style="{ width: progressBarWidth }"></div>
                   </div>
 
-                  <div :style="todayIndicatorStyle" class="absolute border-l border-black top-2"></div>
-                  <div class="text-center mt-1">
-                    <span class="bg-white p-1 rounded border border-gray-200 text-black text-xs font-bold">Today</span>
-                    <div class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[5px] border-b-white mx-auto"></div>
+                  <div :style="todayIndicatorStyle" class="absolute border-l border-black top-2 flex justify-center">
+                    <div class="mt-1">
+                      <span class="bg-white p-1 rounded border border-gray-200 text-black text-xs font-bold">Today</span>
+                    </div>
                   </div>
                 </div>
             </div>       
@@ -333,8 +332,9 @@ const progressBarWidth = computed(() => {
 });
 
 const todayIndicatorStyle = computed(() => {
+  let position = todayPosition.value / totalParts.value * 100;
   return {
-    left: `calc(${(todayPosition.value / totalParts.value) * 100}%)`,
+    left: position + '%',
     height: '4px',
     width: '2px', 
   };

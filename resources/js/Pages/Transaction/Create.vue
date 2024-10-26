@@ -2,7 +2,7 @@
     <div>
         <Form :action="'Save'">
             <InputMoney :inputValue="money" @update:inputValue="money = $event" />
-            <Select :selectText="'Select category'" :sizeText="'24'"/>
+            <Select :selectText="'Select category'" :sizeText="'16'"/>
             <Note />
             <Select :icon="'fa-regular fa-calendar'" :selectText="'Today'" />
             <Select :icon="'wallet'" :selectText="'Select wallet'" />

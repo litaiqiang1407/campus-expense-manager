@@ -30,11 +30,22 @@ class WalletService
 
     public function createWallet($data, $userId)
     {
+        if ($this->walletRepository->walletExistsWithName($userId, $data['name'])) {
+            return [
+                'success' => false,
+                'message' => 'Wallet name already exists.'
+            ];
+        }
+
         $wallet = $this->walletRepository->createWallet($data, $userId);
 
         $this->walletRepository->recalculateTotalWalletBalance($userId);
 
-        return $wallet;
+        return [
+            'success' => true,
+            'message' => 'Wallet created successfully.',
+            'wallet' => $wallet
+        ];
     }
 
     public function getWalletById($walletId)
