@@ -49,11 +49,15 @@ class MyWalletController extends Controller
         ]);
 
         $userHasWallet = $this->walletService->userHasWallet($user_id);
-        $this->walletService->createWallet($validatedData, $user_id);
+        $result = $this->walletService->createWallet($validatedData, $user_id);
+
+        if (!$result['success']) {
+            return response()->json(['message' => $result['message']], 400);
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'Wallet created successfully!',
+            'message' => $result['message'],
             'userHasWallet' => !$userHasWallet,
         ]);
     }

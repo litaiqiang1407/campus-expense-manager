@@ -17,7 +17,7 @@
                   {{ formatBalance(wallet.balance) }}
                 </div>
               </div>
-              <font-awesome-icon v-if="wallet.id == walletIdSelected" icon="check" class="text-primary" />
+              <font-awesome-icon v-if="wallet.id == walletIdSelected || walletIdSelected == undefined" icon="check" class="text-primary" />
             </div>
           </div>
         </div>
@@ -83,6 +83,7 @@ import Loading from '@/Components/Loading/Index.vue';
 
 const router = useRouter();
 const walletIdSelected = router.currentRoute.value.query.walletId;
+console.log(walletIdSelected);
 
 const isLoading = ref(false);
 const wallets = ref([]);
