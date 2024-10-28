@@ -1,4 +1,7 @@
 <template>
+    <div class="py-4 px-2 bg-white">
+      <Search class="h-[30px]" :initialQuery="initialQuery" @search="performSearch" />
+    </div>
     <div class="max-w-full mx-auto mt-4">
       <div v-for="wallet in wallets" :key="wallet.id">
         <div v-if="wallet.name == 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
@@ -29,28 +32,36 @@
       <div v-if="isLoading" class="flex w-screen items-center justify-center h-64">
         <Loading class="size-16"/>
       </div>
-      <div v-for="wallet in wallets" :key="wallet.id" >
-        <div v-if="wallet.name != 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
-          <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
-            <div class="flex flex-1 items-center">
-              <img
-                :alt="`${wallet.name} icon`"
-                class="w-10 h-10 rounded-full"
-                :src="wallet.icon_path"
-              />
-              <div class="ml-4 flex-1 flex flex-col justify-between">
-                <div class="font-medium">
-                  {{ wallet.name }}
+      <div v-if="!isLoading && wallets.length > 0">
+        <div v-for="wallet in wallets" :key="wallet.id" >
+          <div v-if="wallet.name != 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
+            <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
+              <div class="flex flex-1 items-center">
+                <img
+                  :alt="`${wallet.name} icon`"
+                  class="w-10 h-10 rounded-full"
+                  :src="wallet.icon_path"
+                />
+                <div class="ml-4 flex-1 flex flex-col justify-between">
+                  <div class="font-medium">
+                    {{ wallet.name }}
+                  </div>
+                  <div class="text-secondaryText text-sm">
+                    {{ formatBalance(wallet.balance) }}
+                  </div>
                 </div>
-                <div class="text-secondaryText text-sm">
-                  {{ formatBalance(wallet.balance) }}
-                </div>
+                <font-awesome-icon v-if="wallet.id == walletIdSelected" icon="check" class="text-primary" />
               </div>
-              <font-awesome-icon v-if="wallet.id == walletIdSelected" icon="check" class="text-primary" />
             </div>
           </div>
         </div>
       </div>
+      <div v-else-if="!isLoading && wallets.length == 0">
+        <div class="flex w-screen items-center justify-center h-64">
+          <h2 class="text-[16px] text-secondaryText">No wallets found</h2>
+        </div>
+      </div>
+      
       <div class="fixed right-4 bottom-4 size-12 text-[20px]" @click="displayWalletTypes">
         <Add :icon="'plus'" />
       </div>
@@ -80,16 +91,18 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
+import { Search } from '@/Components/Header/Components/Index';
 
 const router = useRouter();
 const walletIdSelected = router.currentRoute.value.query.walletId;
-console.log(walletIdSelected);
 
 const isLoading = ref(false);
 const wallets = ref([]);
 const walletTypes = ref([]);
 const openWalletTypes = ref(false);
 const totalWalletBalance = ref(0);
+
+const initialQuery = ref('');
 
 const fetchWallets = async () => {
   try {
@@ -100,6 +113,18 @@ const fetchWallets = async () => {
     totalWalletBalance.value = response.data.totalWalletBalance;
   } catch (error) {
     console.error('Error fetching wallets:', error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const performSearch = async (query) => {
+  try {
+    isLoading.value = true;
+    const response = await axios.get(route('SearchWallets', { search : query}));
+    wallets.value = response.data.wallets;
+  } catch (error) {
+    console.error('Error fetching search results:', error);
   } finally {
     isLoading.value = false;
   }
