@@ -28,17 +28,14 @@
   const noteContent = ref(props.modelValue);
   const router = useRouter();
 
-  // Theo dõi sự thay đổi trong noteContent và phát ra giá trị mới
   watch(noteContent, (newValue) => {
     emit('update:modelValue', newValue);
   });
 
-  // Theo dõi sự thay đổi trong modelValue từ cha và cập nhật noteContent
   watch(() => props.modelValue, (newValue) => {
     noteContent.value = newValue;
   });
 
-  // Hàm chuyển hướng đến trang ghi chú
   function goToNote() {
     router.push({ name: 'Note', query: { returnPath: '/transaction/create', note: noteContent.value } });
   }

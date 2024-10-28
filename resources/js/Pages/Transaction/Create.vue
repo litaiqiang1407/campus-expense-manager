@@ -2,7 +2,7 @@
   <div>
     <Form :action="'Save'" @submit="submitForm">
       <InputMoney :inputValue="amount" @update:inputValue="amount = $event" />
-      <Select
+      <SelectTe
         :selectText="selectedCategory ? selectedCategory.name : 'Select category'"
         :sizeText="'24'"
         :items="categories"
@@ -25,7 +25,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { InputMoney, Select, Note, Form, DateTimePicker, RevertSelect } from '@/Components/Form/Index';
+import { InputMoney, SelectTe, Note, Form, DateTimePicker, RevertSelect } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
 import { useRoute } from 'vue-router';
