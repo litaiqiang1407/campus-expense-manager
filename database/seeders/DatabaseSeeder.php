@@ -12,8 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            IconsTableSeeder::class,
-            WalletTypesTableSeeder::class,
+            IconsTableSeeder::class,            WalletTypesTableSeeder::class,
             WalletsTableSeeder::class,
             TransactionSeeder::class
         ]);
