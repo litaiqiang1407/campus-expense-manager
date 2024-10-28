@@ -106,7 +106,6 @@ const routes = [
         path: '/my-wallet',
         name: 'MyWallet',
         component: MyWallet,
-        meta: { layout: HeaderLayout, title: 'My Wallet', isBack: true, isCancel: false, headerComponent: [Search]},
     },
     {
         path: '/my-wallet/:walletTypeId/create',

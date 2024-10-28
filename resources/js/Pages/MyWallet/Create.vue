@@ -93,7 +93,7 @@ const submitForm = async () => {
       router.push({ name: redirectRoute });
       localStorage.clear();
     } else {
-      toast.error('Failed to create wallet.');
+      toast.error(response.data.message);
     }
   } catch (error) {
     toast.error('Error creating wallet: ' + error.response?.data?.message || error.message);

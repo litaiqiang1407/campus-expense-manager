@@ -44,6 +44,13 @@ class WalletRepository
         return WalletType::select('id', 'name')->get();
     }
 
+    public function walletExistsWithName($userId, $walletName)
+    {
+        return Wallet::where('user_id', $userId)
+            ->where('name', $walletName)
+            ->exists();
+    }
+
     public function createWallet($data, $userId)
     {
         $wallet = Wallet::create(array_merge($data, ['user_id' => $userId]));
@@ -132,5 +139,25 @@ class WalletRepository
         }
 
         return $totalWallet;
+    }
+
+    public function searchWallets($userId, $search, $limit = null)
+    {
+        if (empty($search)) {
+            return $this->getAllWallets($userId, $limit);
+        }
+        return Wallet::select(
+                'wallets.id',
+                'wallets.name',
+                'wallets.balance',
+                'icons.path as icon_path',
+                'icons.name as icon_name'
+            )
+            ->where('user_id', $userId)
+            ->where('wallets.name', 'LIKE', '%' . $search . '%') 
+            ->orWhere('wallets.balance', 'LIKE', '%' . $search . '%')
+            ->join('icons', 'wallets.icon_id', '=', 'icons.id')
+            ->limit($limit)
+            ->get();
     }
 }
