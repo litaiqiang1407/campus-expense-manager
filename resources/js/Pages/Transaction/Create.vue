@@ -43,7 +43,6 @@ const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) ||
 const selectedCategory = ref(JSON.parse(localStorage.getItem('selectedCategory')) || null);
 const transactionDate = ref(new Date());
 
-// Hàm lấy dữ liệu cần thiết để tạo giao dịch
 const fetchCreateTransactionData = async () => {
   try {
     const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
@@ -55,17 +54,13 @@ const fetchCreateTransactionData = async () => {
   }
 };
 
-// Xử lý khi trang được tải
 onMounted(() => {
   fetchCreateTransactionData();
-
-  // Kiểm tra xem có giá trị note từ query hay không
   if (route.query.note) {
-    note.value = route.query.note;  // Cập nhật giá trị cho ghi chú
+    note.value = route.query.note;
   }
 });
 
-// Hàm gửi form
 const submitForm = async () => {
   try {
     const formData = {
@@ -80,7 +75,6 @@ const submitForm = async () => {
 
     if (response.data.success) {
       toast.success(response.data.message);
-      // Xóa dữ liệu khỏi localStorage
       localStorage.removeItem('amount');
       localStorage.removeItem('note');
       localStorage.removeItem('selectedWallet');
@@ -97,7 +91,6 @@ const submitForm = async () => {
   }
 };
 
-// Lưu trữ dữ liệu vào localStorage
 watch([amount, note, selectedWallet, selectedCategory, transactionDate], () => {
   localStorage.setItem('amount', amount.value);
   localStorage.setItem('note', note.value);
