@@ -1,12 +1,12 @@
 <template>
-    <div class="min-h-screen bg-white">
+    <div class="min-h-[calc(100vh-72px)] bg-white">
       <div v-if="isFirstTime" class="w-full flex flex-col items-center p-4 mt-10">
         <h2 class="text-black text-[24px] font-bold">First, create a wallet</h2>
         <p class="text-center text-secondaryText">To get started, please create your first wallet to manage your transactions and track your finances.</p>
       </div>
       <Form :action="'Create Wallet'" @submit="submitForm">
           <div class="flex flex-col items-center">
-            <Select :selectText="''" :sizeText="'28'" @click="selectIcon" :iconSrc="iconSrc"/>
+            <Select :selectText="''" @click="selectIcon" :iconSrc="iconSrc"/>
             <span class="text-primary uppercase font-semibold text-[14px]">Select wallet icon</span>
           </div>
           <Input v-model="walletName" :label="''" :placeholder="'Wallet name...'"  />
@@ -93,7 +93,7 @@ const submitForm = async () => {
       router.push({ name: redirectRoute });
       localStorage.clear(); 
     } else {
-      toast.error('Failed to create wallet.');
+      toast.error(response.data.message);
     }
   } catch (error) {
     toast.error('Error creating wallet: ' + error.response?.data?.message || error.message);

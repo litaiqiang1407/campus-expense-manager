@@ -17,7 +17,7 @@
         <div class="p-4">
           <h3 class="text-2xl font-bold tracking-wide">Select time range</h3>
             <ul class="mt-2">
-              <li v-for="option in dateOptions" :key="option.value" @click="selectDateOption(option.value)" class="flex items-center py-2 cursor-pointer hover:bg-gray-100 text-lg">
+              <li v-for="option in dateOptions" :key="option.value" @click="selectDateOption(option.value)" class="flex items-center py-2 cursor-pointer text-lg">
                 <input type="radio" :value="option.value" v-model="selectedDateOption" class="mr-2 h-5 w-5" />
                 <span class="text-lg font-medium tracking-normal">{{ option.label }}</span>
               </li>

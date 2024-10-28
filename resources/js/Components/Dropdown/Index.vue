@@ -1,11 +1,11 @@
 <template>
-    <div class="flex w-full space-x-6 items-center py-4">
-      <div class="size-[60px] flex items-center justify-center">
-        <font-awesome-icon :icon="icon" class="text-black text-[36px]" />
+    <div class="flex w-full space-x-2 items-center py-4">
+      <div class="size-[20px] flex items-center justify-center">
+        <font-awesome-icon :icon="icon" class="text-black text-[16px]" />
       </div>
       <div class="relative w-full">
         <button type="button"
-          class="button-animate flex items-center justify-between w-full border-[1px] font-semibold border-primary px-4 py-2 rounded-md shadow-sm text-[20px] focus:outline-none"
+          class="button-animate flex items-center justify-between w-full border-[1px] font-semibold border-primary px-2 py-1 rounded-md shadow-sm text-[16px] focus:outline-none"
           @click="toggleDropdown"
         >
           <span>{{ selectedItem ? selectedItem.name : defaultText }}</span>
@@ -18,7 +18,7 @@
               v-for="item in itemList"
               :key="item.id"
               @click="selectItem(item)"
-              class="button-animate cursor-pointer px-4 py-2 hover:bg-gray-100 text-[16px] "
+              class="button-animate cursor-pointer px-2 py-1 hover:bg-gray-100 text-[16px] "
             >
               {{ item.name }}
             </li>
