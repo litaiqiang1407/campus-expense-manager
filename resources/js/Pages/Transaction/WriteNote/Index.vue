@@ -17,23 +17,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
 const router = useRouter();
 const noteContent = ref('');
 
-// This function will handle saving the note
 function saveNote() {
     console.log("Save button clicked!", noteContent.value);
     router.push({ name: 'CreateTransaction', query: { note: noteContent.value } });
 }
-
-// If you need to emit save action to a parent component, use this:
-const emit = defineEmits(['setSaveAction']);
-
-onMounted(() => {
-    emit('setSaveAction', saveNote);
-});
 </script>
 
