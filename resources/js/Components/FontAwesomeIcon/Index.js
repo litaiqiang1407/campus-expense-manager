@@ -34,7 +34,7 @@ import {
   faCheck
 } from '@fortawesome/free-solid-svg-icons';
 
-import { faCalendar, faCircleQuestion as faCircleQuestionRegular, faComment as faCommentRegular } from '@fortawesome/free-regular-svg-icons';
+import { faCalendar, faCircleQuestion as faCircleQuestionRegular, faComment as faCommentRegular, faCircleXmark as faXmarkRegular } from '@fortawesome/free-regular-svg-icons';
 
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
@@ -74,7 +74,8 @@ library.add(
   faChevronDown,
   faChevronUp,
   faCircleMinus,
-  faCheck
+  faCheck,
+  faXmarkRegular
 );
 
 export default FontAwesomeIcon;
