@@ -51,7 +51,7 @@ const transactions = ref([]);
 const inflow = ref(0);
 const outflow = ref(0);
 const totalFlow = ref(0);
-const hasData = ref(false);  // Kiểm tra nếu có dữ liệu giao dịch
+const hasData = ref(false); 
 const selectedMonth = ref('this');
 const wallets = ref([]);
 const isLoading = ref(false);
@@ -62,13 +62,12 @@ const fetchTransactions = async () => {
         const response = await axios.get(route('Transaction'));
         transactions.value = response.data.transactions;
         wallets.value = response.data.wallets;
-        console.log('Fetched Transactions:', wallets.value);
-        hasData.value = transactions.value.length > 0;  // Cập nhật trạng thái dữ liệu
+        hasData.value = transactions.value.length > 0;
         calculateInflowAndOutflow(transactions.value);
     } catch (error) {
         console.error(error);
     } finally {
-        isLoading.value = false;  // Đảm bảo tắt trạng thái loading sau khi tải xong
+        isLoading.value = false;
     }
 };
 

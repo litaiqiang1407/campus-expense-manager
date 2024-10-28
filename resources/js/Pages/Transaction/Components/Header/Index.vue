@@ -69,7 +69,6 @@ const toggleDropdown = () => {
     isDropdownVisible.value = !isDropdownVisible.value;
 };
 
-// Đóng dropdown khi click ra ngoài
 document.addEventListener('click', (event) => {
     if (!event.target.closest('.transaction-type-container')) {
         isDropdownVisible.value = false;
