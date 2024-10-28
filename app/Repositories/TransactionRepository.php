@@ -10,20 +10,18 @@ class TransactionRepository
 {
     public function getTransactionsByUser($userId)
     {
-        // Lấy các giao dịch theo userId và liên kết với category và icon
         return Transaction::with(['category.icon'])
             ->select('id', 'amount', 'note', 'category_id', 'user_id', 'date')
             ->where('user_id', $userId)
             ->orderBy('date', 'desc')
             ->get();
     }   
-    // Tạo giao dịch mới
+
     public function createTransaction($data, $userId)
     {
         return Transaction::create(array_merge($data, ['user_id' => $userId]));
     }
 
-    // Cập nhật giao dịch
     public function updateTransaction($transactionId, $data)
     {
         $transaction = Transaction::findOrFail($transactionId);
@@ -59,12 +57,10 @@ class TransactionRepository
         return Category::all();
     }
 
-    // Cập nhật số dư của ví
     public function updateWalletBalance($walletId, $amount, $isIncome)
     {
         $wallet = Wallet::findOrFail($walletId);
 
-        // Nếu là income thì cộng tiền, ngược lại là trừ tiền
         if ($isIncome) {
             $wallet->balance += $amount;
         } else {
