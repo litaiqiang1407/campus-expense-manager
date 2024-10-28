@@ -8,7 +8,7 @@
                 class="transition-all flex-1 text-[14px] rounded-md duration-300 ease-in-out w-full  outline-none"
                 @focus="isSearching = true"
                 @keyup.enter="handleSearch"/>
-            <font-awesome-icon icon="fa-regular fa-circle-xmark" class="text-primary cursor-pointer" @click="clearSearch" />
+            <font-awesome-icon v-if="localQuery" icon="fa-regular fa-circle-xmark" class="text-primary cursor-pointer" @click="clearSearch" />
         </div>
       
         <ul v-if="searchHistory.length > 0 && isSearching" class="absolute w-full mx-auto bg-white top-[80%] py-2 rounded-b-md border-r-[1px] border-b-[1px] border-l-[1px] border-primary">
@@ -31,7 +31,7 @@ const props = defineProps({
   },
   historyKey: {
     type: String,
-    required: true
+    default: ''
   }
 });
 

@@ -77,7 +77,6 @@ import { useRouter } from 'vue-router';
 import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 import Swal from 'sweetalert2';
-import { debounce } from 'lodash';
 import { Search } from '@/Components/Header/Components/Index';
 
 const router = useRouter();

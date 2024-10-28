@@ -141,12 +141,6 @@ class MyWalletController extends Controller
     {
         $userId = $request->user()->id;
         $search = $request->search;
-        if (empty($search)) {
-            $wallets = $this->walletService->getWallets($userId);
-            return response()->json([
-                'wallets' => $wallets,
-            ]);
-        }
         $wallets = $this->walletService->searchWallets($userId, $search);
 
         return response()->json([
