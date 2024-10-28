@@ -3,7 +3,7 @@
     <div class="flex flex-1 items-center gap-4 h-[30px]">
       <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack" />
       <h1 v-if="!isSearching" class="text-[20px] font-semibold h-full">My Wallets</h1>
-      <Search v-if="isSearching" :initialQuery="initialQuery" historyKey="walletSearchHistory" @search="performSearch" />
+      <Search v-if="isSearching" class="h-[30px]" :initialQuery="initialQuery" historyKey="walletSearchHistory" @search="performSearch" />
     </div>
     <div class="flex items-center space-x-4">
       <font-awesome-icon icon="magnifying-glass" class="text-[20px] cursor-pointer" @click.stop="toggleSearch" />
@@ -50,7 +50,7 @@
       <div class="fixed right-4 bottom-4 size-12 text-[20px]" @click="displayWalletTypes">
         <Add :icon="'plus'" />
       </div>
-  
+
       <div v-if="openWalletTypes" class="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50" @click="closeWalletTypes">
         <div class="bg-white w-full rounded-t-lg p-4 z-100" @click.stop>
             <div class="w-full p-2 flex items-center justify-between">
@@ -58,17 +58,17 @@
                 <div class="button-animate size-7 flex items-center justify-center rounded-full border-[1px] border-primary" @click="closeWalletTypes"><font-awesome-icon icon="xmark" class="text-[16px]" /></div>
             </div>
             <div class="px-2 py-4 grid grid-cols-2 gap-4">
-                <button 
-                    v-for="walletType in walletTypes" 
-                    :key="walletType.id" 
+                <button
+                    v-for="walletType in walletTypes"
+                    :key="walletType.id"
                     class="button-animate border-[2px] border-primary p-4 rounded-lg flex items-center justify-center"
                     @click.stop="createWallet(walletType.id)">
                         <h3 class="font-semibold text-[16px]">{{ walletType.name }}</h3>
-                </button>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -94,12 +94,12 @@ const searchHistory = ref([]);
 const STORAGE_KEY = 'walletSearchHistory';
 
 const saveSearchHistory = (query) => {
-  if (!query.trim()) return; 
+  if (!query.trim()) return;
 
   searchHistory.value = searchHistory.value.filter(item => item !== query);
 
   searchHistory.value.unshift(query);
-  searchHistory.value = searchHistory.value.slice(0, 5); 
+  searchHistory.value = searchHistory.value.slice(0, 5);
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(searchHistory.value));
 };
@@ -125,69 +125,69 @@ const performSearch = async (query) => {
 };
 
 const fetchWallets = async () => {
-  try {
-    isLoading.value = true;
-    const response = await axios.get(route('MyWallet'));
-    walletTypes.value = response.data.walletTypes;
-    wallets.value = response.data.wallets;
-    totalWalletBalance.value = response.data.totalWalletBalance;
-  } catch (error) {
-    console.error('Error fetching wallets:', error);
-  } finally {
-    isLoading.value = false;
-  }
+    try {
+        isLoading.value = true;
+        const response = await axios.get(route('MyWallet'));
+        walletTypes.value = response.data.walletTypes;
+        wallets.value = response.data.wallets;
+        totalWalletBalance.value = response.data.totalWalletBalance;
+    } catch (error) {
+        console.error('Error fetching wallets:', error);
+    } finally {
+        isLoading.value = false;
+    }
 };
 
 const formatBalance = (balance) => {
-  return balance === 0 
-    ? '$0' 
-    : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
+    return balance === 0
+        ? '$0'
+        : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
 }
 
 const displayWalletTypes = () => {
-  openWalletTypes.value = true;
+    openWalletTypes.value = true;
 };
 
 const closeWalletTypes = () => {
-  openWalletTypes.value = false;
+    openWalletTypes.value = false;
 };
 
 const createWallet = (walletTypeId) => {
-  router.push({ name: 'CreateWallet', params: { walletTypeId } });
+    router.push({ name: 'CreateWallet', params: { walletTypeId } });
 };
 
 const editWallet = (walletId) => {
-  router.push({ name: 'EditWallet', params: { walletId } });
+    router.push({ name: 'EditWallet', params: { walletId } });
 };
 
 const confirmDelete = (walletId) => {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: 'You won\'t be able to revert this!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#00BC2A',
-    cancelButtonColor: '#FF2121',
-    confirmButtonText: 'Yes, delete it!',
-    cancelButtonText: 'No, cancel!',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      deleteWallet(walletId);
-    }
-  });
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00BC2A',
+        cancelButtonColor: '#FF2121',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteWallet(walletId);
+        }
+    });
 };
 
 const deleteWallet = async (walletId) => {
-  try {
-    await axios.post(route('DeleteWallet', { walletId }));
-    wallets.value = wallets.value.filter(wallet => wallet.id !== walletId);
+    try {
+        await axios.post(route('DeleteWallet', { walletId }));
+        wallets.value = wallets.value.filter(wallet => wallet.id !== walletId);
 
-    if (wallets.value.length === 0) {
-      window.location.href = route('CreateWallet', { walletTypeId: 1 });
+        if (wallets.value.length === 0) {
+            window.location.href = route('CreateWallet', { walletTypeId: 1 });
+        }
+    } catch (error) {
+        console.error('Error deleting wallet:', error);
     }
-  } catch (error) {
-    console.error('Error deleting wallet:', error);
-  }
 };
 
 const goBack = () => {

@@ -1,23 +1,25 @@
 <template>
-    <div class="relative flex-1 h-full">
-        <div class="flex items-center gap-2 border-[1px] border-primary rounded-md px-3 h-full">
-            <input 
-                v-model="localQuery"
-                type="text"
-                placeholder="Search wallets..."
-                class="transition-all flex-1 text-[14px] rounded-md duration-300 ease-in-out w-full  outline-none"
-                @focus="isSearching = true"
-                @keyup.enter="handleSearch"/>
-            <font-awesome-icon v-if="localQuery" icon="fa-regular fa-circle-xmark" class="text-primary cursor-pointer" @click="clearSearch" />
-        </div>
-      
-        <ul v-if="searchHistory.length > 0 && isSearching" class="absolute w-full mx-auto bg-white top-[80%] py-2 rounded-b-md border-r-[1px] border-b-[1px] border-l-[1px] border-primary">
-            <li v-for="(query, index) in searchHistory" :key="index" class="button-animate px-4 py-1 flex items-center gap-2 justify-between cursor-pointer hover:bg-hoverPrimary hover:text-white">
-                <span @click="selectQuery(query)" class="w-full line-clamp-1">{{ query }}</span>
-                <font-awesome-icon icon="xmark" class="text-[12px]" @mousedown.stop="removeSearchQuery(query)" />
-            </li>
-        </ul>
-    </div>
+<div class="flex-1">
+      <div class="relative flex-1 h-full">
+          <div class="flex items-center gap-2 border-[1px] border-primary rounded-md px-3 h-full">
+              <input 
+                  v-model="localQuery"
+                  type="text"
+                  placeholder="Search wallets..."
+                  class="transition-all flex-1 text-[14px] rounded-md duration-300 ease-in-out w-full  outline-none"
+                  @focus="isSearching = true"
+                  @keyup.enter="handleSearch"/>
+              <font-awesome-icon v-if="localQuery" icon="fa-regular fa-circle-xmark" class="text-primary cursor-pointer" @click="clearSearch" />
+          </div>
+        
+          <ul v-if="searchHistory.length > 0 && isSearching" class="absolute w-full mx-auto bg-white top-[80%] py-2 rounded-b-md border-r-[1px] border-b-[1px] border-l-[1px] border-primary">
+              <li v-for="(query, index) in searchHistory" :key="index" class="button-animate px-4 py-1 flex items-center gap-2 justify-between cursor-pointer hover:bg-hoverPrimary hover:text-white">
+                  <span @click="selectQuery(query)" class="w-full line-clamp-1">{{ query }}</span>
+                  <font-awesome-icon icon="xmark" class="text-[12px]" @mousedown.stop="removeSearchQuery(query)" />
+              </li>
+          </ul>
+      </div>
+</div class="flex-1">
 </template>
 
 <script setup>

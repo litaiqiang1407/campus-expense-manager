@@ -19,11 +19,16 @@ Route::get('/welcome', [WelcomeController::class, 'index'])->name('Welcome');
 
 Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('Home');
-    Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
     Route::get('/categories', [CategoryController::class, 'index'])->name('Categories');
 
+    Route::group(['prefix' => 'transaction'], function ()
+    {
+        Route::get('/', [TransactionController::class, 'index'])->name('Transaction');
+        Route::get('/create', [TransactionController::class, 'create'])->name('CreateTransaction');
+        Route::post('/store', [TransactionController::class, 'store'])->name('StoreTransaction');
+    });
     Route::group(['prefix' => 'my-wallet'], function () {
         Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');
         Route::get('/{walletTypeId}/create', [MyWalletController::class, 'create'])->name('CreateWallet');

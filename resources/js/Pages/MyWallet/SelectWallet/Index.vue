@@ -1,5 +1,5 @@
 <template>
-    <div class="py-4 px-2 bg-white">
+    <div class="py-4 px-2 bg-white h-[52px]">
       <Search class="h-[30px]" :initialQuery="initialQuery" @search="performSearch" />
     </div>
     <div class="max-w-full mx-auto mt-4">
@@ -61,11 +61,11 @@
           <h2 class="text-[16px] text-secondaryText">No wallets found</h2>
         </div>
       </div>
-      
+
       <div class="fixed right-4 bottom-4 size-12 text-[20px]" @click="displayWalletTypes">
         <Add :icon="'plus'" />
       </div>
-  
+
       <div v-if="openWalletTypes" class="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50" @click="closeWalletTypes">
         <div class="bg-white w-full rounded-t-lg p-4 z-100" @click.stop>
             <div class="w-full p-2 flex items-center justify-between">
@@ -73,17 +73,17 @@
                 <div class="button-animate size-7 flex items-center justify-center rounded-full border-[1px] border-primary" @click="closeWalletTypes"><font-awesome-icon icon="xmark" class="text-[16px]" /></div>
             </div>
             <div class="px-2 py-4 grid grid-cols-2 gap-4">
-                <button 
-                    v-for="walletType in walletTypes" 
-                    :key="walletType.id" 
+                <button
+                    v-for="walletType in walletTypes"
+                    :key="walletType.id"
                     class="button-animate border-[2px] border-primary p-4 rounded-lg flex items-center justify-center"
                     @click.stop="createWallet(walletType.id)">
                         <h3 class="font-semibold text-[16px]">{{ walletType.name }}</h3>
-                </button>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -131,29 +131,29 @@ const performSearch = async (query) => {
 };
 
 const formatBalance = (balance) => {
-  return balance === 0 
-    ? '$0' 
-    : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
+    return balance === 0
+        ? '$0'
+        : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
 }
 
 const selectWallet = (walletId) => {
-  router.push({ name: 'Budget', query: { walletId } });
+    router.push({ name: 'CreateTransaction', query: { walletId } });
 };
 
 const displayWalletTypes = () => {
-  openWalletTypes.value = true;
+    openWalletTypes.value = true;
 };
 
 const closeWalletTypes = () => {
-  openWalletTypes.value = false;
+    openWalletTypes.value = false;
 };
 
 const createWallet = (walletTypeId) => {
-  router.push({ name: 'CreateWallet', params: { walletTypeId } });
+    router.push({ name: 'CreateWallet', params: { walletTypeId } });
 };
 
 const goToMyWallet = () => {
-  router.push({ name: 'MyWallet' });
+    router.push({ name: 'MyWallet' });
 };
 
 onMounted(fetchWallets);

@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, WriteNote } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
 
-import { Support, Menu, Search, SelectWallet as SelectComponent } from "../Components/Header/Components/Index";
+import { Support, Menu, Search, SelectWallet as SelectComponent, SaveButton} from "../Components/Header/Components/Index";
 
 const routes = [
     {
@@ -42,6 +42,18 @@ const routes = [
         name: 'CreateTransaction',
         component: CreateTransaction,
         meta: { layout: HeaderLayout, title: 'Add transaction', isBack: false, isCancel: true},
+    },
+    {
+        path: '/note',
+        name: 'Note',
+        component: WriteNote,
+        meta: {
+            layout: HeaderLayout,
+            title: 'Note',
+            isBack: false,
+            isCancel: true,
+            headerComponent: [SaveButton]
+        },
     },
     {
         path: '/signin',
@@ -111,7 +123,7 @@ const routes = [
     },
     {
         path: '/logout',
-        name: 'Logout',        
+        name: 'Logout',
     },
     {
         path: '/icon',
@@ -119,7 +131,7 @@ const routes = [
         component: Icon,
         meta: { layout: HeaderLayout, title: 'Icon', isBack: true, isCancel: false },
         props: true,
-    },  
+    },
     {
         path: '/select-wallet',
         name: 'SelectWallet',
