@@ -31,6 +31,7 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
         Route::get('/edit/{walletId}', [MyWalletController::class, 'edit'])->name('EditWallet');
         Route::post('/update/{walletId}', [MyWalletController::class, 'update'])->name('UpdateWallet');
         Route::post('/delete/{walletId}', [MyWalletController::class, 'delete'])->name('DeleteWallet');
+        Route::get('/search', [MyWalletController::class, 'search'])->name('SearchWallets');
     });
 
     Route::group(['prefix' => 'budget'], function () {

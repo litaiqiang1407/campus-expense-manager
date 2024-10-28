@@ -78,4 +78,9 @@ class WalletService
     {
         return $this->walletRepository->recalculateTotalWalletBalance($userId);
     }
+
+    public function searchWallets($userId, $search, $limit = null)
+    {
+        return $this->walletRepository->searchWallets($userId, $search, $limit);
+    }
 }
