@@ -53,7 +53,11 @@ const props = defineProps({
     },
     destinationPage: {
         type: String,
-  },
+    },
+    isDateSelect: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const isDropdownOpen = ref(false);
@@ -65,10 +69,16 @@ const toggleDropdown = () => {
 const router = useRouter();
 
 const select = () => {
-    if (props.destinationPage) {
-        router.push({ name: props.destinationPage });
+    if (props.isDateSelect) {
+        // Emit an event to the parent to show date options
+        emit('show-date-options');
     } else {
-        toggleDropdown();
+        // Handle navigation or toggle dropdown for other cases
+        if (props.destinationPage) {
+            router.push({ name: props.destinationPage });
+        } else {
+            toggleDropdown();
+        }
     }
 };
 

@@ -6,9 +6,9 @@
     <div class="relative">
       <Select 
         :icon="'fa-regular fa-calendar'" 
-        :selectText="formattedDateOption || 'Today'" 
-        @click="toggleDateOptions" 
-      />
+        :selectText="formattedDateOption || 'Today'"
+        :isDateSelect="true"  
+      @show-date-options="showDateOptions = true" />
 
       <div v-if="showDateOptions" class="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50" @click="showDateOptions = false"></div>
       <!-- Updated date options with slide-up effect -->
