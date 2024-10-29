@@ -1,5 +1,5 @@
 <template>
-    <div class="py-4 px-2 bg-white">
+    <div class="py-4 px-2 bg-white h-[52px]">
       <Search class="h-[30px]" :initialQuery="initialQuery" @search="performSearch" />
     </div>
     <div class="max-w-full mx-auto mt-4">

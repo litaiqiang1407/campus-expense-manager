@@ -3,7 +3,7 @@
     <div class="flex flex-1 items-center gap-4 h-[30px]">
       <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack" />
       <h1 v-if="!isSearching" class="text-[20px] font-semibold h-full">My Wallets</h1>
-      <Search v-if="isSearching" :initialQuery="initialQuery" historyKey="walletSearchHistory" @search="performSearch" />
+      <Search v-if="isSearching" class="h-[30px]" :initialQuery="initialQuery" historyKey="walletSearchHistory" @search="performSearch" />
     </div>
     <div class="flex items-center space-x-4">
       <font-awesome-icon icon="magnifying-glass" class="text-[20px] cursor-pointer" @click.stop="toggleSearch" />

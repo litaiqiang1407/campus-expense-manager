@@ -19,21 +19,17 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-        // Lấy thông tin người dùng từ request
         $user = $request->user();
 
-        // Sử dụng service để lấy ví và giao dịch của user
         $data = $this->transactionService->getTransactionsAndWalletsByUser($user->id);
 
-        // Trả về JSON nếu yêu cầu là dạng JSON
         if ($request->wantsJson()) {
             return response()->json([
                 'transactions' => $data['transactions'],
-                'wallets' => $data['wallets'], // Trả về ví của người dùng
+                'wallets' => $data['wallets'],
             ]);
         }
 
-        // Trả về giao diện với dữ liệu
         return Inertia::render('Transaction/Index', [
             'transactions' => $data['transactions'],
             'wallets' => $data['wallets'],
@@ -62,7 +58,6 @@ class TransactionController extends Controller
         ]);
     }
 
-    // Lưu giao dịch mới
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -102,7 +97,6 @@ class TransactionController extends Controller
         ]);
     }
 
-    // Cập nhật giao dịch
     public function update(Request $request, $transactionId)
     {
         $validatedData = $request->validate([

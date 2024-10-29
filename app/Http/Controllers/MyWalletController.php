@@ -122,7 +122,7 @@ class MyWalletController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Wallet updated successfully!!!',
+            'message' => 'Wallet updated successfully!',
         ]);
     }
 

@@ -2,21 +2,22 @@
     <div>
       <Form :action="'Save'" @submit="submitForm">
         <InputMoney :inputValue="amount" @update:inputValue="amount = $event" />
-        <SelectTe
+        <Select
           :selectText="selectedCategory ? selectedCategory.name : 'Select category'"
-          :sizeText="'24'"
+          :sizeText="'16'"
           :items="categories"
           :getItemLabel="item => item.name"
           @update:selectText="selectedCategory = $event"
         />
         <Note v-model="note" />
         <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-        <RevertSelect
+        <Select
           :icon="'wallet'"
           :selectText="selectedWallet ? selectedWallet.name : 'Select Wallet'"
           :items="[wallets]"
           :getItemLabel="item => item.name"
           @update:selectText="selectedWallet = $event"
+          :destinationPage="'SelectWallet'"
         />
         <Submit> Save</Submit>
       </Form>
@@ -25,7 +26,7 @@
 
   <script setup>
   import { ref, onMounted, watch } from 'vue';
-  import { InputMoney, SelectTe, Note, Form, DateTimePicker, RevertSelect } from '@/Components/Form/Index';
+  import { InputMoney, Select , Note, Form, DateTimePicker } from '@/Components/Form/Index';
   import { useToast } from 'vue-toastification';
   import Submit from '@/Components/Button/Submit/Index.vue';
   import { useRoute } from 'vue-router';
