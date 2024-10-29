@@ -136,4 +136,15 @@ class MyWalletController extends Controller
             'message' => 'Wallet deleted successfully!',
         ]);
     }
+
+    public function search(Request $request)
+    {
+        $userId = $request->user()->id;
+        $search = $request->search;
+        $wallets = $this->walletService->searchWallets($userId, $search);
+
+        return response()->json([
+            'wallets' => $wallets,
+        ]);
+    }
 }

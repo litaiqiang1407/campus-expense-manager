@@ -19,14 +19,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router'; 
+import { useRouter } from 'vue-router';
 import { InputMoney, Select, Form, Input } from '@/Components/Form/Index';
 import Dropdown from '@/Components/Dropdown/Index.vue';
 import Submit from '@/Components/Button/Submit/Index.vue';
 import { useToast } from 'vue-toastification';
 
 const toast = useToast();
-const router = useRouter(); 
+const router = useRouter();
 
 const isFirstTime = ref(false);
 const walletType = ref(null);
@@ -35,7 +35,7 @@ const icons = ref([]);
 const iconSrc = ref('');
 const iconID = ref('');
 const balance = ref(localStorage.getItem('balance') || '0');
-const walletName = ref(localStorage.getItem('walletName') || '');  
+const walletName = ref(localStorage.getItem('walletName') || '');
 
 const props = defineProps({
   walletTypeId: {
@@ -69,12 +69,12 @@ const selectIcon = () => {
 const submitForm = async () => {
   const errors = [];
   if (!walletName.value.trim()) errors.push('Wallet name is required.');
-  if (!walletType.value?.id) errors.push('Please select a wallet type.'); 
+  if (!walletType.value?.id) errors.push('Please select a wallet type.');
   if (!iconID.value) errors.push('Please select a wallet icon.');
 
   if (errors.length) {
-    errors.forEach(toast.error); 
-    return; 
+    errors.forEach(toast.error);
+    return;
   }
 
   const formData = {
@@ -89,9 +89,9 @@ const submitForm = async () => {
 
     if (response.data.success) {
       toast.success(response.data.message);
-      const redirectRoute = response.data.userHasWallet ? 'Home' : 'MyWallet'; 
+      const redirectRoute = response.data.userHasWallet ? 'Home' : 'MyWallet';
       router.push({ name: redirectRoute });
-      localStorage.clear(); 
+      localStorage.clear();
     } else {
       toast.error(response.data.message);
     }
@@ -102,10 +102,10 @@ const submitForm = async () => {
 
 onMounted(() => {
   const queryIcon = router.currentRoute.value.query.icon;
-  
+
   const defaultIcon = { path: '/assets/icon/income/salary.png' };
   const selectedIcon = queryIcon ? JSON.parse(queryIcon) : defaultIcon;
-  
+
   iconSrc.value = selectedIcon.path;
   iconID.value = selectedIcon.id;
 

@@ -13,6 +13,7 @@ export default {
         blueText: '#0080FF',
         redText: '#FF2121',
         primaryBackground: '#F8F9FA',
+        hoverPrimary: 'rgba(0, 188, 42, 0.8)', 
       },
     },
   },
