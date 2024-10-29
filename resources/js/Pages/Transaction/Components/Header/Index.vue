@@ -4,7 +4,7 @@
         <div
             class="balance-section flex flex-col items-center justify-center flex-1 absolute left-1/2 transform -translate-x-1/2">
             <h2 class="balance-label text-gray-400 font-bold text-center text-xs">Balance</h2>
-            <p class="balance-amount text-black text-xl font-bold">{{ balance }}</p>
+            <p class="balance-amount text-black text-xl font-bold">{{ formatCurrency(selectedWallet?.balance || 0) }}</p>
         </div>
         <div class="icons-section flex space-x-4 ml-auto">
             <span class="search-icon cursor-pointer text-black text-lg font-normal">
@@ -15,15 +15,14 @@
             </span>
         </div>
 
-        <!-- Transaction Type Dropdown -->
+        <!-- Wallet Selection Dropdown -->
         <div class="relative cursor-pointer transaction-type-container bg-[#F3F3F3] flex justify-center items-center p-2 max-w-max mx-auto mt-4 rounded"
             @click="toggleDropdown">
-            <img :src="firstWallet?.icon_path || '/assets/img/wallet.png'" alt="Icon"
-                class="h-6 w-6 mr-2 rounded-full" />
-            <h3 class="transaction-type text-black text-sm mr-2">{{ firstWallet?.name || 'Select Wallet' }}</h3>
+            <img :src="selectedWallet?.icon_path || '/assets/img/wallet.png'" alt="Icon" class="h-6 w-6 mr-2 rounded-full" />
+            <h3 class="transaction-type text-black text-sm mr-2">{{ selectedWallet?.name || 'Select Wallet' }}</h3>
             <font-awesome-icon icon="chevron-down" />
 
-            <!-- Dropdown -->
+            <!-- Dropdown list of wallets -->
             <div v-if="isDropdownVisible" class="absolute left-0 top-full mt-2 bg-white shadow-md rounded w-full z-10">
                 <ul>
                     <li v-for="wallet in wallets" :key="wallet.id" @click="selectWallet(wallet)"
@@ -38,40 +37,48 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps({
-    wallets: Array
+    wallets: Array,
 });
+
+const emit = defineEmits(['walletSelected']);
 
 const isDropdownVisible = ref(false);
-const selectedWallet = ref(null);
+const selectedWallet = ref(props.wallets[0] || null);
 
-const firstWallet = computed(() => {
-    return props.wallets.length > 0 ? props.wallets[0] : null;
-});
-
-const balance = computed(() => {
-    return selectedWallet.value ? selectedWallet.value.balance : (firstWallet.value ? firstWallet.value.balance : 0);
-});
-
-const selectWallet = (wallet) => {
-    selectedWallet.value = wallet;
-
-    const walletIndex = props.wallets.findIndex(w => w.id === wallet.id);
-    if (walletIndex !== -1) {
-        props.wallets.unshift(props.wallets.splice(walletIndex, 1)[0]);
-    }
-    isDropdownVisible.value = false;
+// Định dạng số dư thành định dạng tiền tệ
+const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+    }).format(amount);
 };
 
+// Hiển thị ví đầu tiên làm mặc định
 const toggleDropdown = () => {
     isDropdownVisible.value = !isDropdownVisible.value;
 };
 
+// Cập nhật ví khi người dùng chọn và phát sự kiện `walletSelected`
+const selectWallet = (wallet) => {
+    selectedWallet.value = wallet;
+    emit('walletSelected', wallet); // Phát ra sự kiện khi chọn ví
+    isDropdownVisible.value = false;
+};
+
+// Đóng dropdown khi click ra ngoài
 document.addEventListener('click', (event) => {
     if (!event.target.closest('.transaction-type-container')) {
         isDropdownVisible.value = false;
     }
 });
 </script>
+
+<style scoped>
+.transaction-type-container {
+    min-width: 180px;
+}
+</style>

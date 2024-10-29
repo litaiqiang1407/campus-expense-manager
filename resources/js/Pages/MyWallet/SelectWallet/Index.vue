@@ -137,7 +137,7 @@ const formatBalance = (balance) => {
 }
 
 const selectWallet = (walletId) => {
-  router.push({ name: 'Budget', query: { walletId } });
+  router.push({ name: 'CreateTransaction', query: { walletId } });
 };
 
 const displayWalletTypes = () => {

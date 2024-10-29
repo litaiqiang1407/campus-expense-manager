@@ -14,7 +14,7 @@ class TransactionService
     public function __construct(TransactionRepository $transactionRepository, WalletRepository $walletRepository)
     {
         $this->transactionRepository = $transactionRepository;
-        $this->walletRepository = $walletRepository; 
+        $this->walletRepository = $walletRepository;
     }
 
     public function getTransactionsAndWalletsByUser($userId)
@@ -29,6 +29,7 @@ class TransactionService
                 'amount' => $transaction->amount,
                 'type' => optional($transaction->category)->type,
                 'note' => $transaction->note,
+                'wallet_id' => $transaction ->wallet_id,
                 'iconPath' => optional($transaction->category->icon)->path,
                 'name' => optional($transaction->category)->name,
                 'date' => $transaction->date,
