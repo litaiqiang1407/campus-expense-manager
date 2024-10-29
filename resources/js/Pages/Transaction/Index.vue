@@ -5,18 +5,17 @@
     </div>
 
     <!-- No data state -->
-    <div v-else-if="!hasData">
+    <div v-else-if="!filteredTransactions.length">
         <NoData message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
     </div>
 
     <!-- Data loaded state -->
     <div v-else class="flex flex-col">
         <!-- Header -->
-        <Header :totalFlow="totalFlow" :wallets="wallets" />
+        <Header :totalFlow="totalFlow" :wallets="wallets" @walletSelected="handleWalletSelected" />
 
         <!-- History Management -->
         <div class="flex justify-between items-center m-0 pt-2 w-full max-w mx-auto px-4 bg-white text-sm">
-            <!-- Month Selection -->
             <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('last')">
                 LAST MONTH
                 <span v-if="selectedMonth === 'last'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
@@ -34,7 +33,7 @@
         <!-- Main Content -->
         <main class="bg-primaryBackground">
             <div>
-                <UseSage :transactions="transactions" :inflow="inflow" :outflow="outflow" :totalFlow="totalFlow" />
+                <UseSage :transactions="filteredTransactions" :inflow="inflow" :outflow="outflow" :totalFlow="totalFlow" />
             </div>
         </main>
     </div>
@@ -42,19 +41,21 @@
 
 <script setup>
 import NoData from '../../Components/NoData/Index.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { UseSage, Header } from '@/Pages/Transaction/Components/Index.js';
 import Loading from '@/Components/Loading/Index.vue';
 import axios from 'axios';
 
 const transactions = ref([]);
+const filteredTransactions = ref([]);
 const inflow = ref(0);
 const outflow = ref(0);
 const totalFlow = ref(0);
-const hasData = ref(false);  // Kiểm tra nếu có dữ liệu giao dịch
+const hasData = ref(false);
 const selectedMonth = ref('this');
 const wallets = ref([]);
 const isLoading = ref(false);
+const selectedWallet = ref(null);
 
 const fetchTransactions = async () => {
     try {
@@ -62,18 +63,27 @@ const fetchTransactions = async () => {
         const response = await axios.get(route('Transaction'));
         transactions.value = response.data.transactions;
         wallets.value = response.data.wallets;
-        console.log('Fetched Transactions:', wallets.value);
-        hasData.value = transactions.value.length > 0;  // Cập nhật trạng thái dữ liệu
-        calculateInflowAndOutflow(transactions.value);
+        hasData.value = transactions.value.length > 0;
+        filterTransactions();
     } catch (error) {
         console.error(error);
     } finally {
-        isLoading.value = false;  // Đảm bảo tắt trạng thái loading sau khi tải xong
+        isLoading.value = false;
     }
 };
 
-const selectMonth = (month) => {
-    selectedMonth.value = month;
+const filterTransactions = () => {
+    if (selectedWallet.value) {
+        filteredTransactions.value = transactions.value.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
+    } else {
+        filteredTransactions.value = transactions.value;
+    }
+    calculateInflowAndOutflow(filteredTransactions.value);
+};
+
+const handleWalletSelected = (wallet) => {
+    selectedWallet.value = wallet;
+    filterTransactions();
 };
 
 const calculateInflowAndOutflow = (transactions) => {
@@ -86,6 +96,10 @@ const calculateInflowAndOutflow = (transactions) => {
     }, 0);
 
     totalFlow.value = inflow.value - outflow.value;
+};
+
+const selectMonth = (month) => {
+    selectedMonth.value = month;
 };
 
 onMounted(() => {
