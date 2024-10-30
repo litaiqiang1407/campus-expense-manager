@@ -9,37 +9,36 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     public function index(Request $request)
-{
-    // Lấy tất cả danh mục cha và kèm theo danh mục con (subcategories)
-    $categories = Category::whereNull('parent_id') // Chỉ lấy danh mục cha (parent_id là null)
-        ->with(['subcategories' => function ($query) {
-            // Lấy các trường cần thiết từ bảng categories và icons cho danh mục con
-            $query->select(
+    {
+        // Lấy tham số type từ request
+        $type = $request->input('type');
+    
+        // Bắt đầu truy vấn cho danh mục
+        $categoriesQuery = Category::query()
+            ->select(
                 'categories.id',
                 'categories.name',
                 'categories.type',
-                'categories.parent_id',
-                'icons.path as icon_path'
+                'icons.path as icon_path' // Chọn các trường cần thiết
             )
-            ->join('icons', 'categories.icon_id', '=', 'icons.id'); // Kết hợp với bảng icons để lấy icon cho danh mục con
-        }])
-        ->select(
-            'categories.id', 
-            'categories.name', 
-            'categories.type', 
-            'icons.path as icon_path' // Chọn trường cần thiết từ bảng categories và icons cho danh mục cha
-        )
-        ->join('icons', 'categories.icon_id', '=', 'icons.id') // Kết hợp với bảng icons để lấy icon cho danh mục cha
-        ->get(); // Lấy tất cả danh mục cha và subcategories
-
-    // Trả về dữ liệu JSON nếu request yêu cầu
-    if ($request->wantsJson()) {
-        return response()->json($categories);
+            ->join('icons', 'categories.icon_id', '=', 'icons.id'); // Kết hợp với icons để lấy đường dẫn biểu tượng
+    
+        // Lọc danh mục theo type nếu có
+        if ($type) {
+            $categoriesQuery->where('categories.type', $type);
+        }
+    
+        // Lấy danh mục
+        $categories = $categoriesQuery->get();
+    
+        // Trả về dưới dạng JSON nếu yêu cầu
+        if ($request->wantsJson()) {
+            return response()->json($categories);
+        }
+    
+        // Render view với Inertia
+        return Inertia::render('Categories/Index', [
+            'categories' => $categories,
+        ]);
     }
-
-    // Trả về view và đổ dữ liệu ra giao diện với Inertia
-    return Inertia::render('Categories/Index', [
-        'categories' => $categories,
-    ]);
-}
 }

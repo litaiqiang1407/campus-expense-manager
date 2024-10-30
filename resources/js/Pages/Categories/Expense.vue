@@ -8,8 +8,9 @@
             <span class="text-primary font-semibold p-3">NEW CATEGORY</span>
         </div>
 
-        <div v-for="category in categories" :key="category.id" class="bg-white shadow my-2">
-            <!-- Phần tử cha bao quanh toàn bộ nội dung -->
+          <!-- Hiển thị danh mục -->
+        <div v-for="category in topCategories" :key="category.id" class="bg-white shadow my-2">
+            <!-- Mục cha -->
             <div class="flex justify-between items-center pt-4 px-4">
                 <div class="flex items-center space-x-3">
                     <img :src="category.icon_path" alt="Category Icon" class="w-10 h-10 rounded-full">
@@ -23,14 +24,14 @@
                 </button>
             </div>
 
-            <!-- Kiểm tra nếu danh mục cha có các danh mục con -->
-            <ul v-if="category.subcategories && category.subcategories.length" class="pl-8">
+            <!-- Danh mục con -->
+            <ul v-if="getSubcategories(category.id).length" class="pl-8">
                 <li
-                    v-for="(subcategory, index) in category.subcategories"
+                    v-for="(subcategory, index) in getSubcategories(category.id)"
                     :key="subcategory.id"
                     :class="[
                         'flex items-center space-x-2 py-2',
-                        index === category.subcategories.length - 1 ? 'border-left-half' : 'border-l-2' // Kiểm tra nếu đây là mục cuối cùng
+                        index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2' 
                     ]"
                 >
                     <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
@@ -45,12 +46,12 @@
                 </li>
             </ul>
         </div>
-
+        
         <div class="flex justify-center items-center bg-white shadow my-2">
             <span class="text-primary font-semibold p-3">Need help? Send us a message?</span>
         </div>
 
-        <div class="flex justify-left items-center bg-white shadow my-2">
+        <div class="flex justify-left items-center bg-white shadow my-2 pb-20">
             <button class="rounded-full px-4">
                 <font-awesome-icon icon="plus" class="text-primary size-6" />
             </button>
@@ -60,6 +61,8 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 const props = defineProps({
     categories: {
         type: Array,
@@ -67,7 +70,16 @@ const props = defineProps({
     },
 });
 
-console.log('Categories:', props.categories);
+const topCategories = computed(() => {
+    return props.categories.filter(category => category.type === 'expense' && category.parent_id === null);
+});
+
+// Hàm lấy các danh mục con theo parent_id
+const getSubcategories = (parentId) => {
+    return props.categories.filter(category => category.parent_id === parentId);
+};
+
+console.log('Top Categories:', topCategories.value);
 </script>
 
 <style>
