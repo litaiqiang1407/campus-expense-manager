@@ -4,12 +4,7 @@
         <Loading />
     </div>
 
-    <!-- No data state -->
-    <div v-else-if="!filteredTransactions.length">
-        <NoData message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
-    </div>
-
-    <!-- Data loaded state -->
+    <!-- Data or No data state -->
     <div v-else class="flex flex-col">
         <!-- Header -->
         <Header :totalFlow="totalFlow" :wallets="wallets" @walletSelected="handleWalletSelected" />
@@ -33,7 +28,8 @@
         <!-- Main Content -->
         <main class="bg-primaryBackground">
             <div>
-                <UseSage :transactions="filteredTransactions" :inflow="inflow" :outflow="outflow" :totalFlow="totalFlow" />
+                <UseSage v-if="filteredTransactions.length" :transactions="filteredTransactions" :inflow="inflow" :outflow="outflow" :totalFlow="totalFlow" />
+                <NoData v-else message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
             </div>
         </main>
     </div>

@@ -48,6 +48,7 @@ const emit = defineEmits(['walletSelected']);
 const isDropdownVisible = ref(false);
 const selectedWallet = ref(props.wallets[0] || null);
 
+// Định dạng số dư thành định dạng tiền tệ
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -56,16 +57,19 @@ const formatCurrency = (amount) => {
     }).format(amount);
 };
 
+// Hiển thị ví đầu tiên làm mặc định
 const toggleDropdown = () => {
     isDropdownVisible.value = !isDropdownVisible.value;
 };
 
+// Cập nhật ví khi người dùng chọn và phát sự kiện `walletSelected`
 const selectWallet = (wallet) => {
     selectedWallet.value = wallet;
-    emit('walletSelected', wallet);
+    emit('walletSelected', wallet); // Phát ra sự kiện khi chọn ví
     isDropdownVisible.value = false;
 };
 
+// Đóng dropdown khi click ra ngoài
 document.addEventListener('click', (event) => {
     if (!event.target.closest('.transaction-type-container')) {
         isDropdownVisible.value = false;
