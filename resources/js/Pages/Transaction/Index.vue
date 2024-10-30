@@ -41,13 +41,13 @@
 
 <script setup>
 import NoData from '../../Components/NoData/Index.vue';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { UseSage, Header } from '@/Pages/Transaction/Components/Index.js';
 import Loading from '@/Components/Loading/Index.vue';
 import axios from 'axios';
 
-const transactions = ref([]);  // Tất cả các giao dịch
-const filteredTransactions = ref([]); // Giao dịch theo ví được chọn
+const transactions = ref([]);
+const filteredTransactions = ref([]);
 const inflow = ref(0);
 const outflow = ref(0);
 const totalFlow = ref(0);
@@ -55,9 +55,8 @@ const hasData = ref(false);
 const selectedMonth = ref('this');
 const wallets = ref([]);
 const isLoading = ref(false);
-const selectedWallet = ref(null);  // Ví hiện đang được chọn
+const selectedWallet = ref(null);
 
-// Hàm gọi API lấy dữ liệu giao dịch
 const fetchTransactions = async () => {
     try {
         isLoading.value = true;
@@ -65,7 +64,6 @@ const fetchTransactions = async () => {
         transactions.value = response.data.transactions;
         wallets.value = response.data.wallets;
         hasData.value = transactions.value.length > 0;
-        // Lọc giao dịch theo ví được chọn khi có dữ liệu
         filterTransactions();
     } catch (error) {
         console.error(error);
@@ -74,38 +72,62 @@ const fetchTransactions = async () => {
     }
 };
 
-// Hàm lọc giao dịch dựa trên `wallet_id` của ví được chọn
 const filterTransactions = () => {
+    let filtered = transactions.value;
+
     if (selectedWallet.value) {
-        filteredTransactions.value = transactions.value.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
-    } else {
-        filteredTransactions.value = transactions.value;
+        filtered = filtered.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
     }
+
+    switch (selectedMonth.value) {
+        case 'last':
+            filtered = filtered.filter(transaction => isLastMonth(transaction.date));
+            break;
+        case 'this':
+            filtered = filtered.filter(transaction => isThisMonth(transaction.date));
+            break;
+        case 'future':
+            filtered = filtered.filter(transaction => isFuture(transaction.date));
+            break;
+    }
+
+    filteredTransactions.value = filtered;
     calculateInflowAndOutflow(filteredTransactions.value);
 };
 
-// Xử lý khi chọn ví từ Header
 const handleWalletSelected = (wallet) => {
     selectedWallet.value = wallet;
     filterTransactions();
 };
 
-// Hàm tính dòng tiền vào và ra
 const calculateInflowAndOutflow = (transactions) => {
-    inflow.value = transactions.reduce((total, transaction) => {
-        return transaction.type === 'income' ? total + transaction.amount : total;
-    }, 0);
-
-    outflow.value = transactions.reduce((total, transaction) => {
-        return transaction.type === 'expense' ? total + transaction.amount : total;
-    }, 0);
-
+    inflow.value = transactions.reduce((total, transaction) => transaction.type === 'income' ? total + transaction.amount : total, 0);
+    outflow.value = transactions.reduce((total, transaction) => transaction.type === 'expense' ? total + transaction.amount : total, 0);
     totalFlow.value = inflow.value - outflow.value;
 };
 
-// Lắng nghe sự thay đổi của `selectedMonth` nếu cần
 const selectMonth = (month) => {
     selectedMonth.value = month;
+    filterTransactions();
+};
+
+const isThisMonth = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    return transactionDate.getMonth() === today.getMonth() && transactionDate.getFullYear() === today.getFullYear();
+};
+
+const isLastMonth = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    return transactionDate.getMonth() === lastMonth.getMonth() && transactionDate.getFullYear() === lastMonth.getFullYear();
+};
+
+const isFuture = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    return transactionDate > today;
 };
 
 onMounted(() => {
