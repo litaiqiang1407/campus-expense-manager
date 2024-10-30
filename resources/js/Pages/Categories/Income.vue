@@ -8,7 +8,6 @@
             <span class="text-primary font-semibold p-3">NEW CATEGORY</span>
         </div>
 
-        <!-- Vòng lặp qua các danh mục thu nhập -->
         <div v-for="income in filteredIncomes" :key="income.id" class="bg-white shadow my-2">
             <div class="flex justify-between items-center pt-4 px-4">
                 <div class="flex items-center space-x-3">
@@ -23,13 +22,13 @@
                 </button>
             </div>
 
-            <ul v-if="income.subcategories && income.subcategories.length" class="pl-8">
+            <ul v-if="getSubcategories(income.id).length" class="pl-8">
                 <li
-                    v-for="(subcategory, index) in income.subcategories"
+                    v-for="(subcategory, index) in getSubcategories(income.id)"
                     :key="subcategory.id"
                     :class="[
                         'flex items-center space-x-2 py-2',
-                        index === income.subcategories.length - 1 ? 'border-left-half' : 'border-l-2' // Kiểm tra nếu đây là mục cuối cùng
+                        index === getSubcategories(income.id).length - 1 ? 'border-left-half' : 'border-l-2' 
                     ]"
                 >
                     <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
@@ -69,11 +68,12 @@ const props = defineProps({
 });
 
 const filteredIncomes = computed(() => {
-    if (!props.incomes) {
-        return [];
-    }
-    return props.incomes.filter(income => income.type === 'income');
+    return props.incomes.filter(income => income.type === 'income' && !income.parent_id);
 });
+
+const getSubcategories = (parentId) => {
+    return props.incomes.filter(income => income.parent_id === parentId);
+};
 
 console.log('Filtered Incomes:', filteredIncomes.value);
 </script>

@@ -8,9 +8,7 @@
             <span class="text-primary font-semibold p-3">NEW CATEGORY</span>
         </div>
 
-          <!-- Hiển thị danh mục -->
         <div v-for="category in topCategories" :key="category.id" class="bg-white shadow my-2">
-            <!-- Mục cha -->
             <div class="flex justify-between items-center pt-4 px-4">
                 <div class="flex items-center space-x-3">
                     <img :src="category.icon_path" alt="Category Icon" class="w-10 h-10 rounded-full">
@@ -24,7 +22,6 @@
                 </button>
             </div>
 
-            <!-- Danh mục con -->
             <ul v-if="getSubcategories(category.id).length" class="pl-8">
                 <li
                     v-for="(subcategory, index) in getSubcategories(category.id)"
@@ -74,7 +71,6 @@ const topCategories = computed(() => {
     return props.categories.filter(category => category.type === 'expense' && category.parent_id === null);
 });
 
-// Hàm lấy các danh mục con theo parent_id
 const getSubcategories = (parentId) => {
     return props.categories.filter(category => category.parent_id === parentId);
 };

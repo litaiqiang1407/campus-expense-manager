@@ -10,33 +10,28 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        // Lấy tham số type từ request
         $type = $request->input('type');
     
-        // Bắt đầu truy vấn cho danh mục
         $categoriesQuery = Category::query()
             ->select(
                 'categories.id',
+                'categories.parent_id',
                 'categories.name',
                 'categories.type',
-                'icons.path as icon_path' // Chọn các trường cần thiết
+                'icons.path as icon_path' 
             )
-            ->join('icons', 'categories.icon_id', '=', 'icons.id'); // Kết hợp với icons để lấy đường dẫn biểu tượng
-    
-        // Lọc danh mục theo type nếu có
+            ->join('icons', 'categories.icon_id', '=', 'icons.id'); 
+
         if ($type) {
             $categoriesQuery->where('categories.type', $type);
         }
     
-        // Lấy danh mục
         $categories = $categoriesQuery->get();
-    
-        // Trả về dưới dạng JSON nếu yêu cầu
+
         if ($request->wantsJson()) {
             return response()->json($categories);
         }
-    
-        // Render view với Inertia
+
         return Inertia::render('Categories/Index', [
             'categories' => $categories,
         ]);

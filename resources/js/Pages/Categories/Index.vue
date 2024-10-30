@@ -23,7 +23,6 @@
             </div>
         </div>
 
-        <!-- Component Display -->
         <Expense v-if="openComponent === 'expense'" :categories="categories" />
         <Income v-if="openComponent === 'income'" :incomes="categories" /> 
     </div>
@@ -45,7 +44,6 @@ const displayComponent = (component) => {
 
 const fetchCategories = async (categoryType) => {
     try {
-        // Gửi request với tham số lọc theo categoryType
         const response = await axios.get(route('Categories'), {
             params: { type: categoryType }
         });
@@ -56,7 +54,6 @@ const fetchCategories = async (categoryType) => {
     }
 };
 
-// Tải danh mục chi tiêu (expense) mặc định
 onMounted(() => {
     fetchCategories('expense'); 
 });
