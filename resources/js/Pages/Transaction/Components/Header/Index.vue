@@ -76,9 +76,3 @@ document.addEventListener('click', (event) => {
     }
 });
 </script>
-
-<style scoped>
-.transaction-type-container {
-    min-width: 180px;
-}
-</style>
