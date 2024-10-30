@@ -41,7 +41,7 @@
 
 <script setup>
 import NoData from '../../Components/NoData/Index.vue';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { UseSage, Header } from '@/Pages/Transaction/Components/Index.js';
 import Loading from '@/Components/Loading/Index.vue';
 import axios from 'axios';
@@ -73,11 +73,25 @@ const fetchTransactions = async () => {
 };
 
 const filterTransactions = () => {
+    let filtered = transactions.value;
+
     if (selectedWallet.value) {
-        filteredTransactions.value = transactions.value.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
-    } else {
-        filteredTransactions.value = transactions.value;
+        filtered = filtered.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
     }
+
+    switch (selectedMonth.value) {
+        case 'last':
+            filtered = filtered.filter(transaction => isLastMonth(transaction.date));
+            break;
+        case 'this':
+            filtered = filtered.filter(transaction => isThisMonth(transaction.date));
+            break;
+        case 'future':
+            filtered = filtered.filter(transaction => isFuture(transaction.date));
+            break;
+    }
+
+    filteredTransactions.value = filtered;
     calculateInflowAndOutflow(filteredTransactions.value);
 };
 
@@ -87,19 +101,33 @@ const handleWalletSelected = (wallet) => {
 };
 
 const calculateInflowAndOutflow = (transactions) => {
-    inflow.value = transactions.reduce((total, transaction) => {
-        return transaction.type === 'income' ? total + transaction.amount : total;
-    }, 0);
-
-    outflow.value = transactions.reduce((total, transaction) => {
-        return transaction.type === 'expense' ? total + transaction.amount : total;
-    }, 0);
-
+    inflow.value = transactions.reduce((total, transaction) => transaction.type === 'income' ? total + transaction.amount : total, 0);
+    outflow.value = transactions.reduce((total, transaction) => transaction.type === 'expense' ? total + transaction.amount : total, 0);
     totalFlow.value = inflow.value - outflow.value;
 };
 
 const selectMonth = (month) => {
     selectedMonth.value = month;
+    filterTransactions();
+};
+
+const isThisMonth = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    return transactionDate.getMonth() === today.getMonth() && transactionDate.getFullYear() === today.getFullYear();
+};
+
+const isLastMonth = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    return transactionDate.getMonth() === lastMonth.getMonth() && transactionDate.getFullYear() === lastMonth.getFullYear();
+};
+
+const isFuture = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    return transactionDate > today;
 };
 
 onMounted(() => {
