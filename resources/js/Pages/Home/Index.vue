@@ -19,8 +19,8 @@
                     </div>
                 </div>
                 <Report />
-                <Spending />
-                <Transaction />
+                <Spending :topSpending="topSpending" :isLoading="isLoading" />
+                <Transaction :transactions="recentTransactions" :isLoading="isLoading" />
             </main>
         </div>
 </template>
@@ -30,9 +30,11 @@ import { Header, Report, Spending, Transaction } from '@/Pages/Home/Components/I
 import { ref, onMounted } from 'vue';
 import Loading  from '@/Components/Loading/Index.vue'; 
 
-
 const totalBalance = ref(0);
 const walletList = ref([])
+const recentTransactions = ref([]);
+const topSpending = ref([]);
+
 const isLoading = ref(false);
 
 const fetchWallets = async () => {
@@ -41,6 +43,8 @@ const fetchWallets = async () => {
     const response = await axios.get(route('Home'));
     walletList.value = response.data.walletList
     totalBalance.value = response.data.totalBalance;
+    recentTransactions.value = response.data.recentTransactions;
+    topSpending.value = response.data.topSpending;
   } catch (error) {
     console.error('Error fetching wallets:', error);
   } finally {
