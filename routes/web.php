@@ -28,6 +28,7 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
         Route::get('/', [TransactionController::class, 'index'])->name('Transaction');
         Route::get('/create', [TransactionController::class, 'create'])->name('CreateTransaction');
         Route::post('/store', [TransactionController::class, 'store'])->name('StoreTransaction');
+        Route::get('/edit/{transactionId}', [TransactionController::class, 'edit'])->name('EditTransaction');
     });
     Route::group(['prefix' => 'my-wallet'], function () {
         Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');

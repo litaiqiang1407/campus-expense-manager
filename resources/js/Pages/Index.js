@@ -8,6 +8,7 @@ export { default as Account } from './Account/Index.vue';
 
 export { default as Transaction } from './Transaction/Index.vue';
 export { default as CreateTransaction } from './Transaction/Create.vue';
+export { default as EditTransaction } from './Transaction/Edit.vue';
 export { default as WriteNote } from './Transaction/WriteNote/Index.vue';
 
 export { default as MyAccount } from './MyAccount/Index.vue';

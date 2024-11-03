@@ -1,8 +1,8 @@
 <template>
     <div class="bg-white mt-[4px]">
         <div class="flex justify-between px-4 py-2">
-            <h1 class="text-[12px]  text-secondaryText">Inflow</h1>
-            <h2 class="text-[12px]  text-blueText">{{ inflow }}</h2>
+            <h1 class="text-[12px] text-secondaryText">Inflow</h1>
+            <h2 class="text-[12px] text-blueText">{{ inflow }}</h2>
         </div>
         <div class="flex justify-between px-4 py-1">
             <h1 class="text-[12px] text-secondaryText">Outflow</h1>
@@ -43,12 +43,11 @@
                 <span class="block w-full h-px bg-[#A7A7A7] mx-auto"></span>
             </div>
             <div v-for="transaction in group.transactions" :key="transaction.id"
-                class="flex items-center px-4 py-2 relative">
+                class="flex items-center px-4 py-2 relative cursor-pointer" @click="editTransaction(transaction.id)">
                 <img :src="transaction.iconPath" alt="Icon" class="w-8 h-8">
                 <div class="flex justify-between w-full ml-2">
                     <span class="font-semibold text-[14px]">{{ transaction.name }}</span>
-                    <span :class="transaction.type === 'income' ? 'text-blue-500' : 'text-red-500'">{{
-                        transaction.amount }}</span>
+                    <span :class="transaction.type === 'income' ? 'text-blue-500' : 'text-red-500'">{{ transaction.amount }}</span>
                 </div>
             </div>
         </div>
@@ -57,11 +56,13 @@
 
 <script setup>
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
     transactions: Array
 });
 
+const router = useRouter();
 const inflow = ref(0);
 const outflow = ref(0);
 const totalFlow = ref(0);
@@ -70,6 +71,7 @@ const currentMonth = ref('');
 const groupedTransactions = ref([]);
 const today = new Date();
 console.log(today)
+
 const parseDate = (dateString) => {
     const isoFormatted = dateString.replace(" ", "T");
     return new Date(isoFormatted);
@@ -80,8 +82,6 @@ const formatDay = (day) => {
 };
 const formatDate = (dateString) => {
     const today = new Date();
-
-    console.log(today)
 
     const date = new Date(dateString);
 
@@ -123,6 +123,10 @@ const calculateInflowAndOutflow = (transactions) => {
     }, 0);
 
     totalFlow.value = inflow.value - outflow.value;
+};
+
+const editTransaction = (transactionId) => {
+    router.push({ name: 'EditTransaction', params: { transactionId } });
 };
 
 watch(

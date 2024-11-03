@@ -78,22 +78,16 @@ class TransactionController extends Controller
 
     public function edit(Request $request, $transactionId)
     {
-        $transaction = $this->transactionService->getTransactionById($transactionId);
-        // $categories = $this->transactionService->getCategories(); // Giả sử bạn có phương thức này
-        // $wallets = $this->transactionService->getWallets(); // Giả sử bạn có phương thức này
+        $transaction = $this->transactionService->getTransactionDetails($transactionId);
 
         if ($request->wantsJson()) {
             return response()->json([
                 'transaction' => $transaction,
-                // 'categories' => $categories,
-                // 'wallets' => $wallets,
             ]);
         }
 
         return Inertia::render('Transaction/Edit', [
             'transaction' => $transaction,
-            // 'categories' => $categories,
-            // 'wallets' => $wallets,
         ]);
     }
 
