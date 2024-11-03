@@ -145,7 +145,7 @@ const chartOptions = {
                 size: 10, 
                 weight: '400', 
             },
-            color: '#FF2121', 
+            color: '#A7A7A7', 
         },
     },
     scales: {
@@ -154,9 +154,10 @@ const chartOptions = {
             ticks: {
                 callback: function(value, index, values) {
                     const labels = formattedDates.value;
-                    if (index === 0 || index === labels.length - 1) {
+                    if (index === 0 || index === labels.length - 1 || index === 29) {
                         return labels[index]; 
                     }
+
                     return ''; 
                 },
                 font: {
@@ -180,7 +181,6 @@ const fetchReportTrending = async () => {
     try {
         const response = await axios.get(route('HomeReport'));
         reportTrending.value = response.data.reportTrending;
-        console.log('reportTrending:', reportTrending.value);
         dates.value = reportTrending.value.dates;
         expense.value = reportTrending.value.expense;
         totalExpense.value = expense.value.reduce((acc, curr) => acc + curr, 0);
@@ -192,7 +192,6 @@ const fetchReportTrending = async () => {
             const [day, month] = date.split('/'); 
             return `${day}/${month}`; 
         });
-
 
         chartData.value = {
             labels: formattedDates.value,

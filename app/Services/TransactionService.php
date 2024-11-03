@@ -90,4 +90,8 @@ class TransactionService
     {
         return $this->transactionRepository->getReportTrending($userId);
     }
+    public function calculateTotalBalance($userId)
+    {
+        return $this->transactionRepository->calculateTotalBalance($userId);
+    }
 }

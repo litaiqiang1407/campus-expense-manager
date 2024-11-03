@@ -1,6 +1,6 @@
 <template>
     <div class="bg-primaryBackground min-h-screen">
-        <header class="sticky top-0 flex flex-col z-50">
+        <header class="sticky top-0 flex flex-col z-50  shadow mb-1">
             <div class="h-13 flex items-center justify-between px-4 py-2 bg-white ">
                 <div class="flex items-center gap-4">
                     <font-awesome-icon icon="arrow-left" class="text-[24px]" @click="goBack" />
@@ -15,7 +15,7 @@
                     </button>
                 </div>
             </div>
-            <div class="flex items-center w-full min-w-screen overflow-x-auto bg-white mb-1">
+            <div class="flex items-center w-full min-w-screen overflow-x-auto bg-white">
                 <div class="flex items-center w-full min-w-screen overflow-x-auto bg-white">
                     <div class="w-1/2 flex-shrink-0 flex flex-col items-center" 
                         @click="selectCategory('expense')">
@@ -38,21 +38,30 @@
                 </div>
             </div>
         </header>
-        <Expense v-if="activeCategory === 'expense'" :categories="expenseCategories" />
-        <Income v-if="activeCategory === 'income'" :categories="incomeCategories" /> 
+        <div v-if="isLoading" class="w-full h-32 flex items-center justify-center">
+            <Loading class="size-8"/>
+        </div>
+        <div v-else-if="!isLoading && categories.length === 0" class="flex flex-col items-center  text-center py-8">
+            <span class="font-semibold text-[10px] text-secondaryText">No categories found 🙌</span>
+        </div>
+        <div v-else-if="!isLoading && categories.length > 0">
+            <Expense v-if="activeCategory === 'expense'" :categories="expenseCategories" />
+            <Income v-if="activeCategory === 'income'" :categories="incomeCategories" /> 
+        </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import Expense from './Expense.vue';
 import Income from './Income.vue';
-import axios from 'axios';
+import Loading from '@/Components/Loading/Index.vue';
 
 const activeCategory = ref('expense');
 const categories = ref([]);
 const expenseCategories = ref([]);
 const incomeCategories = ref([]);
+const isLoading = ref(false);
 
 const selectCategory = (category) => {
     activeCategory.value = category; 
@@ -60,12 +69,15 @@ const selectCategory = (category) => {
 
 const fetchCategories = async () => {
     try {
+        isLoading.value = true;
         const response = await axios.get(route('Categories'));
         categories.value = response.data; 
         expenseCategories.value = response.data.filter(category => category.type === "expense");
         incomeCategories.value = response.data.filter(category => category.type === "income");
     } catch (error) {
         console.error('Error fetching categories:', error); 
+    } finally {
+        isLoading.value = false;
     }
 };
 

@@ -26,9 +26,9 @@ class HomeController extends Controller
 
         $filter = $request->input('filter', 'month'); 
 
-        $totalBalance = Wallet::where('user_id', $user_id)->sum('balance');
+        $totalBalance = $this->transactionService->calculateTotalBalance($user_id);
 
-        $walletList = $this->walletService->getWallets($user_id, 3);
+        $walletList = $this->walletService->getThreeWallets($user_id);
 
         $topSpending = $this->transactionService->getTopSpending($user_id, $filter);
 
