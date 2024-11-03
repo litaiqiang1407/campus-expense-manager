@@ -10,6 +10,13 @@ use Carbon\Carbon;
 
 class TransactionRepository
 {
+    public function getTransactionsByWallet($userId, $walletId)
+    {
+        return Transaction::where('user_id', $userId)
+            ->where('wallet_id', $walletId)
+            ->get(['id', 'category_id', 'amount', 'date']);
+    }
+    
     public function getTransactionsByUser($userId)
     {
         return Transaction::with(['category.icon'])

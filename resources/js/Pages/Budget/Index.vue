@@ -211,12 +211,10 @@ const fetchBudgets = async () => {
         });
         budgetList.value = response.data.budgets;
         wallet.value = response.data.wallet;
-        console.log("wallet value", wallet)
         timeRanges.value = [...new Set(budgetList.value.map(budget => budget.time_range))];
         activeTimeRange.value = timeRanges.value[0];
         transactions.value = response.data.transactions;
         transactionList.value = transactionsByRange(transactions.value, activeTimeRange.value);
-        console.log(transactionList.value);
         remainingTime.value = calculateRemainingTime(activeTimeRange.value);
         timeRangeBudgets()
     } catch (error) {
