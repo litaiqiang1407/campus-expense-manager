@@ -49,6 +49,25 @@ class TransactionRepository
             ->join('icons', 'wallets.icon_id', '=', 'icons.id')
             ->get();
     }
+
+    public function calculateTotalBalance($userId)
+    {
+        $totalIncome = Transaction::where('user_id', $userId)
+            ->whereHas('category', function($query) {
+                $query->where('type', 'income');
+            })
+            ->sum('amount');
+    
+        $totalExpense = Transaction::where('user_id', $userId)
+            ->whereHas('category', function($query) {
+                $query->where('type', 'expense');
+            })
+            ->sum('amount');
+    
+        return $totalIncome - $totalExpense;
+    }
+        
+
     public function getCategoryById($categoryId)
     {
         return Category::findOrFail($categoryId);

@@ -23,6 +23,11 @@ class WalletService
         return $this->walletRepository->getAllWallets($userId, $limit);
     }
 
+    public function getThreeWallets($userId)
+    {
+        return $this->walletRepository->getThreeWallets($userId);
+    }
+
     public function getWalletTypes()
     {
         return $this->walletRepository->getWalletTypes();

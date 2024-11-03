@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Models\Wallet;
 use App\Models\WalletType;
 use App\Models\Icon;
+use App\Models\Category;
+use App\Models\Transaction;
 
 use App\Repositories\IconRepository;
 use App\Repositories\WalletTypeRepository;
@@ -39,6 +41,23 @@ class WalletRepository
         ->get();
     }
 
+    public function getThreeWallets($userId)
+    {
+        return Wallet::select(
+            'wallets.id',
+            'wallets.name',
+            'wallets.balance',
+            'icons.path as icon_path',
+            'icons.name as icon_name'
+        )
+        ->where('user_id', $userId)
+        ->where('wallets.name', '!=', Wallet::TOTAL_WALLET_NAME) 
+        ->join('icons', 'wallets.icon_id', '=', 'icons.id')
+        ->limit(3)
+        ->get();
+    }
+        
+
     public function getWalletTypes()
     {
         return WalletType::select('id', 'name')->get();
@@ -54,6 +73,19 @@ class WalletRepository
     public function createWallet($data, $userId)
     {
         $wallet = Wallet::create(array_merge($data, ['user_id' => $userId]));
+
+        $category = Category::where('name', 'Other Income')->first();
+
+        if ($category) {
+            Transaction::create([
+                'category_id' => $category->id,
+                'amount' => $wallet->balance,
+                'wallet_id' => $wallet->id,
+                'user_id' => $userId,
+                'date' => now(), // Thời gian hiện tại
+                'note' => 'Initial balance', // Ghi chú cho giao dịch
+            ]);
+        }
 
         $this->recalculateTotalWalletBalance($userId);
 
