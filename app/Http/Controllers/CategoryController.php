@@ -11,6 +11,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $type = $request->input('type');
+        $userId = $request->user()->id;
     
         $categoriesQuery = Category::query()
             ->select(
@@ -18,22 +19,26 @@ class CategoryController extends Controller
                 'categories.parent_id',
                 'categories.name',
                 'categories.type',
-                'icons.path as icon_path' 
+                'icons.path as icon_path'
             )
-            ->join('icons', 'categories.icon_id', '=', 'icons.id'); 
-
+            ->join('icons', 'categories.icon_id', '=', 'icons.id')
+            ->where(function ($query) use ($userId) {
+                $query->whereNull('categories.user_id')
+                      ->orWhere('categories.user_id', $userId);
+            });
+    
         if ($type) {
             $categoriesQuery->where('categories.type', $type);
         }
     
         $categories = $categoriesQuery->get();
-
+    
         if ($request->wantsJson()) {
             return response()->json($categories);
         }
-
+    
         return Inertia::render('Categories/Index', [
             'categories' => $categories,
         ]);
-    }
+    }    
 }
