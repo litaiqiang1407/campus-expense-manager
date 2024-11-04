@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <span class="font-semibold text-[10px]" 
-                            :class="transaction?.type == 'income' ? 'text-redText' : 'text-blueText'"
+                            :class="transaction?.type == 'expense' ? 'text-redText' : 'text-blueText'"
                             >
                                 {{ transaction?.amount || "99" }}
                         </span>

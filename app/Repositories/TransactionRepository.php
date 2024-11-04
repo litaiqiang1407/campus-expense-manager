@@ -70,7 +70,7 @@ class TransactionRepository
                 $query->where('type', 'expense');
             })
             ->sum('amount');
-    
+
         return $totalIncome - $totalExpense;
     }
         
