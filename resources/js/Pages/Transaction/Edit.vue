@@ -9,53 +9,51 @@
                 :items="categories" :getItemLabel="item => item.name" @update:selectText="updateCategory" />
             <Note v-model="note" />
             <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :icon="'wallet'" :selectText="selectedWallet ? selectedWallet.name : 'Select Wallet'"
-                :items="wallets" :getItemLabel="item => item.name" @update:selectText="updateWallet"
-                :destinationPage="'SelectWallet'" />
+            <Select :icon="'wallet'" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
+                :getItemLabel="item => item.name" @update:selectText="updateWallet" :destinationPage="'SelectWallet'" />
             <Submit> Save</Submit>
         </Form>
     </div>
 </template>
-
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router'; // Import useRoute
 import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
 import axios from 'axios';
 import Loading from '@/Components/Loading/Index.vue';
+import { fromJSON } from 'postcss';
 
 const toast = useToast();
 const loading = ref(false);
 
 const categories = ref([]);
-const wallets = ref([]); // Sửa thành mảng
+const wallets = ref([]);
 const amount = ref(localStorage.getItem('amount') || '0');
 const note = ref(localStorage.getItem('note') || '');
-const selectedCategory = ref(null); // Thêm khai báo cho selectedCategory
-const selectedWallet = ref(null);
-const transactionDate = ref(["2024-10-31"]);
+const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) || null);
+const selectedCategory = ref(JSON.parse(localStorage.getItem('selectedCategory')) || null);
+const transactionDate = ref(localStorage.getItem('transactionDate') ? new Date(localStorage.getItem('transactionDate')) : new Date());
 
-const props = defineProps({
-    transactionId: {
-        type: String,
-        required: true,
-    },
-});
+// Lấy transactionId từ route params
+const router = useRoute();
+const transactionId = router.params.transactionId; // Sử dụng params từ route
+
+console.log("transactionId from params:", transactionId);
+
 const fetchTransactionData = async () => {
     try {
         loading.value = true;
-        const response = await axios.get(route('EditTransaction', { transactionId: props.transactionId || '147' }));
+        const response = await axios.get(route('EditTransaction', { transactionId: transactionId}));
         console.log("data", response.data); // Kiểm tra toàn bộ dữ liệu phản hồi
         const transactionData = response.data.transaction; // Dữ liệu phản hồi
-        console.log("data2",transactionData.date)
-        // Cập nhật các biến với dữ liệu từ transactionData
-        amount.value = transactionData.amount; // Lấy amount
-        note.value = transactionData.note; // Lấy note
-        selectedCategory.value = transactionData.category || { id: 1, name: 'Default Category' }; // Cập nhật nếu có dữ liệu
-        selectedWallet.value = transactionData.wallet || { id: 1, name: 'Default Wallet' }; // Cập nhật nếu có dữ liệu
-        // transactionDate.value = "2024-10-31"; // Sử dụng hàm parseDate để chuyển đổi
-
+        categories.value = response.data.categories;
+        amount.value = transactionData.amount;
+        note.value = transactionData.note;
+        selectedCategory.value = transactionData.category || { id: 1, name: 'Default Category' };
+        selectedWallet.value = transactionData.wallet_name;
+        transactionDate.value = transactionData.date;
     } catch (error) {
         console.error('Error fetching transaction data:', error);
         toast.error('Failed to load data. Please try again.');
@@ -63,7 +61,6 @@ const fetchTransactionData = async () => {
         loading.value = false;
     }
 };
-
 const updateAmount = (value) => {
     amount.value = value;
 };
@@ -82,16 +79,17 @@ const submitForm = async () => {
         const formData = {
             category_id: selectedCategory.value ? selectedCategory.value.id : 1,
             amount: amount.value,
-            wallet_id: selectedWallet.value ? selectedWallet.value.id : null,
+            wallet_id: 11,
             note: note.value,
             date: transactionDate.value,
+            type: 'expense', // hoặc 'income', tùy theo loại giao dịch
         };
+        console.log("data", formData);
 
-        const response = await axios.put(`/transaction/${transactionId.value}/update`, formData);
-
+        const response = await axios.post(route('UpdateTransaction', { transactionId: transactionId }), formData);
         if (response.data.success) {
             toast.success(response.data.message);
-            saveToLocalStorage(); // Gọi hàm saveToLocalStorage sau khi cập nhật thành công
+            saveToLocalStorage();
             clearLocalStorage();
             window.location.href = '/transaction';
         } else {
