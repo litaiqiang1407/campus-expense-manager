@@ -1,13 +1,13 @@
 <template>
     <div>
       <Form :action="'Save'" @submit="submitForm">
-        <InputMoney :inputValue="amount" @update:inputValue="amount = $event" />
+        <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
         <Select
           :selectText="selectedCategory ? selectedCategory.name : 'Select category'"
           :sizeText="'16'"
           :items="categories"
           :getItemLabel="item => item.name"
-          @update:selectText="selectedCategory = $event"
+          @update:selectText="updateCategory"
         />
         <Note v-model="note" />
         <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
@@ -16,7 +16,7 @@
           :selectText="selectedWallet ? selectedWallet.name : 'Select Wallet'"
           :items="[wallets]"
           :getItemLabel="item => item.name"
-          @update:selectText="selectedWallet = $event"
+          @update:selectText="updateWallet"
           :destinationPage="'SelectWallet'"
         />
         <Submit> Save</Submit>
@@ -26,7 +26,7 @@
 
   <script setup>
   import { ref, onMounted, watch } from 'vue';
-  import { InputMoney, Select , Note, Form, DateTimePicker } from '@/Components/Form/Index';
+  import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
   import { useToast } from 'vue-toastification';
   import Submit from '@/Components/Button/Submit/Index.vue';
   import { useRoute } from 'vue-router';
@@ -49,7 +49,10 @@
       const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
       categories.value = data.categories;
       wallets.value = data.wallet;
-      selectedWallet.value = wallets.value;
+
+      if (!selectedWallet.value) {
+        selectedWallet.value = wallets.value;
+      }
     } catch (error) {
       toast.error('Failed to load data. Please try again.');
     }
@@ -61,6 +64,18 @@
       note.value = route.query.note;
     }
   });
+
+  const updateAmount = (value) => {
+    amount.value = value;
+  };
+
+  const updateCategory = (value) => {
+    selectedCategory.value = value;
+  };
+
+  const updateWallet = (value) => {
+    selectedWallet.value = value;
+  };
 
   const submitForm = async () => {
     try {
@@ -76,12 +91,7 @@
 
       if (response.data.success) {
         toast.success(response.data.message);
-        localStorage.removeItem('amount');
-        localStorage.removeItem('note');
-        localStorage.removeItem('selectedWallet');
-        localStorage.removeItem('selectedCategory');
-        localStorage.removeItem('transactionDate');
-
+        clearLocalStorage();
         window.location.href = '/transaction';
       } else {
         toast.error('Failed to create Transaction.');
@@ -92,11 +102,23 @@
     }
   };
 
+  const clearLocalStorage = () => {
+    localStorage.removeItem('amount');
+    localStorage.removeItem('note');
+    localStorage.removeItem('selectedWallet');
+    localStorage.removeItem('selectedCategory');
+    localStorage.removeItem('transactionDate');
+  };
+
   watch([amount, note, selectedWallet, selectedCategory, transactionDate], () => {
+    saveToLocalStorage();
+  });
+
+  const saveToLocalStorage = () => {
     localStorage.setItem('amount', amount.value);
     localStorage.setItem('note', note.value);
     localStorage.setItem('selectedWallet', JSON.stringify(selectedWallet.value));
     localStorage.setItem('selectedCategory', JSON.stringify(selectedCategory.value));
     localStorage.setItem('transactionDate', transactionDate.value.toISOString());
-  });
+  };
   </script>

@@ -20,11 +20,11 @@ class TransactionRepository
     public function getTransactionsByUser($userId)
     {
         return Transaction::with(['category.icon'])
-            ->select('id', 'amount', 'note', 'category_id', 'user_id', 'date')
+            ->select('id', 'amount', 'note', 'category_id', 'user_id', 'date', 'wallet_id')
             ->where('user_id', $userId)
             ->orderBy('date', 'desc')
             ->get();
-    }   
+    }
 
     public function createTransaction($data, $userId)
     {
