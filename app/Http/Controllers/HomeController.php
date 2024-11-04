@@ -57,14 +57,18 @@ class HomeController extends Controller
 
         $reportTrending = $this->transactionService->getReportTrending($user_id);
 
+        $reportSpending = $this->transactionService->getReportSpending($user_id);
+
         if ($request->wantsJson()) {
             return response()->json([
-                'reportTrending' => $reportTrending
+                'reportTrending' => $reportTrending,
+                'reportSpending' => $reportSpending,
             ]);
         }
 
         return Inertia::render('Home/Components/Report/Index', [
-            'reportTrending' => $reportTrending
+            'reportTrending' => $reportTrending,
+            'reportSpending' => $reportSpending,
         ]);
     }
 }
