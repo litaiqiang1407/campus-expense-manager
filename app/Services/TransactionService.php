@@ -23,13 +23,13 @@ class TransactionService
 
     return [
         'id' => $transaction->id,
-        // 'amount' => $transaction->amount,
-        // 'type' => optional($transaction->category)->type,
-        // 'wallet_id' => $transaction->wallet_id,
-        // 'note' => $transaction->note,
-        // 'iconPath' => optional($transaction->category->icon)->path,
-        // 'name' => optional($transaction->category)->name,
-        // 'date' => $transaction->date,
+        'amount' => $transaction->amount,
+        'type' => optional($transaction->category)->type,
+        'wallet_id' => $transaction->wallet_id,
+        'note' => $transaction->note,
+        'iconPath' => optional($transaction->category->icon)->path,
+        'name' => optional($transaction->category)->name,
+        'date' => $transaction->date,
     ];
 }
 

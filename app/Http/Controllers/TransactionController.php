@@ -78,20 +78,24 @@ class TransactionController extends Controller
 
     public function edit(Request $request, $transactionId)
     {
+        $user = $request->user();
         $transaction = $this->transactionService->getTransactionDetails($transactionId);
 
         if ($request->wantsJson()) {
-            return response()->json([
+            return response()->json(data: [
                 'transaction' => $transaction,
+                // 'categories' => $categories,
+                // 'wallets' => $wallets,
             ]);
         }
 
         return Inertia::render('Transaction/Edit', [
             'transaction' => $transaction,
+            // 'categories' => $categories,
+            // 'wallets' => $wallets,
         ]);
     }
-
-    public function update(Request $request, $transactionId)
+        public function update(Request $request, $transactionId)
     {
         $validatedData = $request->validate([
             'amount' => 'required|numeric|min:0',

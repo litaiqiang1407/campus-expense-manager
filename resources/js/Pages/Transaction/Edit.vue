@@ -1,73 +1,66 @@
 <template>
     <div>
+        <div v-if="loading" class="flex w-screen items-center justify-center h-64">
+            <Loading class="size-16" />
+        </div>
         <Form :action="'Save'" @submit="submitForm">
             <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
-            <Select
-                :selectText="selectedCategory ? selectedCategory.name : 'Select category'"
-                :sizeText="'16'"
-                :items="categories"
-                :getItemLabel="item => item.name"
-                @update:selectText="updateCategory"
-            />
+            <Select :selectText="selectedCategory ? selectedCategory.name : 'Select category'" :sizeText="'16'"
+                :items="categories" :getItemLabel="item => item.name" @update:selectText="updateCategory" />
             <Note v-model="note" />
             <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select
-                :icon="'wallet'"
-                :selectText="selectedWallet ? selectedWallet.name : 'Select Wallet'"
-                :items="[wallets]"
-                :getItemLabel="item => item.name"
-                @update:selectText="updateWallet"
-                :destinationPage="'SelectWallet'"
-            />
+            <Select :icon="'wallet'" :selectText="selectedWallet ? selectedWallet.name : 'Select Wallet'"
+                :items="wallets" :getItemLabel="item => item.name" @update:selectText="updateWallet"
+                :destinationPage="'SelectWallet'" />
             <Submit> Save</Submit>
         </Form>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
-import { useRoute } from 'vue-router';
 import axios from 'axios';
+import Loading from '@/Components/Loading/Index.vue';
 
 const toast = useToast();
-const route = useRoute();
+const loading = ref(false);
 
-const transactionId = ref(route.query.transactionId); // ID của giao dịch cần chỉnh sửa
-const walletId = ref(route.query.walletId);
 const categories = ref([]);
-const wallets = ref({});
+const wallets = ref([]); // Sửa thành mảng
 const amount = ref(localStorage.getItem('amount') || '0');
 const note = ref(localStorage.getItem('note') || '');
-// const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) || null);
-// const selectedCategory = ref(JSON.parse(localStorage.getItem('selectedCategory')) || null);
-// const transactionDate = ref(localStorage.getItem('transactionDate') ? new Date(localStorage.getItem('transactionDate')) : new Date());
+const selectedCategory = ref(null); // Thêm khai báo cho selectedCategory
+const selectedWallet = ref(null);
+const transactionDate = ref(["2024-10-31"]);
+
 const props = defineProps({
     transactionId: {
-    type: String,
-    required: true,
-  },
+        type: String,
+        required: true,
+    },
 });
 const fetchTransactionData = async () => {
     try {
-        const response = await axios.get(`/transaction/edit/${transactionId}`); // Điều chỉnh endpoint cho phù hợp
+        loading.value = true;
+        const response = await axios.get(route('EditTransaction', { transactionId: props.transactionId || '147' }));
+        console.log("data", response.data); // Kiểm tra toàn bộ dữ liệu phản hồi
+        const transactionData = response.data.transaction; // Dữ liệu phản hồi
+        console.log("data2",transactionData.date)
+        // Cập nhật các biến với dữ liệu từ transactionData
+        amount.value = transactionData.amount; // Lấy amount
+        note.value = transactionData.note; // Lấy note
+        selectedCategory.value = transactionData.category || { id: 1, name: 'Default Category' }; // Cập nhật nếu có dữ liệu
+        selectedWallet.value = transactionData.wallet || { id: 1, name: 'Default Wallet' }; // Cập nhật nếu có dữ liệu
+        // transactionDate.value = "2024-10-31"; // Sử dụng hàm parseDate để chuyển đổi
 
-        // Log dữ liệu để kiểm tra
-        console.log("Fetched Data:", response.data); // Chỉ log dữ liệu data
-
-        // Gán giá trị từ response.data
-        // categories.value = response.data.categories; // Sử dụng response.data
-        // wallets.value = response.data.wallets;       // Sử dụng response.data
-        // amount.value = response.data.transaction.amount; // Sử dụng response.data
-        // note.value = response.data.transaction.note; // Sử dụng response.data
-        // transactionDate.value = new Date(response.data.transaction.date); // Sử dụng response.data
-        // selectedWallet.value = response.data.transaction.wallet_id; // Sử dụng response.data
-        // selectedCategory.value = response.data.transaction.category_id; // Sử dụng response.data
     } catch (error) {
-        console.error('Error fetching transaction data:', error); // Log lỗi nếu có
+        console.error('Error fetching transaction data:', error);
         toast.error('Failed to load data. Please try again.');
+    } finally {
+        loading.value = false;
     }
 };
 
@@ -98,6 +91,7 @@ const submitForm = async () => {
 
         if (response.data.success) {
             toast.success(response.data.message);
+            saveToLocalStorage(); // Gọi hàm saveToLocalStorage sau khi cập nhật thành công
             clearLocalStorage();
             window.location.href = '/transaction';
         } else {
@@ -116,11 +110,6 @@ const clearLocalStorage = () => {
     localStorage.removeItem('selectedCategory');
     localStorage.removeItem('transactionDate');
 };
-
-// Lưu trạng thái vào localStorage khi có thay đổi
-// watch([amount, note, selectedWallet, selectedCategory, transactionDate], () => {
-//     saveToLocalStorage();
-// });
 
 const saveToLocalStorage = () => {
     localStorage.setItem('amount', amount.value);
