@@ -1,20 +1,11 @@
 <template>
-    <!-- Loading state -->
-    <div v-if="isLoading" class="min-h-screen bg-white">
-        <Loading />
+    <div v-if="isLoading" class="w-full h-screen flex items-center justify-center">
+        <Loading class="size-8"/>
     </div>
 
-    <!-- No data state -->
-    <div v-else-if="!filteredTransactions.length">
-        <NoData message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
-    </div>
-
-    <!-- Data loaded state -->
     <div v-else class="flex flex-col">
-        <!-- Header -->
         <Header :totalFlow="totalFlow" :wallets="wallets" @walletSelected="handleWalletSelected" />
 
-        <!-- History Management -->
         <div class="flex justify-between items-center m-0 pt-2 w-full max-w mx-auto px-4 bg-white text-sm">
             <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('last')">
                 LAST MONTH
@@ -30,10 +21,10 @@
             </span>
         </div>
 
-        <!-- Main Content -->
         <main class="bg-primaryBackground">
             <div>
-                <UseSage :transactions="filteredTransactions" :inflow="inflow" :outflow="outflow" :totalFlow="totalFlow" />
+                <UseSage v-if="filteredTransactions.length" :transactions="filteredTransactions" />
+                <NoData v-else message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
             </div>
         </main>
     </div>
@@ -44,7 +35,6 @@ import NoData from '../../Components/NoData/Index.vue';
 import { ref, onMounted, watch } from 'vue';
 import { UseSage, Header } from '@/Pages/Transaction/Components/Index.js';
 import Loading from '@/Components/Loading/Index.vue';
-import axios from 'axios';
 
 const transactions = ref([]);
 const filteredTransactions = ref([]);
@@ -73,11 +63,25 @@ const fetchTransactions = async () => {
 };
 
 const filterTransactions = () => {
+    let filtered = transactions.value;
+
     if (selectedWallet.value) {
-        filteredTransactions.value = transactions.value.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
-    } else {
-        filteredTransactions.value = transactions.value;
+        filtered = filtered.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
     }
+
+    switch (selectedMonth.value) {
+        case 'last':
+            filtered = filtered.filter(transaction => isLastMonth(transaction.date));
+            break;
+        case 'this':
+            filtered = filtered.filter(transaction => isThisMonth(transaction.date));
+            break;
+        case 'future':
+            filtered = filtered.filter(transaction => isFuture(transaction.date));
+            break;
+    }
+
+    filteredTransactions.value = filtered;
     calculateInflowAndOutflow(filteredTransactions.value);
 };
 
@@ -87,19 +91,33 @@ const handleWalletSelected = (wallet) => {
 };
 
 const calculateInflowAndOutflow = (transactions) => {
-    inflow.value = transactions.reduce((total, transaction) => {
-        return transaction.type === 'income' ? total + transaction.amount : total;
-    }, 0);
-
-    outflow.value = transactions.reduce((total, transaction) => {
-        return transaction.type === 'expense' ? total + transaction.amount : total;
-    }, 0);
-
+    inflow.value = transactions.reduce((total, transaction) => transaction.type === 'income' ? total + transaction.amount : total, 0);
+    outflow.value = transactions.reduce((total, transaction) => transaction.type === 'expense' ? total + transaction.amount : total, 0);
     totalFlow.value = inflow.value - outflow.value;
 };
 
 const selectMonth = (month) => {
     selectedMonth.value = month;
+    filterTransactions();
+};
+
+const isThisMonth = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    return transactionDate.getMonth() === today.getMonth() && transactionDate.getFullYear() === today.getFullYear();
+};
+
+const isLastMonth = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    return transactionDate.getMonth() === lastMonth.getMonth() && transactionDate.getFullYear() === lastMonth.getFullYear();
+};
+
+const isFuture = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    return transactionDate > today;
 };
 
 onMounted(() => {

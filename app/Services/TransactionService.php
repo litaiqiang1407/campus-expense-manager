@@ -30,6 +30,7 @@ class TransactionService
                 'type' => optional($transaction->category)->type,
                 'wallet_id' => $transaction -> wallet_id,
                 'note' => $transaction->note,
+                'wallet_id' => $transaction ->wallet_id,
                 'iconPath' => optional($transaction->category->icon)->path,
                 'name' => optional($transaction->category)->name,
                 'date' => $transaction->date,

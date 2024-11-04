@@ -50,11 +50,10 @@
     try {
       const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
       categories.value = data.categories;
-      wallets.value = data.wallet; // Giả định data.wallet là một mảng. Nếu không, cần điều chỉnh.
+      wallets.value = data.wallet;
 
-      // Thiết lập ví được chọn nếu chưa có
       if (!selectedWallet.value) {
-        selectedWallet.value = wallets.value[0]; // Lấy ví đầu tiên trong danh sách
+        selectedWallet.value = wallets.value;
       }
     } catch (error) {
       toast.error('Failed to load data. Please try again.');
@@ -69,7 +68,6 @@
     }
   });
 
-  // Cập nhật giá trị
   const updateAmount = (value) => {
     amount.value = value;
   };
@@ -82,7 +80,6 @@
     selectedWallet.value = value;
   };
 
-  // Hàm gửi biểu mẫu
   const submitForm = async () => {
     try {
       const formData = {
@@ -108,7 +105,6 @@
     }
   };
 
-  // Hàm xóa dữ liệu lưu trữ
   const clearLocalStorage = () => {
     localStorage.removeItem('amount');
     localStorage.removeItem('note');
@@ -117,12 +113,10 @@
     localStorage.removeItem('transactionDate');
   };
 
-  // Theo dõi và lưu dữ liệu vào localStorage
   watch([amount, note, selectedWallet, selectedCategory, transactionDate], () => {
     saveToLocalStorage();
   });
 
-  // Hàm lưu vào localStorage
   const saveToLocalStorage = () => {
     localStorage.setItem('amount', amount.value);
     localStorage.setItem('note', note.value);

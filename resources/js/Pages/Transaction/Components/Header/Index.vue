@@ -27,8 +27,8 @@
                 <ul>
                     <li v-for="wallet in wallets" :key="wallet.id" @click="selectWallet(wallet)"
                         class="cursor-pointer hover:bg-gray-200 p-2 flex items-center">
-                        <img :src="wallet.icon_path" alt="Wallet Icon" class="h-6 w-6 mr-2 rounded-full" />
-                        <span class="truncate text-[12px]">{{ wallet.name }}</span>
+                        <img :src="wallet?.icon_path" alt="Wallet Icon" class="h-6 w-6 mr-2 rounded-full" />
+                        <span class="truncate text-[12px]">{{ wallet?.name || 'Wallet' }}</span>
                     </li>
                 </ul>
             </div>
