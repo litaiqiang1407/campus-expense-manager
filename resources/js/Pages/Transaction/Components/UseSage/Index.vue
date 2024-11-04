@@ -44,11 +44,11 @@
             </div>
             <div v-for="transaction in group.transactions" :key="transaction.id"
                 class="flex items-center px-4 py-2 relative">
-                <img :src="transaction.iconPath" alt="Icon" class="w-8 h-8">
+                <img :src="transaction?.iconPath" alt="Icon" class="w-8 h-8">
                 <div class="flex justify-between w-full ml-2">
-                    <span class="font-semibold text-[14px]">{{ transaction.name }}</span>
+                    <span class="font-semibold text-[14px]">{{ transaction?.name || 'Transaction'}}</span>
                     <span :class="transaction.type === 'income' ? 'text-blue-500' : 'text-red-500'">{{
-                        transaction.amount }}</span>
+                        formatBalance(transaction?.amount) || '0' }}</span>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
 import { ref, watch } from 'vue';
 
 const props = defineProps({
-    transactions: Array
+    transactions: Array,
 });
 
 const inflow = ref(0);
@@ -68,8 +68,7 @@ const totalFlow = ref(0);
 const dayUse = ref('');
 const currentMonth = ref('');
 const groupedTransactions = ref([]);
-const today = new Date();
-console.log(today)
+
 const parseDate = (dateString) => {
     const isoFormatted = dateString.replace(" ", "T");
     return new Date(isoFormatted);
@@ -80,8 +79,6 @@ const formatDay = (day) => {
 };
 const formatDate = (dateString) => {
     const today = new Date();
-
-    console.log(today)
 
     const date = new Date(dateString);
 
@@ -124,6 +121,12 @@ const calculateInflowAndOutflow = (transactions) => {
 
     totalFlow.value = inflow.value - outflow.value;
 };
+
+const formatBalance = (balance) => {
+  return balance === 0 
+    ? '$0' 
+    : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
+}
 
 watch(
     () => props.transactions,
