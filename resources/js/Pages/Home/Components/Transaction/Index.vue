@@ -27,7 +27,7 @@
                         <span class="font-semibold text-[10px]" 
                             :class="transaction?.type == 'expense' ? 'text-redText' : 'text-blueText'"
                             >
-                                {{ transaction?.amount || "99" }}
+                                {{ formatBalance(transaction?.amount) || "99" }}
                         </span>
                     </div>
                 </div>
@@ -38,6 +38,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { formatBalance } from '@/Helpers/Helpers';
 import Loading  from '@/Components/Loading/Index.vue'; 
 
 const router = useRouter();
