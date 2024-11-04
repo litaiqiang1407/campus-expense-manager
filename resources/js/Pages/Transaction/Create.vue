@@ -49,6 +49,7 @@
   const fetchCreateTransactionData = async () => {
     try {
       const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
+      console.log("data",data)
       categories.value = data.categories;
       wallets.value = data.wallet;
 
