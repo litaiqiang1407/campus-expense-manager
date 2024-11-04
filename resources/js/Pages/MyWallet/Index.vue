@@ -78,6 +78,7 @@ import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 import Swal from 'sweetalert2';
 import { Search } from '@/Components/Header/Components/Index';
+import { formatBalance } from '@/Helpers/Helpers';
 
 const router = useRouter();
 
@@ -137,12 +138,6 @@ const fetchWallets = async () => {
         isLoading.value = false;
     }
 };
-
-const formatBalance = (balance) => {
-    return balance === 0
-        ? '$0'
-        : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
-}
 
 const displayWalletTypes = () => {
     openWalletTypes.value = true;
