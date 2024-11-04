@@ -43,7 +43,7 @@ const note = ref(localStorage.getItem('note') || '');
 const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) || null);
 const selectedCategory = ref(JSON.parse(localStorage.getItem('selectedCategory')) || null);
 
-const transactionDate = ref(localStorage.getItem('transactionDate') ? new Date(localStorage.getIte('transactionDate')) : new Date());
+const transactionDate = ref(localStorage.getItem('transactionDate') ? new Date(localStorage.getItem('transactionDate')) : new Date());
 
 const fetchCreateTransactionData = async () => {
   try {
