@@ -46,6 +46,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
+import { formatBalance } from '@/Helpers/Helpers';
 import Loading  from '@/Components/Loading/Index.vue'; 
 
 const props = defineProps({
@@ -88,12 +89,6 @@ const fetchTopSpending = async (filter) => {
         isLoading.value = false;
     }
 };
-
-const formatBalance = (balance) => {
-    return balance === 0
-        ? '$0'
-        : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
-}
 
 const displayTopSpending = computed(() => topSpending.value);
 </script>
