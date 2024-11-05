@@ -68,6 +68,7 @@ const customTo = ref('');
 const formattedDateRange = ref(''); 
 
 const formatDate = (date) => date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' });
+const formatDateYear = (date) => date.toLocaleDateString('en-GB');
 
 const today = new Date();
 const dayOfWeek = today.getDay();
@@ -95,11 +96,13 @@ const dateOptions = computed(() => [
 ]);
 
 const formattedDateOption = computed(() => {
-  if (selectedDateOption.value === 'Custom' && customFrom.value && customTo.value) {
-      return `${formatDate(new Date(customFrom.value))} - ${formatDate(new Date(customTo.value))}`;
-  }
-  const selectedOption = dateOptions.value.find(option => option.value === selectedDateOption.value);
-  return selectedOption ? selectedOption.label : 'Select time range';
+    if (selectedDateOption.value === 'Custom' && customFrom.value && customTo.value) {
+        return `${formatDateYear(new Date(customFrom.value))} - ${formatDateYear(new Date(customTo.value))}`;
+    } else if (selectedDateOption.value === 'custom' && customFrom.value && customTo.value) {
+        return `${formatDateYear(new Date(customFrom.value))} - ${formatDateYear(new Date(customTo.value))}`;
+    }
+    const selectedOption = dateOptions.value.find(option => option.value === selectedDateOption.value);
+    return selectedOption ? selectedOption.label : 'Select time range';
 });
 
 const toggleDateOptions = () => {

@@ -136,7 +136,7 @@ const routes = [
         path: '/select-wallet',
         name: 'SelectWallet',
         component: SelectWallet,
-        meta: { layout: HeaderLayout, title: 'Select wallet', isBack: false, isCancel: true },
+        meta: { layout: HeaderLayout, title: 'Select wallet', isBack: true, isCancel: false },
         props: true,
     }
 ]
