@@ -216,53 +216,50 @@ class TransactionRepository
     public function getReportSpending($userId)
     {
         $now = Carbon::now();
-
+    
         $startOfThisMonth = $now->startOfMonth()->toDateString();
         $endOfThisMonth = $now->endOfMonth()->toDateString();
-    
+        
         $startOfLastMonth = $now->subMonth()->startOfMonth()->toDateString();
         $endOfLastMonth = $now->endOfMonth()->toDateString(); 
-
+    
         $startOfThisWeek = $now->startOfWeek()->toDateString();
         $endOfThisWeek = $now->endOfWeek()->toDateString();
-    
+        
         $startOfLastWeek = $now->subWeek()->startOfWeek()->toDateString();
         $endOfLastWeek = $now->endOfWeek()->toDateString(); 
-
-        $lastMonthExpense = DB::table('transactions')
-            ->join('categories', 'transactions.category_id', '=', 'categories.id')
-            ->where('transactions.user_id', $userId)
-            ->where('categories.type', 'expense')
-            ->whereBetween('transactions.date', [$startOfLastMonth, $endOfLastMonth])
-            ->sum('transactions.amount');
     
-        $thisMonthExpense = DB::table('transactions')
-            ->join('categories', 'transactions.category_id', '=', 'categories.id')
-            ->where('transactions.user_id', $userId)
-            ->where('categories.type', 'expense')
-            ->whereBetween('transactions.date', [$startOfThisMonth, $endOfThisMonth])
-            ->sum('transactions.amount');
-
-        $lastWeekExpense = DB::table('transactions')
-            ->join('categories', 'transactions.category_id', '=', 'categories.id')
-            ->where('transactions.user_id', $userId)
-            ->where('categories.type', 'expense')
-            ->whereBetween('transactions.date', [$startOfLastWeek, $endOfLastWeek])
-            ->sum('transactions.amount');
-
-        $thisWeekExpense = DB::table('transactions')
-            ->join('categories', 'transactions.category_id', '=', 'categories.id')
-            ->where('transactions.user_id', $userId)
-            ->where('categories.type', 'expense')
-            ->whereBetween('transactions.date', [$startOfThisWeek, $endOfThisWeek])
-            ->sum('transactions.amount');
-
+        $getTotalExpense = function($startDate, $endDate) use ($userId) {
+            return DB::table('transactions')
+                ->join('categories', 'transactions.category_id', '=', 'categories.id')
+                ->where('transactions.user_id', $userId)
+                ->where('categories.type', 'expense')
+                ->whereBetween('transactions.date', [$startDate, $endDate])
+                ->sum('transactions.amount');
+        };
+    
+        $lastMonthExpense = $getTotalExpense($startOfLastMonth, $endOfLastMonth);
+        $thisMonthExpense = $getTotalExpense($startOfThisMonth, $endOfThisMonth);
+        $lastWeekExpense = $getTotalExpense($startOfLastWeek, $endOfLastWeek);
+        $thisWeekExpense = $getTotalExpense($startOfThisWeek, $endOfThisWeek);
+    
+        $monthComparison = null;
+        if ($lastMonthExpense > 0) {
+            $monthComparison = $thisMonthExpense === 0 ? -100 : (int)round((($thisMonthExpense - $lastMonthExpense) / $lastMonthExpense) * 100);
+        }
+    
+        $weekComparison = null;
+        if ($lastWeekExpense > 0) {
+            $weekComparison = $thisWeekExpense === 0 ? -100 : (int)round((($thisWeekExpense - $lastWeekExpense) / $lastWeekExpense) * 100);
+        }
+    
         $result = [
             'monthExpense' => [(float)$lastMonthExpense, (float)$thisMonthExpense],
             'weekExpense' => [(float)$lastWeekExpense, (float)$thisWeekExpense],
+            'monthComparison' => $monthComparison,
+            'weekComparison' => $weekComparison,
         ];
-    
+
         return $result;
     }
-      
-}
+}    
