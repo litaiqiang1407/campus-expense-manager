@@ -1,5 +1,5 @@
 <template>
-    <AuthForm :title="'Sign up'" @submitted="handleSignup" />
+    <AuthForm :title="'Sign up'" @submitted="handleSignup" :errors="errors" />
     <div class="text-center mt-4">
         <a @click.prevent="goToSignin" class="text-primary font-semibold mb-2 text-[14px] text-center">
             Sign in
@@ -11,20 +11,26 @@
 import AuthForm from '@/Components/Form/AuthForm.vue';
 import { useRouter } from 'vue-router'; 
 import { ref } from 'vue';
-import { useToast } from 'vue-toastification'; // Nếu bạn muốn sử dụng thông báo cho người dùng
+import { useToast } from 'vue-toastification';
 
 const router = useRouter(); 
 const toast = useToast();
 
+const errors = ref({});
+
 const handleSignup = async (formData) => {
-    console.log(formData); // Kiểm tra giá trị được gửi
     try {
-        await axios.post('/register', formData);
+        const response = await axios.post('/register', formData);
         toast.success('Registration successful!');
         router.push({ name: 'Home' });
     } catch (error) {
-        console.error(error.response.data); // In ra thông báo lỗi
-        toast.error('Registration unsuccessful. Please try again.' + error.response.data.message);
+        errors.value = {};
+        if (error.response.data.type == 'email') {
+            errors.value.email = error.response.data.error;
+        } else if (error.response.data.type == 'password') {
+            errors.value.password = error.response.data.error;
+        }
+        console.log(errors.value);
     }
 };
 

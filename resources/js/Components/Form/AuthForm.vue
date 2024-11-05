@@ -24,14 +24,14 @@
         <form class="mt-8" @submit.prevent="submit">
             <div class="flex flex-col space-y-6">
                 <InputField v-model="email" type="text" placeholder="Email" />
-                <span v-if="emailError" class="text-redText text-sm">{{ emailError }}</span>
-                <!-- Chỉ hiển thị thông báo lỗi cho email -->
+                <span v-if="errors.email" class="text-redText text-sm">
+                    {{ errors.email }}
+                </span>
                 
                 <InputField v-model="password" type="password" placeholder="Password" />
-                <span v-if="passwordError && emailExists" class="text-redText text-sm">{{ passwordError }}</span> <!-- Hiển thị lỗi mật khẩu nếu email tồn tại -->
-
-                <!-- Di chuyển thông báo lỗi login dưới trường mật khẩu -->
-                <span v-if="loginError && !passwordError" class="text-redText text-sm">{{ loginError }}</span> <!-- Hiển thị lỗi mật khẩu -->
+                <span v-if="errors.password" class="text-redText text-sm">
+                    {{ errors.password }}
+                </span> 
 
                 <button type="submit" class="bg-primary text-white rounded py-2 uppercase font-semibold">{{ title }}</button>
             </div>
@@ -42,72 +42,76 @@
 <script setup>
 import Header from '@/Components/Header/Index.vue';
 import InputField from '@/Components/Form/InputField.vue';
-import { ref, defineEmits, defineProps } from 'vue';
+import { ref, defineEmits, watch, toRefs } from 'vue';
 
 const emit = defineEmits(['submitted']);
 const props = defineProps({
     title: String,
-    loginError: String // Nhận thông báo lỗi từ component cha
+    errors: Object
 });
 
 const email = ref('');
 const password = ref('');
-const emailError = ref('');
-const passwordError = ref('');
-const emailExists = ref(false); // Biến để kiểm tra email tồn tại
+const errors = ref({});
+const { errors: propErrors } = toRefs(props);
+
+watch(propErrors, (newValue) => {
+    errors.value = newValue;
+});
+
+const validateEmpty = (field, name) => {
+    if (!field || field.trim() === '') {
+        return `${name} is required.`;
+    }
+    return '';
+};
+
+const validateEmailFormat = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        return 'Invalid email format.';
+    }
+    return '';
+};
+
+const validatePasswordLength = (password) => {
+    if (password.length < 8) {
+        return 'Password must be at least 8 characters.';
+    }
+    return '';
+};
+
+const validateForm = () => {
+    errors.value = {};
+
+    const emailEmptyError = validateEmpty(email.value, 'Email');
+    const emailFormatError = validateEmailFormat(email.value);
+    if (emailEmptyError) {
+        errors.value.email = emailEmptyError;
+    } else if (emailFormatError) {
+        errors.value.email = emailFormatError;
+    }
+
+    const passwordEmptyError = validateEmpty(password.value, 'Password');
+    const passwordLengthError = validatePasswordLength(password.value);
+    if (passwordEmptyError) {
+        errors.value.password = passwordEmptyError;
+    } else if (passwordLengthError) {
+        errors.value.password = passwordLengthError;
+    }
+
+    return Object.keys(errors.value).length === 0;
+};
+
 
 const submit = async () => {
-    emailError.value = '';
-    passwordError.value = '';
-
-    if (email.value.trim() === '') {
-        emailError.value = 'Email is required';
-        return;
-    } else if (!validateEmail(email.value)) {
-        emailError.value = 'Invalid email format';
-        return;
+    if (validateForm()) {
+        try {
+            emit('submitted', { email: email.value, password: password.value });
+        } catch (error) {
+            console.error('Submission error:', error);
+        }
     }
-
-    // Kiểm tra email đã tồn tại hay chưa
-    await checkEmailExists(email.value);
-
-    if (!emailExists.value) {
-        return; // Nếu email không tồn tại, dừng lại
-    }
-
-    // Nếu người dùng đã nhập mật khẩu
-    if (password.value.trim() === '') {
-        passwordError.value = 'Password is required';
-    } else if (password.value.length < 8) {
-        passwordError.value = 'Password must be at least 8 characters';
-    }
-
-    // Chỉ gửi dữ liệu nếu không có lỗi
-    if (emailError.value === '' && passwordError.value === '') {
-        emit('submitted', {
-            email: email.value,
-            password: password.value,
-        });
-    }
-};
-
-// Hàm kiểm tra email đã tồn tại trong database
-const checkEmailExists = async (email) => {
-    try {
-        // Gửi request để kiểm tra email tồn tại
-        const response = await axios.post('/check-email', { email });
-        // Nếu tồn tại, đặt biến emailExists thành true
-        emailExists.value = true;
-    } catch (error) {
-        // Nếu không tồn tại, cập nhật thông báo lỗi
-        emailError.value = 'Email does not exist. Please register.';
-        emailExists.value = false; // Đặt biến thành false
-    }
-};
-
-const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
 };
 
 const loginWithGoogle = () => {

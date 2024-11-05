@@ -1,5 +1,5 @@
 <template>
-    <AuthForm :title="'Sign in'" @submitted="handleSignin" :loginError="loginError" />
+    <AuthForm :title="'Sign in'" @submitted="handleSignin" :errors="errors" />
     <div class="flex items-center justify-between mt-4 px-16">
         <a @click.prevent="goToSignup" class="text-primary font-semibold mb-2 text-[14px] text-center">
             Sign up
@@ -17,18 +17,23 @@ import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 
 const router = useRouter(); 
-const loginError = ref(''); // Biến lưu trữ thông báo lỗi đăng nhập
 const toast = useToast();
 
+const errors = ref({});
+
 const handleSignin = async (formData) => {
-    console.log(formData); // Kiểm tra giá trị được gửi
     try {
         await axios.post('/signin', formData);
         toast.success('Login successful!');
         router.push({ name: 'Home' });
     } catch (error) {
-        console.error(error.response.data); // In ra thông báo lỗi
-        loginError.value = error.response.data.message; // Cập nhật thông báo lỗi
+        errors.value = {};
+        if (error.response.data.type == 'email') {
+            errors.value.email = error.response.data.error;
+        } else if (error.response.data.type == 'password') {
+            errors.value.password = error.response.data.error;
+        }
+        console.log(errors.value);
     }
 };
 

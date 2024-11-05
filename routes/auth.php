@@ -11,7 +11,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/signup', [SignUpController::class, 'index'])->name('SignUp');
     Route::get('/signin', [SignInController::class, 'index'])->name('login');
     Route::post('/register', [SignUpController::class, 'store'])->name('signup.store');
-    Route::post('/signin', [SignInController::class, 'store'])->name('login.store');
+    Route::post('/signin', [SignInController::class, 'login'])->name('login.store');
     Route::post('/check-email', [SignInController::class, 'checkEmail']);
 
 });
