@@ -29,7 +29,7 @@ class TransactionSeeder extends Seeder
                 'wallet_id' => $faker->randomElement($walletIds),
                 'user_id' => $faker->randomElement($userIds),
                 'note' => $faker->sentence(),
-                'date' => $faker->dateTimeBetween('2024-10-01', '2024-10-31')->format('Y-m-d'),
+                'date' => $faker->dateTimeBetween('2024-11-01', '2024-11-30')->format('Y-m-d'),
             ]);
         }
     }
