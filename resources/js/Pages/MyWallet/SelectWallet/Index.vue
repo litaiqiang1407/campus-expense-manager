@@ -79,11 +79,11 @@
                     class="button-animate border-[2px] border-primary p-4 rounded-lg flex items-center justify-center"
                     @click.stop="createWallet(walletType.id)">
                         <h3 class="font-semibold text-[16px]">{{ walletType.name }}</h3>
-                    </button>
-                </div>
+                </button>
             </div>
         </div>
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -92,6 +92,7 @@ import { useRouter } from 'vue-router';
 import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 import { Search } from '@/Components/Header/Components/Index';
+import { formatBalance } from '@/Helpers/Helpers';
 
 const router = useRouter();
 const walletIdSelected = router.currentRoute.value.query.walletId;
@@ -130,30 +131,24 @@ const performSearch = async (query) => {
   }
 };
 
-const formatBalance = (balance) => {
-    return balance === 0
-        ? '$0'
-        : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
-}
-
 const selectWallet = (walletId) => {
-    router.push({ name: 'CreateTransaction', query: { walletId } });
+  router.push({ name: 'Budget', query: { walletId } });
 };
 
 const displayWalletTypes = () => {
-    openWalletTypes.value = true;
+  openWalletTypes.value = true;
 };
 
 const closeWalletTypes = () => {
-    openWalletTypes.value = false;
+  openWalletTypes.value = false;
 };
 
 const createWallet = (walletTypeId) => {
-    router.push({ name: 'CreateWallet', params: { walletTypeId } });
+  router.push({ name: 'CreateWallet', params: { walletTypeId } });
 };
 
 const goToMyWallet = () => {
-    router.push({ name: 'MyWallet' });
+  router.push({ name: 'MyWallet' });
 };
 
 onMounted(fetchWallets);

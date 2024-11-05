@@ -18,6 +18,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { formatBalance } from '@/Helpers/Helpers';
 
 const router = useRouter();
 
@@ -31,10 +32,4 @@ const props = defineProps({
 const goToNotification = () => {
     router.push({ name: 'Notification' });
 };
-
-const formatBalance = (balance) => {
-  return balance === 0 
-    ? '$0' 
-    : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
-}
 </script>

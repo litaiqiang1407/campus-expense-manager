@@ -18,6 +18,10 @@ use App\Http\Middleware\HandleInertiaRequests;
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('Welcome');
 
 Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->group(function () {
+    Route::group(['prefix' => ''], function () {
+        Route::get('/', [HomeController::class, 'index'])->name('Home');
+        Route::get('/report', [HomeController::class, 'report'])->name('HomeReport');
+    });
     Route::get('/', [HomeController::class, 'index'])->name('Home');
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
