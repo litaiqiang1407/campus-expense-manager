@@ -15,6 +15,11 @@
                 class="w-full">
                 <swiper-slide>
                     <div class="flex flex-col items-center pb-4">
+                        <div class="w-full py-2 border-b-[1px] border-primary mb-4">
+                            <h2 class="text-primary text-[12px] w-full text-center">
+                                Trending report
+                            </h2>
+                        </div> 
                         <div class="flex items-center w-full mb-2 border-b-[1px] border-gray-100">
                             <div class="w-1/2 flex flex-col items-center border-b-[1px] pb-2"
                                 @click="setActiveTrending('expense')"
@@ -34,17 +39,17 @@
                                 </h2>
                             </div>
                         </div> 
-                        <Line :data="chartData" :options="chartOptions" class="w-full h-full mb-14" />
-                        <div class="absolute top-[79%]">
-                            <span class="text-primary text-[12px]">
-                                Trending report
-                            </span>
-                        </div>                      
+                        <Line :data="chartData" :options="chartOptions" class="w-full h-full mb-14" />                    
                     </div>
                 </swiper-slide>
                 <swiper-slide>
                     <div class="flex flex-col items-center pb-4">
-                        <div class="flex items-center p-1 bg-[#f0f0f0] rounded-[8px] w-full my-3">
+                        <div class="w-full py-2 border-b-[1px] border-primary mb-4">
+                            <h2 class="text-primary text-[12px] w-full text-center">
+                                Spending report
+                            </h2>
+                        </div> 
+                        <div class="flex items-center p-1 bg-[#f0f0f0] rounded-[8px] w-full mb-3">
                             <button 
                                 class="w-1/2 rounded-[4px] font-medium text-[10px] py-2" 
                                 :class="activeSpending === 'week' ? 'bg-white' : 'bg-[#f0f0f0'" 
@@ -57,12 +62,27 @@
                                 Month
                             </button>
                         </div>
-                        <Bar :data="barChartData" :options="barChartOptions" class="w-full h-full mb-14" />
-                        <div class="absolute top-[76%]">
-                            <span class="text-primary text-[12px]">
-                                Spending report
-                            </span>
+                        <div class="flex flex-col items-start w-full">
+                            <h3 class="text-[12px] text-black text-left font-bold">
+                                {{ activeSpending === 'week' ? formatBalance(spentThisWeek, false, true) : formatBalance(spentThisMonth, false, true) }}
+                            </h3>
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] text-secondaryText font-semibold">Total spent this {{ activeSpending }}</span>
+                                <div class="flex items-center gap-0.5 text-[10px] font-semibold" :class="{
+                                    'text-green-500': (activeSpending === 'week' && weekComparison < 0) || (activeSpending === 'month' && monthComparison < 0),
+                                    'text-red-500': (activeSpending === 'week' && weekComparison > 0) || (activeSpending === 'month' && monthComparison > 0),
+                                    'text-yellow-500': (activeSpending === 'week' && weekComparison === 0) || (activeSpending === 'month' && monthComparison === 0)}">
+                                    <span v-if="activeSpending === 'week'">
+                                        <font-awesome-icon :icon="weekComparison < 0 ? 'fa-solid fa-circle-arrow-down' : weekComparison > 0 ? 'fa-solid fa-circle-arrow-up' : 'fa-solid fa-circle-minus'" />
+                                    </span>
+                                    <span v-if="activeSpending === 'month'">
+                                        <font-awesome-icon :icon="monthComparison < 0 ? 'fa-solid fa-circle-arrow-down' : monthComparison > 0 ? 'fa-solid fa-circle-arrow-up' : 'fa-solid fa-circle-minus'" />
+                                    </span>
+                                    <span>{{ activeSpending === 'week' ? Math.abs(weekComparison) : Math.abs(monthComparison) }}%</span>
+                                </div>
+                            </div>
                         </div>
+                        <Bar :data="barChartData" :options="barChartOptions" class="w-full h-full mb-14" />
                     </div>
                 </swiper-slide>
             </swiper>
@@ -104,6 +124,12 @@ const formattedDates = ref([]);
 const weekExpense = ref([]);
 const monthExpense = ref([]);
 
+const spentThisMonth = ref(0);
+const spentThisWeek = ref(0);
+
+const monthComparison = ref(0);
+const weekComparison = ref(0);
+
 const barChartOptions = {
     responsive: true,
     plugins: {
@@ -112,15 +138,23 @@ const barChartOptions = {
     scales: {
         x: {
             type: 'category',
-            ticks: { font: { size: 10 } },
+            grid: {
+                display: false, 
+            },
+            ticks: { 
+                font: { size: 10 } },
         },
         y: {
             beginAtZero: true,
-            ticks: { font: { size: 10 } },
+            position: 'right',
+            ticks: { 
+                callback: function(value) {
+                    return formatBalance(value, true, false); 
+                },
+                font: { size: 10 } },
         },
     },
 };
-
 
 const barChartData = ref({
     labels:  [] ,
@@ -169,6 +203,9 @@ const chartOptions = {
     scales: {
         x: {
             type: 'category',
+            grid: {
+                display: false, 
+            },
             ticks: {
                 callback: function(value, index, values) {
                     const labels = formattedDates.value;
@@ -187,6 +224,9 @@ const chartOptions = {
             beginAtZero: true,
             position: 'right',
             ticks: {
+                callback: function(value) {
+                    return formatBalance(value, true, false);
+                },
                 font: {
                     size: 10, 
                 },
@@ -247,6 +287,12 @@ const fetchReportTrending = async () => {
         weekExpense.value = reportSpending.weekExpense;
         monthExpense.value = reportSpending.monthExpense;
 
+        spentThisMonth.value = reportSpending.monthExpense[1];
+        spentThisWeek.value = reportSpending.weekExpense[1];
+
+        weekComparison.value = reportSpending.weekComparison;
+        monthComparison.value = reportSpending.monthComparison;
+
     } catch (error) {
         console.error('Error fetching report trending:', error);
     }
@@ -277,7 +323,7 @@ onMounted(async () => {
 }
 
 .swiper-button-prev, .swiper-button-next {
-    top: 78%;
+    top: 84%;
     color: #00BC2A;
     height: 20px !important;
     margin-top: 0 !important;
