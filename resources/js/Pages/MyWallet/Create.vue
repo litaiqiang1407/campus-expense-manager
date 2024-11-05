@@ -114,6 +114,4 @@ onMounted(() => {
 
   fetchWalletData();
 });
-
-
 </script>

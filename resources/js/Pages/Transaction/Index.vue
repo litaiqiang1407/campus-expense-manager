@@ -1,22 +1,12 @@
 <template>
-    <!-- Loading state -->
-    <div v-if="isLoading" class="min-h-screen bg-white">
-        <Loading />
+    <div v-if="isLoading" class="w-full h-screen flex items-center justify-center">
+        <Loading class="size-8"/>
     </div>
 
-    <!-- No data state -->
-    <div v-else-if="!hasData">
-        <NoData message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
-    </div>
-
-    <!-- Data loaded state -->
     <div v-else class="flex flex-col">
-        <!-- Header -->
-        <Header :totalFlow="totalFlow" :wallets="wallets" />
+        <Header :totalFlow="totalFlow" :wallets="wallets" @walletSelected="handleWalletSelected" />
 
-        <!-- History Management -->
         <div class="flex justify-between items-center m-0 pt-2 w-full max-w mx-auto px-4 bg-white text-sm">
-            <!-- Month Selection -->
             <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('last')">
                 LAST MONTH
                 <span v-if="selectedMonth === 'last'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
@@ -31,10 +21,10 @@
             </span>
         </div>
 
-        <!-- Main Content -->
         <main class="bg-primaryBackground">
             <div>
-                <UseSage :transactions="transactions" :inflow="inflow" :outflow="outflow" :totalFlow="totalFlow" />
+                <UseSage v-if="filteredTransactions.length" :transactions="filteredTransactions" />
+                <NoData v-else message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
             </div>
         </main>
     </div>
@@ -45,16 +35,17 @@ import NoData from '../../Components/NoData/Index.vue';
 import { ref, onMounted } from 'vue';
 import { UseSage, Header } from '@/Pages/Transaction/Components/Index.js';
 import Loading from '@/Components/Loading/Index.vue';
-import axios from 'axios';
 
 const transactions = ref([]);
+const filteredTransactions = ref([]);
 const inflow = ref(0);
 const outflow = ref(0);
 const totalFlow = ref(0);
-const hasData = ref(false);  // Kiểm tra nếu có dữ liệu giao dịch
+const hasData = ref(false);
 const selectedMonth = ref('this');
 const wallets = ref([]);
 const isLoading = ref(false);
+const selectedWallet = ref(null);
 
 const fetchTransactions = async () => {
     try {
@@ -62,30 +53,71 @@ const fetchTransactions = async () => {
         const response = await axios.get(route('Transaction'));
         transactions.value = response.data.transactions;
         wallets.value = response.data.wallets;
-        console.log('Fetched Transactions:', wallets.value);
-        hasData.value = transactions.value.length > 0;  // Cập nhật trạng thái dữ liệu
-        calculateInflowAndOutflow(transactions.value);
+        hasData.value = transactions.value.length > 0;
+        filterTransactions();
     } catch (error) {
         console.error(error);
     } finally {
-        isLoading.value = false;  // Đảm bảo tắt trạng thái loading sau khi tải xong
+        isLoading.value = false;
     }
+};
+
+const filterTransactions = () => {
+    let filtered = transactions.value;
+
+    if (selectedWallet.value) {
+        filtered = filtered.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
+    }
+
+    switch (selectedMonth.value) {
+        case 'last':
+            filtered = filtered.filter(transaction => isLastMonth(transaction.date));
+            break;
+        case 'this':
+            filtered = filtered.filter(transaction => isThisMonth(transaction.date));
+            break;
+        case 'future':
+            filtered = filtered.filter(transaction => isFuture(transaction.date));
+            break;
+    }
+
+    filteredTransactions.value = filtered;
+    calculateInflowAndOutflow(filteredTransactions.value);
+};
+
+const handleWalletSelected = (wallet) => {
+    selectedWallet.value = wallet;
+    filterTransactions();
+};
+
+const calculateInflowAndOutflow = (transactions) => {
+    inflow.value = transactions.reduce((total, transaction) => transaction.type === 'income' ? total + transaction.amount : total, 0);
+    outflow.value = transactions.reduce((total, transaction) => transaction.type === 'expense' ? total + transaction.amount : total, 0);
+    totalFlow.value = inflow.value - outflow.value;
 };
 
 const selectMonth = (month) => {
     selectedMonth.value = month;
+    filterTransactions();
 };
 
-const calculateInflowAndOutflow = (transactions) => {
-    inflow.value = transactions.reduce((total, transaction) => {
-        return transaction.type === 'income' ? total + transaction.amount : total;
-    }, 0);
+const isThisMonth = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    return transactionDate.getMonth() === today.getMonth() && transactionDate.getFullYear() === today.getFullYear();
+};
 
-    outflow.value = transactions.reduce((total, transaction) => {
-        return transaction.type === 'expense' ? total + transaction.amount : total;
-    }, 0);
+const isLastMonth = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    return transactionDate.getMonth() === lastMonth.getMonth() && transactionDate.getFullYear() === lastMonth.getFullYear();
+};
 
-    totalFlow.value = inflow.value - outflow.value;
+const isFuture = (date) => {
+    const transactionDate = new Date(date);
+    const today = new Date();
+    return transactionDate > today;
 };
 
 onMounted(() => {

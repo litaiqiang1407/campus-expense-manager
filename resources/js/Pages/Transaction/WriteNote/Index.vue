@@ -17,14 +17,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
 const router = useRouter();
+const route = useRoute();
 const noteContent = ref('');
+
+onMounted(() => {
+    noteContent.value = route.query.note || '';
+});
 
 function saveNote() {
     console.log("Save button clicked!", noteContent.value);
     router.push({ name: 'CreateTransaction', query: { note: noteContent.value } });
 }
 </script>
-

@@ -9,7 +9,7 @@
       <font-awesome-icon icon="magnifying-glass" class="text-[20px] cursor-pointer" @click.stop="toggleSearch" />
     </div>
   </header>
-    <div class="max-w-full mx-auto">
+    <div class="max-w-full mx-auto bg-primaryBackground">
       <div class="text-[14px] text-secondaryText p-4 text-center flex items-center font-bold">
         Included in Total
       </div>
@@ -18,7 +18,7 @@
       </div>
       <div v-if="!isLoading && wallets.length > 0">
         <div v-for="wallet in wallets" :key="wallet.id" >
-          <div v-if="wallet.name != 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full">
+          <div v-if="wallet.name != 'Total'" class="bg-white rounded-lg flex items-center p-4 w-full h-full">
             <div class="w-full flex items-center justify-between" @click="editWallet(wallet.id)">
               <div class="flex flex-1 items-center">
                 <img
@@ -78,6 +78,7 @@ import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 import Swal from 'sweetalert2';
 import { Search } from '@/Components/Header/Components/Index';
+import { formatBalance } from '@/Helpers/Helpers';
 
 const router = useRouter();
 
@@ -137,12 +138,6 @@ const fetchWallets = async () => {
         isLoading.value = false;
     }
 };
-
-const formatBalance = (balance) => {
-    return balance === 0
-        ? '$0'
-        : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
-}
 
 const displayWalletTypes = () => {
     openWalletTypes.value = true;
