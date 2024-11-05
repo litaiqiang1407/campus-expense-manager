@@ -37,7 +37,7 @@
         <footer>
             <div class="flex flex-col items-center">
                 <a @click.prevent="goToSignup" class="w-[80%] bg-primary rounded-full uppercase text-center font-semibold text-white py-2 mb-8 text-[12px]">Sign up for free</a>
-                <a class="uppercase text-primary font-semibold mb-2 text-[12px]">Sign in</a>
+                <a @click.prevent="goToSignin" class="uppercase text-primary font-semibold mb-2 text-[12px]">Sign in</a>
                 <span class="text-[8px]">Version 1</span>
             </div>
         </footer>
@@ -59,6 +59,10 @@ const router = useRouter();
 
 const goToSignup = () => {
     router.push({ name: 'Signup' }); 
+};
+
+const goToSignin = () => {
+    router.push({ name: 'login' });
 };
 </script>
 
