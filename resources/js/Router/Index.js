@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, RecurringTransaction } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
@@ -127,7 +127,14 @@ const routes = [
         component: SelectWallet,
         meta: { layout: HeaderLayout, title: 'Select wallet', isBack: false, isCancel: true },
         props: true,
-    }
+    },
+    {
+        path: '/transaction/recurring',
+        name: 'RecurringTransaction',
+        component: RecurringTransaction,
+        meta: { layout: DefaultLayout, title: 'RecurringTransaction', isBack: true, isCancel: false },
+        props: true,
+    },  
 ]
 
 const router = createRouter({
