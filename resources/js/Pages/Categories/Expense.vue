@@ -38,6 +38,16 @@
                 </li>
             </ul>
         </div>
+        <div class="flex justify-center items-center bg-white shadow my-2">
+            <span class="text-primary font-semibold p-3">Need help? Send us a message?</span>
+        </div>
+
+        <div class="flex justify-left items-center bg-white shadow my-2">
+            <button class="rounded-full px-4">
+                <font-awesome-icon icon="plus" class="text-primary size-6" />
+            </button>
+            <span class="text-primary font-semibold p-3">Show inactive categories</span>
+        </div>
     </div>
 </template>
 
