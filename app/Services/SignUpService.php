@@ -18,7 +18,7 @@ class SignUpService
     {
         if ($this->signUpRepository->userExists($data['email'])) {
             return [
-                'type' => 'email',
+                'type' => 'emailExist',
                 'error' => 'This email is already registered. Please sign in instead.',
             ];
         }

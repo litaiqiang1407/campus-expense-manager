@@ -21,7 +21,7 @@ class SignInService
 
         if (!$user) {
             return [
-                'type' => 'email',
+                'type' => 'emailNotExist',
                 'error' => 'This email is not registered. Please sign up.',
             ];
         }
@@ -33,9 +33,8 @@ class SignInService
             ];
         }
 
-        // Log in the user
         Auth::login($user);
 
-        return $user; // Successful login response
+        return $user; 
     }
 }

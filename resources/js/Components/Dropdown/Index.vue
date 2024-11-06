@@ -8,7 +8,7 @@
           class="button-animate flex items-center justify-between w-full border-[1px] font-semibold border-primary px-2 py-1 rounded-md shadow-sm text-[16px] focus:outline-none"
           @click="toggleDropdown"
         >
-          <span>{{ selectedItem ? selectedItem.name : defaultText }}</span>
+          <span>{{ selectedItem ? selectedItem : defaultText }}</span>
           <font-awesome-icon :icon="isOpen ? 'chevron-up' : 'chevron-down'" class="text-primary" />
         </button>
   
@@ -16,11 +16,11 @@
           <ul class="max-h-48 overflow-auto">
             <li
               v-for="item in itemList"
-              :key="item.id"
+              :key="item"
               @click="selectItem(item)"
               class="button-animate cursor-pointer px-2 py-1 hover:bg-gray-100 text-[16px] "
             >
-              {{ item.name }}
+              {{ item }}
             </li>
           </ul>
           </div>
@@ -37,7 +37,7 @@ const props = defineProps({
         default: [],
     },
     modelValue: {
-        type: Object,
+        type: String,
         default: null,
     },
     defaultText: {
