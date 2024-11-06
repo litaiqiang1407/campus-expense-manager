@@ -29,7 +29,6 @@ const toast = useToast();
 const router = useRouter();
 
 const isFirstTime = ref(false);
-const walletType = ref(null);
 const walletTypeList = ref([]);
 const icons = ref([]);
 const iconSrc = ref('');
@@ -38,20 +37,20 @@ const balance = ref(localStorage.getItem('balance') || '0');
 const walletName = ref(localStorage.getItem('walletName') || '');
 
 const props = defineProps({
-  walletTypeId: {
+  walletType: {
     type: String,
     required: true,
   },
 });
 
-const walletTypeId = ref(props.walletTypeId);
+const walletType = ref(props.walletType || 'Basic');
 
 const fetchWalletData = async () => {
   try {
-    const response = await axios.get(route('CreateWallet', { walletTypeId: walletTypeId.value }));
+    const response = await axios.get(route('CreateWallet'));
     walletTypeList.value = response.data.walletTypeList;
     icons.value = response.data.icons;
-    walletType.value = response.data.walletType;
+    // walletType.value = response.data.walletType;
     isFirstTime.value = response.data.isFirstTime;
   } catch (error) {
     console.error('Error creating wallet:', error);
@@ -61,15 +60,16 @@ const fetchWalletData = async () => {
 const selectIcon = () => {
   localStorage.setItem('walletName', walletName.value);
   localStorage.setItem('balance', balance.value);
+  localStorage.setItem('walletType', walletType.value);
 
-  router.push({ name: 'Icon', query: { walletTypeId: walletTypeId.value} });
+  router.push({ name: 'Icon', query: { walletType: walletType.value} });
 };
 
 
 const submitForm = async () => {
   const errors = [];
   if (!walletName.value.trim()) errors.push('Wallet name is required.');
-  if (!walletType.value?.id) errors.push('Please select a wallet type.');
+  if (!walletType.value) errors.push('Please select a wallet type.');
   if (!iconID.value) errors.push('Please select a wallet icon.');
 
   if (errors.length) {
@@ -80,7 +80,7 @@ const submitForm = async () => {
   const formData = {
     name: walletName.value.trim(),
     balance: balance.value,
-    wallet_type_id: walletType.value.id,
+    wallet_type_name: walletType.value,
     icon_id: iconID.value,
   };
 

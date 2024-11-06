@@ -37,15 +37,15 @@ const fetchIcon = async () => {
 };
 
 const selectIcon = (icon) => {
-    const walletTypeId = router.currentRoute.value.query.walletTypeId;
+    const walletType = router.currentRoute.value.query.walletType;
     const walletId = router.currentRoute.value.query.walletId;
 
     if (walletId) {
         router.push({ name: 'EditWallet', params: { walletId }, query: { icon: JSON.stringify(icon)} }); 
     }
 
-    if (walletTypeId) {
-        router.push({ name: 'CreateWallet', params: { walletTypeId }, query: { icon: JSON.stringify(icon)} }); 
+    if (walletType) {
+        router.push({ name: 'CreateWallet', params: { walletType }, query: { icon: JSON.stringify(icon)} }); 
     }
 };
 

@@ -29,7 +29,7 @@ const router = useRouter();
 
 const wallet = ref({});
 const walletTypeList = ref([]);
-const walletTypeSelected = ref({});
+const walletTypeSelected = ref('');
 const loading = ref(false);
 const iconSrc = ref('');
 const iconID = ref('');
@@ -46,9 +46,10 @@ const fetchWalletData = async () => {
   try {
     loading.value = true;
     const response = await axios.get(route('EditWallet', { walletId: props.walletId }));
+    console.log(response.data);
     walletTypeList.value = response.data.walletTypes;
     wallet.value = response.data.wallet;
-    walletTypeSelected.value = { id: response.data.wallet.wallet_type_id, name: response.data.wallet.walletTypeName };
+    walletTypeSelected.value = response.data.wallet.wallet_type_name;
 
     const queryIcon = router.currentRoute.value.query.icon;
   
@@ -60,6 +61,7 @@ const fetchWalletData = async () => {
 
     wallet.value.name = localStorage.getItem('walletName') || wallet.value.name;
     wallet.value.balance = localStorage.getItem('balance') || wallet.value.balance;
+    walletTypeSelected.value = localStorage.getItem('walletType') || walletTypeSelected.value;
 
   } catch (error) {
     console.error('Error creating wallet:', error);
@@ -76,7 +78,7 @@ const submitForm = async () => {
   try {
     const formData = {
       name: wallet.value.name,
-      wallet_type_id: walletTypeSelected.value.id,
+      wallet_type_name: walletTypeSelected.value,
       balance: wallet.value.balance,
       icon_id: iconID.value,
     };
@@ -102,6 +104,7 @@ const submitForm = async () => {
 const selectIcon = () => {
   localStorage.setItem('walletName', wallet.value.name);
   localStorage.setItem('balance', wallet.value.balance);
+  localStorage.setItem('walletType', walletTypeSelected.value);
   router.push({ name: 'Icon', query: {walletId: props.walletId}});
 };
 onMounted(fetchWalletData);

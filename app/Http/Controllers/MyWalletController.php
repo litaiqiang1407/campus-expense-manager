@@ -43,7 +43,7 @@ class MyWalletController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'wallet_type_id' => 'required|exists:wallet_types,id',
+            'wallet_type_name' => 'required|string',
             'balance' => 'numeric|min:0',
             'icon_id' => 'required|exists:icons,id',
         ]);
@@ -64,8 +64,8 @@ class MyWalletController extends Controller
 
     public function create(Request $request)
     {
-        $walletTypeID = $request->walletTypeId;
-        $walletType = $this->walletService->getWalletTypes()->find($walletTypeID);
+        // $walletTypeID = $request->walletTypeId;
+        // $walletType = $this->walletService->getWalletTypes()->find($walletTypeID);
         $walletTypeList = $this->walletService->getWalletTypes();
         $icons = $this->walletService->getIcons();
 
@@ -76,7 +76,7 @@ class MyWalletController extends Controller
         if ($request->wantsJson()) {
             return response()->json([
                 'isFirstTime' => $isFirstTime,
-                'walletType' => $walletType,
+                // 'walletType' => $walletType,
                 'walletTypeList' => $walletTypeList,
                 'icons' => $icons,
             ]);
@@ -84,7 +84,7 @@ class MyWalletController extends Controller
 
         return Inertia::render('MyWallet/Create', [
             'isFirstTime' => $isFirstTime,
-            'walletType' => $walletType,
+            // 'walletType' => $walletType,
             'walletTypeList' => $walletTypeList,
             'icons' => $icons,
         ]);
@@ -113,7 +113,7 @@ class MyWalletController extends Controller
         $user_id = $request->user()->id;
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'wallet_type_id' => 'required|exists:wallet_types,id',
+            'wallet_type_name' => 'required|string',
             'balance' => 'required|numeric|min:0',
             'icon_id' => 'required|exists:icons,id',
         ]);
