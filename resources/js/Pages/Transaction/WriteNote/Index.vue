@@ -29,7 +29,16 @@ onMounted(() => {
 });
 
 function saveNote() {
-    console.log("Save button clicked!", noteContent.value);
-    router.push({ name: 'CreateTransaction', query: { note: noteContent.value } });
+    const transactionId = route.query.transactionId || route.params.transactionId;
+
+    if (transactionId) {
+        router.push({
+            name: 'EditTransaction',
+            params: { transactionId: transactionId },
+            query: { note: noteContent.value }
+        });
+    } else {
+        console.error("transactionId is missing from route query or params.");
+    }
 }
 </script>

@@ -93,8 +93,12 @@ import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 import { Search } from '@/Components/Header/Components/Index';
 import { formatBalance } from '@/Helpers/Helpers';
+import { useRoute } from 'vue-router';
 
 const router = useRouter();
+const routerr = useRoute();
+
+const transactionId = routerr.query.transactionId;
 const walletIdSelected = router.currentRoute.value.query.walletId;
 
 const isLoading = ref(false);
@@ -132,7 +136,15 @@ const performSearch = async (query) => {
 };
 
 const selectWallet = (walletId) => {
-  router.push({ name: 'Budget', query: { walletId } });
+  if (transactionId) {
+    router.push({
+      name: 'EditTransaction',
+      params: { transactionId },
+      query: { walletId }
+    });
+  } else {
+    console.error('transactionId is missing in query parameters');
+  }
 };
 
 const displayWalletTypes = () => {

@@ -46,14 +46,25 @@ const selectedMonth = ref('this');
 const wallets = ref([]);
 const isLoading = ref(false);
 const selectedWallet = ref(null);
-
 const fetchTransactions = async () => {
     try {
         isLoading.value = true;
         const response = await axios.get(route('Transaction'));
         transactions.value = response.data.transactions;
         wallets.value = response.data.wallets;
+
+        wallets.value.sort((a, b) => {
+            if (a.name === 'Total') return -1;
+            if (b.name === 'Total') return 1;
+            return 0;
+        });
+
         hasData.value = transactions.value.length > 0;
+
+        if (wallets.value.length > 0 && !selectedWallet.value) {
+            selectedWallet.value = wallets.value[0];
+        }
+
         filterTransactions();
     } catch (error) {
         console.error(error);
@@ -64,8 +75,7 @@ const fetchTransactions = async () => {
 
 const filterTransactions = () => {
     let filtered = transactions.value;
-
-    if (selectedWallet.value) {
+    if (selectedWallet.value && selectedWallet.value.name !== 'Total') {
         filtered = filtered.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
     }
 
@@ -82,6 +92,7 @@ const filterTransactions = () => {
     }
 
     filteredTransactions.value = filtered;
+
     calculateInflowAndOutflow(filteredTransactions.value);
 };
 

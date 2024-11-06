@@ -51,12 +51,12 @@ class WalletRepository
             'icons.name as icon_name'
         )
         ->where('user_id', $userId)
-        ->where('wallets.name', '!=', Wallet::TOTAL_WALLET_NAME) 
+        ->where('wallets.name', '!=', Wallet::TOTAL_WALLET_NAME)
         ->join('icons', 'wallets.icon_id', '=', 'icons.id')
         ->limit(3)
         ->get();
     }
-        
+
 
     public function getWalletTypes()
     {
@@ -186,7 +186,7 @@ class WalletRepository
                 'icons.name as icon_name'
             )
             ->where('user_id', $userId)
-            ->where('wallets.name', 'LIKE', '%' . $search . '%') 
+            ->where('wallets.name', 'LIKE', '%' . $search . '%')
             ->orWhere('wallets.balance', 'LIKE', '%' . $search . '%')
             ->join('icons', 'wallets.icon_id', '=', 'icons.id')
             ->limit($limit)

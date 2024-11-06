@@ -37,7 +37,7 @@ const walletId = ref(route.query.walletId);
 const categories = ref([]);
 const wallets = ref({});
 
-const amount = ref(localStorage.getItem('amount') || '0');
+const amount = ref(localStorage.getItem('amount'));
 const note = ref(localStorage.getItem('note') || '');
 
 const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) || null);
@@ -81,10 +81,10 @@ const submitForm = async () => {
   try {
     const formData = {
       category_id: selectedCategory.value ? selectedCategory.value.id : 1,
-      amount: amount.value,
-      wallet_id: selectedWallet.value ? selectedWallet.value.id : null,
-      note: note.value,
-      date: transactionDate.value,
+      amount: amount.value || 1000,
+      wallet_id: selectedWallet.value ? selectedWallet.value.id : 17,
+      note: note.value || 'test transacion without fill',
+      date: transactionDate.value || '2024-11-07T01:30:15.000Z',
     };
     const response = await axios.post('/transaction/store', formData);
     if (response.data.success) {

@@ -86,25 +86,25 @@ class TransactionController extends Controller
             return response()->json(data: [
                 'transaction' => $transaction,
                 'categories' => $categories,
-                // 'wallets' => $wallets,
             ]);
         }
 
         return Inertia::render('Transaction/Edit', [
             'transaction' => $transaction,
             'categories' => $categories,
-            // 'wallets' => $wallets,
         ]);
     }
         public function update(Request $request, $transactionId)
     {
         $validatedData = $request->validate([
-            'amount' => 'required|numeric|min:0',
+            'amount' => 'required|numeric|',
             'type' => 'required|in:expense,income',
             'category_id' => 'required|exists:categories,id',
             'wallet_id' => 'required|exists:wallets,id',
             'note' => 'nullable|string',
+            'date' => 'required|date|',
         ]);
+
 
         $transaction = $this->transactionService->updateTransaction($transactionId, $validatedData);
 
