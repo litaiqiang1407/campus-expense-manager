@@ -71,7 +71,7 @@
                                 <div class="flex items-center gap-0.5 text-[10px] font-semibold" :class="{
                                     'text-green-500': (activeSpending === 'week' && weekComparison < 0) || (activeSpending === 'month' && monthComparison < 0),
                                     'text-red-500': (activeSpending === 'week' && weekComparison > 0) || (activeSpending === 'month' && monthComparison > 0),
-                                    'text-yellow-500': (activeSpending === 'week' && weekComparison === 0) || (activeSpending === 'month' && monthComparison === 0)}">
+                                    'text-yellow-500': (activeSpending === 'week' && weekComparison === null) || (activeSpending === 'month' && monthComparison === null)}">
                                     <span v-if="activeSpending === 'week'">
                                         <font-awesome-icon :icon="weekComparison < 0 ? 'fa-solid fa-circle-arrow-down' : weekComparison > 0 ? 'fa-solid fa-circle-arrow-up' : 'fa-solid fa-circle-minus'" />
                                     </span>

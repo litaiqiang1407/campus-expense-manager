@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 const formatBalance = (balance, useAbbreviation = false, includeCurrencySymbol = true) => {
     if (balance === 0) return includeCurrencySymbol ? '$0' : '0';
 
@@ -26,4 +28,25 @@ const formatBalance = (balance, useAbbreviation = false, includeCurrencySymbol =
         : `${balance < 0 ? '-' : ''}${formattedBalance}`;
 };
 
-export { formatBalance };
+const goPage = (router, page) => {
+    router.push({ name: page });
+};
+
+const showAlert = ({ title, text, confirmText, onConfirm }) => {
+    Swal.fire({
+        title,
+        text,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00BC2A',
+        cancelButtonColor: '#FF2121',
+        confirmButtonText: confirmText,
+        cancelButtonText: 'No, cancel'
+    }).then((result) => {
+        if (result.isConfirmed && onConfirm) {
+            onConfirm();
+        }
+    });
+}
+
+export { formatBalance, showAlert, goPage };

@@ -59,11 +59,11 @@
             </div>
             <div class="px-2 py-4 grid grid-cols-2 gap-4">
                 <button
-                    v-for="walletType in walletTypes"
-                    :key="walletType.id"
+                    v-for="(walletType, index) in walletTypes"
+                    :key="index"
                     class="button-animate border-[2px] border-primary p-4 rounded-lg flex items-center justify-center"
-                    @click.stop="createWallet(walletType.id)">
-                        <h3 class="font-semibold text-[16px]">{{ walletType.name }}</h3>
+                    @click.stop="createWallet(walletType)">
+                        <h3 class="font-semibold text-[16px]">{{ walletType }}</h3>
                     </button>
                 </div>
             </div>
@@ -147,8 +147,8 @@ const closeWalletTypes = () => {
     openWalletTypes.value = false;
 };
 
-const createWallet = (walletTypeId) => {
-    router.push({ name: 'CreateWallet', params: { walletTypeId } });
+const createWallet = (walletType) => {
+    router.push({ name: 'CreateWallet', params: { walletType } });
 };
 
 const editWallet = (walletId) => {
