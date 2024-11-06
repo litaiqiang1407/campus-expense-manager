@@ -19,20 +19,23 @@
                     </div>
                 </div>
                 <Report />
-                <Spending />
-                <Transaction />
+                <Spending :topSpending="topSpending" :isLoading="isLoading" />
+                <Transaction :transactions="recentTransactions" :isLoading="isLoading" />
             </main>
         </div>
 </template>
 
 <script setup>
 import { Header, Report, Spending, Transaction } from '@/Pages/Home/Components/Index.js';
+import { formatBalance } from '@/Helpers/Helpers';
 import { ref, onMounted } from 'vue';
 import Loading  from '@/Components/Loading/Index.vue'; 
 
-
 const totalBalance = ref(0);
 const walletList = ref([])
+const recentTransactions = ref([]);
+const topSpending = ref([]);
+
 const isLoading = ref(false);
 
 const fetchWallets = async () => {
@@ -41,6 +44,8 @@ const fetchWallets = async () => {
     const response = await axios.get(route('Home'));
     walletList.value = response.data.walletList
     totalBalance.value = response.data.totalBalance;
+    recentTransactions.value = response.data.recentTransactions;
+    topSpending.value = response.data.topSpending;
   } catch (error) {
     console.error('Error fetching wallets:', error);
   } finally {
@@ -48,10 +53,5 @@ const fetchWallets = async () => {
   }
 };
 
-const formatBalance = (balance) => {
-  return balance === 0 
-    ? '$0' 
-    : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
-}
 onMounted(fetchWallets);
 </script>

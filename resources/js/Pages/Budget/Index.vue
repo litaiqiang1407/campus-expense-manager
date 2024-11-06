@@ -211,12 +211,10 @@ const fetchBudgets = async () => {
         });
         budgetList.value = response.data.budgets;
         wallet.value = response.data.wallet;
-        console.log("wallet value", wallet)
         timeRanges.value = [...new Set(budgetList.value.map(budget => budget.time_range))];
         activeTimeRange.value = timeRanges.value[0];
         transactions.value = response.data.transactions;
         transactionList.value = transactionsByRange(transactions.value, activeTimeRange.value);
-        console.log(transactionList.value);
         remainingTime.value = calculateRemainingTime(activeTimeRange.value);
         timeRangeBudgets()
     } catch (error) {
@@ -245,8 +243,6 @@ const selectRange = (range) => {
     timeRangeBudgets();
     remainingTime.value = calculateRemainingTime(range);
     transactionList.value = transactionsByRange(transactions.value, activeTimeRange.value);
-    console.log("Transaction: ", transactionList.value);
-    console.log("Budget: ", timeRangeBudgetList.value);
 };
 
 const formatTotalBudget = (num) => {
@@ -386,7 +382,6 @@ const transactionsByRange = (transactions, activeRange) => {
     });
 };
 
-// Hàm tính ngày bắt đầu và kết thúc của tuần hiện tại
 const startOfCurrentWeek = (date) => {
     const day = date.getDay();
     const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Điều chỉnh nếu ngày là Chủ Nhật
@@ -398,7 +393,6 @@ const endOfCurrentWeek = (date) => {
     return new Date(startOfWeek.setDate(startOfWeek.getDate() + 6));
 };
 
-// Hàm lấy ngày bắt đầu và kết thúc của quý hiện tại
 const getQuarterDates = (date) => {
     const currentMonth = date.getMonth();
     const quarter = Math.floor(currentMonth / 3);

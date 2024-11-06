@@ -43,11 +43,20 @@
                 <span class="block w-full h-px bg-[#A7A7A7] mx-auto"></span>
             </div>
             <div v-for="transaction in group.transactions" :key="transaction.id"
+<<<<<<< HEAD
                 class="flex items-center px-4 py-2 relative cursor-pointer" @click="editTransaction(transaction.id)">
                 <img :src="transaction.iconPath" alt="Icon" class="w-8 h-8">
                 <div class="flex justify-between w-full ml-2">
                     <span class="font-semibold text-[14px]">{{ transaction.name }}</span>
                     <span :class="transaction.type === 'income' ? 'text-blue-500' : 'text-red-500'">{{ transaction.amount }}</span>
+=======
+                class="flex items-center px-4 py-2 relative">
+                <img :src="transaction?.iconPath" alt="Icon" class="w-8 h-8">
+                <div class="flex justify-between w-full ml-2">
+                    <span class="font-semibold text-[14px]">{{ transaction?.name || 'Transaction'}}</span>
+                    <span :class="transaction.type === 'income' ? 'text-blue-500' : 'text-red-500'">{{
+                        formatBalance(transaction?.amount) || '0' }}</span>
+>>>>>>> 139c1f4156f6ced382c10b3f7979423e711e21ca
                 </div>
             </div>
         </div>
@@ -59,7 +68,7 @@ import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps({
-    transactions: Array
+    transactions: Array,
 });
 
 const router = useRouter();
@@ -69,8 +78,11 @@ const totalFlow = ref(0);
 const dayUse = ref('');
 const currentMonth = ref('');
 const groupedTransactions = ref([]);
+<<<<<<< HEAD
 const today = new Date();
 console.log(today)
+=======
+>>>>>>> 139c1f4156f6ced382c10b3f7979423e711e21ca
 
 const parseDate = (dateString) => {
     const isoFormatted = dateString.replace(" ", "T");
@@ -125,9 +137,11 @@ const calculateInflowAndOutflow = (transactions) => {
     totalFlow.value = inflow.value - outflow.value;
 };
 
-const editTransaction = (transactionId) => {
-    router.push({ name: 'EditTransaction', params: { transactionId } });
-};
+const formatBalance = (balance) => {
+  return balance === 0
+    ? '$0'
+    : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
+}
 
 watch(
     () => props.transactions,

@@ -27,8 +27,8 @@
                 <ul>
                     <li v-for="wallet in wallets" :key="wallet.id" @click="selectWallet(wallet)"
                         class="cursor-pointer hover:bg-gray-200 p-2 flex items-center">
-                        <img :src="wallet.icon_path" alt="Wallet Icon" class="h-6 w-6 mr-2 rounded-full" />
-                        <span class="truncate text-[12px]">{{ wallet.name }}</span>
+                        <img :src="wallet?.icon_path" alt="Wallet Icon" class="h-6 w-6 mr-2 rounded-full" />
+                        <span class="truncate text-[12px]">{{ wallet?.name || 'Wallet' }}</span>
                     </li>
                 </ul>
             </div>
@@ -48,7 +48,6 @@ const emit = defineEmits(['walletSelected']);
 const isDropdownVisible = ref(false);
 const selectedWallet = ref(props.wallets[0] || null);
 
-// Định dạng số dư thành định dạng tiền tệ
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -57,19 +56,16 @@ const formatCurrency = (amount) => {
     }).format(amount);
 };
 
-// Hiển thị ví đầu tiên làm mặc định
 const toggleDropdown = () => {
     isDropdownVisible.value = !isDropdownVisible.value;
 };
 
-// Cập nhật ví khi người dùng chọn và phát sự kiện `walletSelected`
 const selectWallet = (wallet) => {
     selectedWallet.value = wallet;
-    emit('walletSelected', wallet); // Phát ra sự kiện khi chọn ví
+    emit('walletSelected', wallet); 
     isDropdownVisible.value = false;
 };
 
-// Đóng dropdown khi click ra ngoài
 document.addEventListener('click', (event) => {
     if (!event.target.closest('.transaction-type-container')) {
         isDropdownVisible.value = false;

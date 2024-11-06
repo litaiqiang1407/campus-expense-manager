@@ -1,6 +1,6 @@
 <template>
     <Form :action="'Save'">
-        <Select :selectText="'Select category'" :sizeText="'24'" />
+        <Select :selectText="'Select category'" />
         <InputMoney />
         <Select :icon="'fa-regular fa-calendar'" :selectText="'Today'" />
         <Select :icon="'wallet'" :selectText="'Select wallet'" />

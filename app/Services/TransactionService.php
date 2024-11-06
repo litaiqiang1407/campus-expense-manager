@@ -94,4 +94,29 @@ class TransactionService
     {
         return $this->transactionRepository->getWalletsByUser($userId);
     }
+
+    public function getRecentTransactions($userId)
+    {
+        return $this->transactionRepository->getRecentTransactions($userId);
+    }
+
+    public function getTopSpending($userId, $filter)
+    {
+        return $this->transactionRepository->getTopSpending($userId, $filter);
+    }
+
+    public function getReportTrending($userId)
+    {
+        return $this->transactionRepository->getReportTrending($userId);
+    }
+
+    public function getReportSpending($userId)
+    {
+        return $this->transactionRepository->getReportSpending($userId);
+    }
+
+    public function calculateTotalBalance($userId)
+    {
+        return $this->transactionRepository->calculateTotalBalance($userId);
+    }
 }

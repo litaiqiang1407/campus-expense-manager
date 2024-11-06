@@ -107,7 +107,6 @@ const routes = [
     {
         path: '/categories',
         name: 'Categories',
-        meta: { layout: DefaultLayout, title: 'Categories', isBack: false, headerComponent: [SelectComponent,Menu] },
         component: Categories
     },
     {

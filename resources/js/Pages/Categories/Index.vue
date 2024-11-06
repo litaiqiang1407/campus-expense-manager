@@ -1,41 +1,53 @@
 <template>
-    <div class="absolute w-screen h-screen bg-[#effbff]">
-        <!-- Expense/Income/Debt Navigation -->
-        <div class="max-w-lg mx-auto py-1 sticky top-0 z-50">
-            <div class="flex justify-around text-xs font-medium bg-[#f8f9fa] ">
-                <!-- EXPENSE Button -->
-                <button
-                    class="py-2 px-4"
-                    :class="openComponent === 'expense' ? 'text-black border-b-2 border-black' : 'text-secondaryText'"
-                    @click="displayComponent('expense')"
-                >
-                    EXPENSE
-                </button>
-
-                <!-- INCOME Button -->
-                <button
-                    class="py-2 px-4"
-                    :class="openComponent === 'income' ? 'text-black border-b-2 border-black' : 'text-secondaryText'"
-                    @click="displayComponent('income')"
-                >
-                    INCOME
-                </button>
-
-                <!-- DEBT/LOAN Button -->
-                <button
-                    class="py-2 px-4"
-                    :class="openComponent === 'debtloan' ? 'text-black border-b-2 border-black' : 'text-secondaryText'"
-                    @click="displayComponent('debtloan')"
-                >
-                    DEBT/LOAN
-                </button>
+    <div class="bg-primaryBackground min-h-screen">
+        <header class="sticky top-0 flex flex-col z-50  shadow mb-1">
+            <div class="h-13 flex items-center justify-between px-4 py-2 bg-white ">
+                <div class="flex items-center gap-4">
+                    <font-awesome-icon icon="arrow-left" class="text-[24px]" @click="goBack" />
+                    <h1 class="text-[20px] font-bold">Budgets</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button >
+                        <img src="/assets/img/earth.png" alt="Wallet" class="size-8">
+                    </button>
+                    <button class="flex items-center">
+                        <font-awesome-icon icon="ellipsis-vertical" class="text-[24px]" />
+                    </button>
+                </div>
             </div>
+            <div class="flex items-center w-full min-w-screen overflow-x-auto bg-white">
+                <div class="flex items-center w-full min-w-screen overflow-x-auto bg-white">
+                    <div class="w-1/2 flex-shrink-0 flex flex-col items-center" 
+                        @click="selectCategory('expense')">
+                        <span class="text-[12px] font-bold w-full text-center uppercase pt-2 px-4"
+                        :class="{ 'text-black': activeCategory === 'expense', 'text-secondaryText': activeCategory !== 'expense' }">
+                            Expense
+                        </span>
+                        <div class="h-[2px] w-full mt-2 rounded-t-full"
+                        :class="{ 'bg-black': activeCategory === 'expense' }"></div>
+                    </div>
+                    <div class="w-1/2 flex-shrink-0 flex flex-col items-center pt-2 px-4" 
+                        @click="selectCategory('income')">
+                        <span class="text-[12px] font-bold w-full text-center uppercase"
+                        :class="{ 'text-black': activeCategory === 'income', 'text-secondaryText': activeCategory !== 'income' }">
+                        Income
+                        </span>
+                        <div class="h-[2px] w-full mt-2 rounded-t-full"
+                        :class="{ 'bg-black': activeCategory === 'income' }"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div v-if="isLoading" class="w-full h-32 flex items-center justify-center">
+            <Loading class="size-8"/>
         </div>
-
-        <!-- Component Display -->
-        <Expense v-if="openComponent === 'expense'" />
-        <Income v-if="openComponent === 'income'" />
-        <DebtLoan v-if="openComponent === 'debtloan'" />
+        <div v-else-if="!isLoading && categories.length === 0" class="flex flex-col items-center  text-center py-8">
+            <span class="font-semibold text-[10px] text-secondaryText">No categories found 🙌</span>
+        </div>
+        <div v-else-if="!isLoading && categories.length > 0">
+            <Expense v-if="activeCategory === 'expense'" :categories="expenseCategories" />
+            <Income v-if="activeCategory === 'income'" :categories="incomeCategories" /> 
+        </div>
     </div>
 </template>
 
@@ -43,28 +55,37 @@
 import { ref, onMounted } from 'vue';
 import Expense from './Expense.vue';
 import Income from './Income.vue';
-import DebtLoan from './DebtLoan.vue';
+import Loading from '@/Components/Loading/Index.vue';
 
-const openComponent = ref('expense');
-
+const activeCategory = ref('expense');
 const categories = ref([]);
+const expenseCategories = ref([]);
+const incomeCategories = ref([]);
+const isLoading = ref(false);
 
-const displayComponent = (component) => {
-    openComponent.value = component;
+const selectCategory = (category) => {
+    activeCategory.value = category; 
 };
 
 const fetchCategories = async () => {
     try {
+        isLoading.value = true;
         const response = await axios.get(route('Categories'));
-        categories.value = response.data;
-        console.log('Categories:', categories.value);
+        categories.value = response.data; 
+        expenseCategories.value = response.data.filter(category => category.type === "expense");
+        incomeCategories.value = response.data.filter(category => category.type === "income");
     } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error('Error fetching categories:', error); 
+    } finally {
+        isLoading.value = false;
     }
 };
 
-onMounted(() => {
-    fetchCategories();
-});
+const goBack = () => {
+    window.history.back()
+};
 
+onMounted(() => {
+    fetchCategories(); 
+});
 </script>

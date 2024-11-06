@@ -1,15 +1,11 @@
 <template>
-    <!-- Loading state -->
-    <div v-if="isLoading" class="min-h-screen bg-white">
-        <Loading />
+    <div v-if="isLoading" class="w-full h-screen flex items-center justify-center">
+        <Loading class="size-8"/>
     </div>
 
-    <!-- Data or No data state -->
     <div v-else class="flex flex-col">
-        <!-- Header -->
         <Header :totalFlow="totalFlow" :wallets="wallets" @walletSelected="handleWalletSelected" />
 
-        <!-- History Management -->
         <div class="flex justify-between items-center m-0 pt-2 w-full max-w mx-auto px-4 bg-white text-sm">
             <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('last')">
                 LAST MONTH
@@ -25,10 +21,9 @@
             </span>
         </div>
 
-        <!-- Main Content -->
         <main class="bg-primaryBackground">
             <div>
-                <UseSage v-if="filteredTransactions.length" :transactions="filteredTransactions" :inflow="inflow" :outflow="outflow" :totalFlow="totalFlow" />
+                <UseSage v-if="filteredTransactions.length" :transactions="filteredTransactions" />
                 <NoData v-else message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
             </div>
         </main>
@@ -40,7 +35,6 @@ import NoData from '../../Components/NoData/Index.vue';
 import { ref, onMounted } from 'vue';
 import { UseSage, Header } from '@/Pages/Transaction/Components/Index.js';
 import Loading from '@/Components/Loading/Index.vue';
-import axios from 'axios';
 
 const transactions = ref([]);
 const filteredTransactions = ref([]);
