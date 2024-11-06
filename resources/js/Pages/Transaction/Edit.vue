@@ -5,40 +5,47 @@
         </div>
         <Form :action="'Save'" @submit="submitForm">
             <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
-            <Select :selectText="selectedCategory ? selectedCategory.name : 'Select category'" :sizeText="'16'"
-                :items="categories" :getItemLabel="item => item.name" @update:selectText="updateCategory" />
+            <Select :selectText="selectedCategory ? selectedCategory : 'Select category'"
+                    :sizeText="'16'"
+                    :items="categories"
+                    :getItemLabel="item => item.name"
+                    @update:selectText="updateCategory" />
             <Note v-model="note" />
             <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :icon="'wallet'" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
-                :getItemLabel="item => item.name" @update:selectText="updateWallet" :destinationPage="'SelectWallet'" />
+            <Select :icon="'wallet'"
+                    :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
+                    :items="wallets"
+                    :getItemLabel="item => item.name"
+                    @update:selectText="updateWallet"
+                    :destinationPage="'SelectWallet'" />
             <Submit> Save</Submit>
         </Form>
     </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router'; // Import useRoute
+import { useRoute } from 'vue-router';
 import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
 import axios from 'axios';
 import Loading from '@/Components/Loading/Index.vue';
-import { fromJSON } from 'postcss';
 
 const toast = useToast();
 const loading = ref(false);
-
-const categories = ref([]);
+const category_id = ref([]);
 const wallets = ref([]);
+const wallet_id = ref([]);
 const amount = ref(localStorage.getItem('amount') || '0');
 const note = ref(localStorage.getItem('note') || '');
+const categories = ref(JSON.parse(localStorage.getItem('categories')) || null);
 const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) || null);
 const selectedCategory = ref(JSON.parse(localStorage.getItem('selectedCategory')) || null);
 const transactionDate = ref(localStorage.getItem('transactionDate') ? new Date(localStorage.getItem('transactionDate')) : new Date());
 
-// Lấy transactionId từ route params
 const router = useRoute();
-const transactionId = router.params.transactionId; // Sử dụng params từ route
+const transactionId = router.params.transactionId;
 
 console.log("transactionId from params:", transactionId);
 
@@ -46,12 +53,14 @@ const fetchTransactionData = async () => {
     try {
         loading.value = true;
         const response = await axios.get(route('EditTransaction', { transactionId: transactionId}));
-        console.log("data", response.data); // Kiểm tra toàn bộ dữ liệu phản hồi
-        const transactionData = response.data.transaction; // Dữ liệu phản hồi
+        const transactionData = response.data.transaction;
+        console.log('data', transactionData)
         categories.value = response.data.categories;
         amount.value = transactionData.amount;
         note.value = transactionData.note;
-        selectedCategory.value = transactionData.category || { id: 1, name: 'Default Category' };
+        category_id.value = transactionData.category_id;
+        wallet_id.value = transactionData.wallet_id;
+        selectedCategory.value = transactionData.name
         selectedWallet.value = transactionData.wallet_name;
         transactionDate.value = transactionData.date;
     } catch (error) {
@@ -73,16 +82,15 @@ const updateWallet = (value) => {
     selectedWallet.value = value;
 };
 
-// Gửi dữ liệu chỉnh sửa
 const submitForm = async () => {
     try {
         const formData = {
-            category_id: selectedCategory.value ? selectedCategory.value.id : 1,
+            category_id: category_id.value,
             amount: amount.value,
-            wallet_id: 11,
+            wallet_id: wallets_id.value,
             note: note.value,
             date: transactionDate.value,
-            type: 'expense', // hoặc 'income', tùy theo loại giao dịch
+            type: 'expense',
         };
         console.log("data", formData);
 

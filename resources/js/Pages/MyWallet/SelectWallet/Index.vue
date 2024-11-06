@@ -92,6 +92,7 @@ import { useRouter } from 'vue-router';
 import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 import { Search } from '@/Components/Header/Components/Index';
+import { formatBalance } from '@/Helpers/Helpers';
 
 const router = useRouter();
 const walletIdSelected = router.currentRoute.value.query.walletId;
@@ -130,14 +131,8 @@ const performSearch = async (query) => {
   }
 };
 
-const formatBalance = (balance) => {
-  return balance === 0
-    ? '$0'
-    : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
-}
-
 const selectWallet = (walletId) => {
-  router.push({ name: 'EditTransaction', query: { walletId } });
+  router.push({ name: 'Budget', query: { walletId } });
 };
 
 const displayWalletTypes = () => {
