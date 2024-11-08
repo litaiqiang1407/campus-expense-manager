@@ -4,10 +4,7 @@
             <div class="size-[20px] flex items-center justify-center">
                 <font-awesome-icon icon="fa-regular fa-comment" class="text-black text-[16px]" />
             </div>
-            <input
-                v-if="noteContent"
-                v-model="noteContent"
-                placeholder="Write Note"
+            <input v-if="noteContent" v-model="noteContent" placeholder="Write Note"
                 class="text-secondaryText text-[14px] w-full outline-none leading-none">
             </input>
             <span v-else class="font-medium text-[14px] text-secondaryText">Write note</span>
@@ -17,12 +14,15 @@
 
 <script setup>
 import { ref, defineProps, watch, defineEmits } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
     modelValue: {
         type: String,
         default: ''
+    },
+    fromPage: {
+        type: String,
     }
 });
 
@@ -40,16 +40,12 @@ watch(() => props.modelValue, (newValue) => {
 
 const goToNote = () => {
     const transactionId = router.currentRoute.value.params.transactionId;
-    if (transactionId) {
-        router.push({
+    router.push({
         name: 'Note',
         query: {
-            transactionId : transactionId,
-            fromPage: 'EditTransaction'
+            transactionId: transactionId,
+            fromPage: props.fromPage
         }
     });
-    } else {
-        console.error("transactionId is missing in route params.");
-    }
 };
 </script>
