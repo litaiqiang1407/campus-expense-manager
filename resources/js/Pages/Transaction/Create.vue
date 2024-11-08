@@ -24,55 +24,16 @@ import Submit from '@/Components/Button/Submit/Index.vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 
-<<<<<<< HEAD
-  <script setup>
-  import { ref, onMounted, watch } from 'vue';
-  import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
-  import { useToast } from 'vue-toastification';
-  import Submit from '@/Components/Button/Submit/Index.vue';
-  import { useRoute } from 'vue-router';
-  import axios from 'axios';
-
-  const toast = useToast();
-  const route = useRoute();
-
-  // Khởi tạo các biến trạng thái
-  const walletId = ref(route.query.walletId);
-  const categories = ref([]);
-  const wallets = ref([]); // Sửa đổi từ đối tượng thành mảng
-  const amount = ref(localStorage.getItem('amount') || '0');
-  const note = ref(localStorage.getItem('note') || '');
-  const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) || null);
-  const selectedCategory = ref(JSON.parse(localStorage.getItem('selectedCategory')) || null);
-  const transactionDate = ref(localStorage.getItem('transactionDate') ? new Date(localStorage.getItem('transactionDate')) : new Date());
-
-  // Hàm lấy dữ liệu giao dịch
-  const fetchCreateTransactionData = async () => {
-    try {
-      const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
-      console.log("data",data)
-      categories.value = data.categories;
-      wallets.value = data.wallet;
-
-      if (!selectedWallet.value) {
-        selectedWallet.value = wallets.value;
-      }
-=======
 // Định nghĩa hàm getLocalStorageItem trước khi sử dụng
 const getLocalStorageItem = (key, defaultValue = null) => {
     const item = localStorage.getItem(key);
     try {
         return item ? JSON.parse(item) : defaultValue;
->>>>>>> 7b27349f56529d985ad6fff254f11ddd8b5689ad
     } catch (error) {
         return item || defaultValue;
     }
 };
 
-<<<<<<< HEAD
-  // Thực thi khi component được gắn vào DOM
-  onMounted(() => {
-=======
 const toast = useToast();
 const route = useRoute();
 const walletId = ref(route.query.walletId);
@@ -113,7 +74,6 @@ const fetchCreateTransactionData = async () => {
 };
 
 onMounted(() => {
->>>>>>> 7b27349f56529d985ad6fff254f11ddd8b5689ad
     fetchCreateTransactionData();
     if (route.query.note) {
         note.value = route.query.note;
