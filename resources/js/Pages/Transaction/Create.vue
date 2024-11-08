@@ -9,7 +9,7 @@
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
             <Note v-model="note" fromPage="CreateTransaction" />
             <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :iconSrc="null" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
+            <Select :iconSrc="'wallets'" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
 
             <Submit> Save</Submit>
@@ -41,12 +41,12 @@ const loading = ref(false);
 const amount = ref(getLocalStorageItem('amount', '0'));
 const note = ref(getLocalStorageItem('note', ''));
 const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
+const wallet_id = ref(getLocalStorageItem('wallet_id', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
+const category_id = ref(getLocalStorageItem('categoryId', null));
 const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
 
-const route = useRoute();
 const router = useRouter();
-const walletId = ref(route.query.walletId);
 const categories = ref([]);
 const wallets = ref([]);
 
@@ -93,18 +93,15 @@ const updateCategory = (value) => {
 const submitForm = async () => {
     try {
         const formData = {
-            category_id: selectedCategory.value ? selectedCategory.value.id : 1,
-            amount: amount.value || 1000,
-            wallet_id: selectedWallet.value ? selectedWallet.value.id : null,
-            note: note.value || 'New transaction',
-            date: transactionDate.value || new Date(),
-            type: 'expense',
+            category_id: category_id.value,
+            amount: amount.value,
+            wallet_id: wallet_id.value,
+            note: note.value,
+            date: transactionDate.value,
         };
-
         const response = await axios.post('/transaction/store', formData);
         if (response.data.success) {
             toast.success(response.data.message);
-            clearLocalStorage();
             window.location.href = '/transaction';
         } else {
             toast.error('Failed to create Transaction.');
@@ -115,13 +112,6 @@ const submitForm = async () => {
     }
 };
 
-const clearLocalStorage = () => {
-    localStorage.removeItem('amount');
-    localStorage.removeItem('note');
-    localStorage.removeItem('selectedWallet');
-    localStorage.removeItem('selectedCategory');
-    localStorage.removeItem('transactionDate');
-};
 
 onMounted(() => {
     fetchCreateTransactionData();
