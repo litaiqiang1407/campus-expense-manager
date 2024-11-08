@@ -29,7 +29,6 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 const noteContent = ref(props.modelValue);
 const router = useRouter();
-const route = useRoute();
 
 watch(noteContent, (newValue) => {
     emit('update:modelValue', newValue);
@@ -40,15 +39,15 @@ watch(() => props.modelValue, (newValue) => {
 });
 
 const goToNote = () => {
-    const transactionId = route.params.transactionId;
+    const transactionId = router.currentRoute.value.params.transactionId;
     if (transactionId) {
         router.push({
-            name: 'Note',
-            query: {
-                transactionId: transactionId,
-                note: noteContent.value
-            }
-        });
+        name: 'Note',
+        query: {
+            transactionId : transactionId,
+            fromPage: 'EditTransaction'
+        }
+    });
     } else {
         console.error("transactionId is missing in route params.");
     }

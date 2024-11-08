@@ -31,13 +31,12 @@ onMounted(() => {
 function saveNote() {
     localStorage.setItem('note', noteContent.value);
 
-    const transactionId = route.query.transactionId || route.params.transactionId;
-
+    const fromPage = router.currentRoute.value.query.fromPage
+    const transactionId = router.currentRoute.value.query.transactionId
     if (transactionId) {
         router.push({
-            name: 'EditTransaction',
+            name: fromPage,
             params: { transactionId: transactionId },
-            query: { note: noteContent.value }
         });
     } else {
         console.error("transactionId is missing from route query or params.");
