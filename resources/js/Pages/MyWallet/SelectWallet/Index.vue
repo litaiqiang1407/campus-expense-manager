@@ -96,9 +96,7 @@ import { formatBalance } from '@/Helpers/Helpers';
 import { useRoute } from 'vue-router';
 
 const router = useRouter();
-const routerr = useRoute();
 
-const transactionId = routerr.query.transactionId;
 const walletIdSelected = router.currentRoute.value.query.walletId;
 
 const isLoading = ref(false);
@@ -139,11 +137,11 @@ const selectWallet = (wallets) => {
     localStorage.setItem('selectedWallet', wallets.name);
 
     const fromPage = router.currentRoute.value.query.fromPage;
-
+    const transactionId = router.currentRoute.value.query.transactionId;
     if (fromPage) {
         router.push({
             name: fromPage,
-            query: { walletId: wallets.id }
+            params: { transactionId: transactionId }
         });
     } else {
         console.error('fromPage is missing in query parameters');

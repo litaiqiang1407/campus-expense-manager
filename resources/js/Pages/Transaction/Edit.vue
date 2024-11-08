@@ -75,7 +75,13 @@ const fetchTransactionData = async () => {
 };
 
 const selectWallet = () => {
-    routerr.push({ name: 'SelectWallet', query: { transactionId } });
+    routerr.push({
+        name: 'SelectWallet',
+        query: {
+            transactionId : transactionId,
+            fromPage: 'EditTransaction'
+        }
+    });
 };
 
 const updateAmount = (value) => {

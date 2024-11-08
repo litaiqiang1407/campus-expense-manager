@@ -80,7 +80,6 @@ const goToEditTransaction = (category) => {
 </script>
 
 <style>
-/* Custom style for left border of subcategories */
 .border-left-half {
     position: relative;
 }
