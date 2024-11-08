@@ -29,6 +29,8 @@ onMounted(() => {
 });
 
 function saveNote() {
+    localStorage.setItem('note', noteContent.value);
+
     const transactionId = route.query.transactionId || route.params.transactionId;
 
     if (transactionId) {

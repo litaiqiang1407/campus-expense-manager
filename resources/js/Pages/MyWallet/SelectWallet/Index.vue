@@ -5,8 +5,8 @@
     <div class="max-w-full mx-auto mt-4">
       <div v-for="wallet in wallets" :key="wallet.id">
         <div v-if="wallet.name == 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
-          <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
-            <div class="flex flex-1 items-center">
+            <div class="w-full flex items-center justify-between" @click="selectWallet(wallet)">
+                <div class="flex flex-1 items-center">
               <img
                 :alt="`${wallet.name} icon`"
                 class="w-10 h-10 rounded-full"
@@ -35,7 +35,7 @@
       <div v-if="!isLoading && wallets.length > 0">
         <div v-for="wallet in wallets" :key="wallet.id" >
           <div v-if="wallet.name != 'Total'" class="bg-white rounded-lg flex items-center p-4 shadow-sm w-full h-full mb-2  ">
-            <div class="w-full flex items-center justify-between" @click="selectWallet(wallet.id)">
+            <div class="w-full flex items-center justify-between" @click="selectWallet(wallet)">
               <div class="flex flex-1 items-center">
                 <img
                   :alt="`${wallet.name} icon`"
@@ -134,17 +134,20 @@ const performSearch = async (query) => {
     isLoading.value = false;
   }
 };
+const selectWallet = (wallets) => {
+    localStorage.setItem('wallet_id', wallets.id);
+    localStorage.setItem('selectedWallet', wallets.name);
 
-const selectWallet = (walletId) => {
-  if (transactionId) {
-    router.push({
-      name: 'EditTransaction',
-      params: { transactionId },
-      query: { walletId }
-    });
-  } else {
-    console.error('transactionId is missing in query parameters');
-  }
+    const fromPage = router.currentRoute.value.query.fromPage;
+
+    if (fromPage) {
+        router.push({
+            name: fromPage,
+            query: { walletId: wallets.id }
+        });
+    } else {
+        console.error('fromPage is missing in query parameters');
+    }
 };
 
 const displayWalletTypes = () => {

@@ -29,7 +29,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 const noteContent = ref(props.modelValue);
 const router = useRouter();
-const route = useRoute(); 
+const route = useRoute();
 
 watch(noteContent, (newValue) => {
     emit('update:modelValue', newValue);

@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, watch } from 'vue';
 
 const emit = defineEmits(['update:inputValue']);
 
@@ -115,5 +115,9 @@ const hideKeyboard = () => {
     showKeyboard.value = false;
   }
 };
+
+watch(() => props.inputValue, (newValue) => {
+  localStorage.setItem('amount', newValue);
+});
 </script>
 

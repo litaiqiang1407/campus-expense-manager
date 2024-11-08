@@ -47,6 +47,7 @@ const wallets = ref([]);
 const isLoading = ref(false);
 const selectedWallet = ref(null);
 const fetchTransactions = async () => {
+    localStorage.clear();
     try {
         isLoading.value = true;
         const response = await axios.get(route('Transaction'));
