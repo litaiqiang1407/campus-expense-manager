@@ -23,3 +23,4 @@ export { default as CreateWallet } from './MyWallet/Create.vue';
 export { default as EditWallet } from './MyWallet/Edit.vue';
 export { default as SelectWallet } from './MyWallet/SelectWallet/Index.vue';
 export { default as Icon } from './Icon/Index.vue';
+export { default as SelectCategory } from './Categories/SelectCategory/Index.vue';

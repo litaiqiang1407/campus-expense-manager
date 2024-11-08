@@ -4,7 +4,7 @@
             <div class="h-13 flex items-center justify-between px-4 py-2 bg-white ">
                 <div class="flex items-center gap-4">
                     <font-awesome-icon icon="arrow-left" class="text-[24px]" @click="goBack" />
-                    <h1 class="text-[20px] font-bold">Budgets</h1>
+                    <h1 class="text-[20px] font-bold">Categories</h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <button >
