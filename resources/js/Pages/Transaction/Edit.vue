@@ -7,10 +7,9 @@
             <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
             <Select :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
-            <Note v-model="note" />
+            <Note v-model="note" fromPage="EditTransaction" />
             <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :iconSrc="null"
-                :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
+            <Select :iconSrc="null" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
 
             <Submit> Save</Submit>
@@ -78,7 +77,7 @@ const selectWallet = () => {
     routerr.push({
         name: 'SelectWallet',
         query: {
-            transactionId : transactionId,
+            transactionId: transactionId,
             fromPage: 'EditTransaction'
         }
     });
@@ -92,7 +91,7 @@ const goToSelectCategories = () => {
     routerr.push({
         name: 'SelectCategories',
         query: {
-            transactionId : transactionId,
+            transactionId: transactionId,
             fromPage: 'EditTransaction'
         }
     });
