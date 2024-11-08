@@ -7,24 +7,27 @@
             <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
             <Select :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
-            <Note v-model="note" />
+            <Note v-model="note" fromPage="CreateTransaction" />
             <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :iconSrc="null" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
+            <Select :iconSrc="'wallets'" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
 
             <Submit> Save</Submit>
         </Form>
     </div>
 </template>
+
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
-import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
+import axios from 'axios';
+import Loading from '@/Components/Loading/Index.vue';
 
-// Định nghĩa hàm getLocalStorageItem trước khi sử dụng
+const toast = useToast();
+
 const getLocalStorageItem = (key, defaultValue = null) => {
     const item = localStorage.getItem(key);
     try {
@@ -34,25 +37,47 @@ const getLocalStorageItem = (key, defaultValue = null) => {
     }
 };
 
-const toast = useToast();
-const route = useRoute();
-const walletId = ref(route.query.walletId);
-const categories = ref([]);
-const wallets = ref({});
-
-const amount = ref(localStorage.getItem('amount'));
-const note = ref(localStorage.getItem('note') || '');
-
-const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) || null);
+const loading = ref(false);
+const amount = ref(getLocalStorageItem('amount', '0'));
+const note = ref(getLocalStorageItem('note', ''));
+const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
+const wallet_id = ref(getLocalStorageItem('wallet_id', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
+const category_id = ref(getLocalStorageItem('categoryId', null));
+const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
 
-const transactionDate = ref(localStorage.getItem('transactionDate') ? new Date(localStorage.getItem('transactionDate')) : new Date());
+const router = useRouter();
+const categories = ref([]);
+const wallets = ref([]);
 
-const router = useRoute();
-const routerr = useRouter();
+const fetchCreateTransactionData = async () => {
+    try {
+        loading.value = true;
+        const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
+        categories.value = data.categories;
+        wallets.value = data.wallets;
+    } catch (error) {
+        toast.error('Failed to load data. Please try again.');
+    } finally {
+        loading.value = false;
+    }
+};
+
+const selectWallet = () => {
+    router.push({
+        name: 'SelectWallet',
+        query: {
+            fromPage: 'CreateTransaction'
+        }
+    });
+};
+
+const updateAmount = (value) => {
+    amount.value = value;
+};
 
 const goToSelectCategories = () => {
-    routerr.push({
+    router.push({
         name: 'SelectCategories',
         query: {
             fromPage: 'CreateTransaction'
@@ -60,39 +85,23 @@ const goToSelectCategories = () => {
     });
 };
 
-const fetchCreateTransactionData = async () => {
-    try {
-        const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
-        categories.value = data.categories;
-        wallets.value = data.wallet;
-        if (!selectedWallet.value) {
-            selectedWallet.value = wallets.value;
-        }
-    } catch (error) {
-        toast.error('Failed to load data. Please try again.');
-    }
+const updateCategory = (value) => {
+    selectedCategory.value = value;
+    localStorage.setItem('selectedCategory', JSON.stringify(value));
 };
-
-onMounted(() => {
-    fetchCreateTransactionData();
-    if (route.query.note) {
-        note.value = route.query.note;
-    }
-});
 
 const submitForm = async () => {
     try {
         const formData = {
-            category_id: selectedCategory.value ? selectedCategory.value.id : 1,
-            amount: amount.value || 1000,
-            wallet_id: selectedWallet.value ? selectedWallet.value.id : 17,
-            note: note.value || 'test transacion without fill',
-            date: transactionDate.value || '2024-11-07T01:30:15.000Z',
+            category_id: category_id.value,
+            amount: amount.value,
+            wallet_id: wallet_id.value,
+            note: note.value,
+            date: transactionDate.value,
         };
         const response = await axios.post('/transaction/store', formData);
         if (response.data.success) {
             toast.success(response.data.message);
-            clearLocalStorage();
             window.location.href = '/transaction';
         } else {
             toast.error('Failed to create Transaction.');
@@ -103,11 +112,8 @@ const submitForm = async () => {
     }
 };
 
-const clearLocalStorage = () => {
-    localStorage.removeItem('amount');
-    localStorage.removeItem('note');
-    localStorage.removeItem('selectedWallet');
-    localStorage.removeItem('selectedCategory');
-    localStorage.removeItem('transactionDate');
-};
+
+onMounted(() => {
+    fetchCreateTransactionData();
+});
 </script>

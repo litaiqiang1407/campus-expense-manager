@@ -93,7 +93,6 @@ const filterTransactions = () => {
     }
 
     filteredTransactions.value = filtered;
-
     calculateInflowAndOutflow(filteredTransactions.value);
 };
 

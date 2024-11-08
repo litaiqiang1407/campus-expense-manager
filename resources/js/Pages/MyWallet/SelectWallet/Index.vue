@@ -93,7 +93,6 @@ import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 import { Search } from '@/Components/Header/Components/Index';
 import { formatBalance } from '@/Helpers/Helpers';
-import { useRoute } from 'vue-router';
 
 const router = useRouter();
 

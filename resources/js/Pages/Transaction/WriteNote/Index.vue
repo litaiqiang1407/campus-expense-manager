@@ -18,23 +18,22 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const route = useRoute();
 const noteContent = ref('');
 
 onMounted(() => {
-    noteContent.value = route.query.note || '';
+    noteContent.value = router.currentRoute.value.query.value || '';
 });
 
 function saveNote() {
     localStorage.setItem('note', noteContent.value);
-    const fromPage = router.currentRoute.value.query.fromPage
-    const transactionId = router.currentRoute.value.query.transactionId
+    const fromPage = router.currentRoute.value.query.fromPage;
+    const transactionId = router.currentRoute.value.query.transactionId;
     router.push({
-            name: fromPage,
-            params: { transactionId: transactionId },
-        });
+        name: fromPage,
+        params: { transactionId: transactionId },
+    });
 }
 </script>

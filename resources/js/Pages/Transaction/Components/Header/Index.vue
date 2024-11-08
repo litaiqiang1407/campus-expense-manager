@@ -62,7 +62,7 @@ const toggleDropdown = () => {
 
 const selectWallet = (wallet) => {
     selectedWallet.value = wallet;
-    emit('walletSelected', wallet); 
+    emit('walletSelected', wallet);
     isDropdownVisible.value = false;
 };
 
