@@ -15,10 +15,15 @@
                 class="w-full">
                 <swiper-slide>
                     <div class="flex flex-col items-center pb-4">
+                        <div class="w-full py-2 border-b-[1px] border-primary mb-4">
+                            <h2 class="text-primary text-[12px] w-full text-center">
+                                Trending report
+                            </h2>
+                        </div> 
                         <div class="flex items-center w-full mb-2 border-b-[1px] border-gray-100">
                             <div class="w-1/2 flex flex-col items-center border-b-[1px] pb-2"
-                                @click="setActiveTab('expense')"
-                                :class="{'border-redText': activeTab === 'expense'}"
+                                @click="setActiveTrending('expense')"
+                                :class="{'border-redText': activeTrending === 'expense'}"
                                 >
                                 <span class="text-secondaryText text-[12px]">Total spent</span>
                                 <h2 class="text-[14px] font-semibold text-redText">
@@ -26,30 +31,58 @@
                                 </h2>
                             </div>
                             <div class="w-1/2 flex flex-col items-center border-b-[1px] pb-2"
-                                @click="setActiveTab('income')" 
-                                :class="{'border-blueText' : activeTab  === 'income'}">
+                                @click="setActiveTrending('income')" 
+                                :class="{'border-blueText' : activeTrending  === 'income'}">
                                 <span class="text-secondaryText text-[12px]">Total income</span>
                                 <h2 class="text-[14px] font-semibold text-blueText">
                                     {{ formatBalance(totalIncome) }}
                                 </h2>
                             </div>
                         </div> 
-                        <Line :data="chartData" :options="chartOptions" class="w-full h-full mb-14" />
-                        <div class="absolute top-[76%] ">
-                            <span class="text-primary text-[12px]">
-                                Trending report
-                            </span>
-                        </div>                      
+                        <Line :data="chartData" :options="chartOptions" class="w-full h-full mb-14" />                    
                     </div>
                 </swiper-slide>
                 <swiper-slide>
-                    <div class="flex flex-col items-center">
-                        <h2>This is spending report</h2>
-                        <div class="absolute top-[83%] ">
-                            <span class="text-primary text-[12px]">
+                    <div class="flex flex-col items-center pb-4">
+                        <div class="w-full py-2 border-b-[1px] border-primary mb-4">
+                            <h2 class="text-primary text-[12px] w-full text-center">
                                 Spending report
-                            </span>
+                            </h2>
+                        </div> 
+                        <div class="flex items-center p-1 bg-[#f0f0f0] rounded-[8px] w-full mb-3">
+                            <button 
+                                class="w-1/2 rounded-[4px] font-medium text-[10px] py-2" 
+                                :class="activeSpending === 'week' ? 'bg-white' : 'bg-[#f0f0f0'" 
+                                @click="setActiveSpending('week')">
+                                Week
+                            </button>
+                            <button class="w-1/2 rounded-[4px] font-medium text-[10px] py-2" 
+                            :class="activeSpending === 'month' ? 'bg-white' : 'bg-[#f0f0f0'" 
+                            @click="setActiveSpending('month')">
+                                Month
+                            </button>
                         </div>
+                        <div class="flex flex-col items-start w-full">
+                            <h3 class="text-[12px] text-black text-left font-bold">
+                                {{ activeSpending === 'week' ? formatBalance(spentThisWeek, false, true) : formatBalance(spentThisMonth, false, true) }}
+                            </h3>
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] text-secondaryText font-semibold">Total spent this {{ activeSpending }}</span>
+                                <div class="flex items-center gap-0.5 text-[10px] font-semibold" :class="{
+                                    'text-green-500': (activeSpending === 'week' && weekComparison < 0) || (activeSpending === 'month' && monthComparison < 0),
+                                    'text-red-500': (activeSpending === 'week' && weekComparison > 0) || (activeSpending === 'month' && monthComparison > 0),
+                                    'text-yellow-500': (activeSpending === 'week' && weekComparison === null) || (activeSpending === 'month' && monthComparison === null)}">
+                                    <span v-if="activeSpending === 'week'">
+                                        <font-awesome-icon :icon="weekComparison < 0 ? 'fa-solid fa-circle-arrow-down' : weekComparison > 0 ? 'fa-solid fa-circle-arrow-up' : 'fa-solid fa-circle-minus'" />
+                                    </span>
+                                    <span v-if="activeSpending === 'month'">
+                                        <font-awesome-icon :icon="monthComparison < 0 ? 'fa-solid fa-circle-arrow-down' : monthComparison > 0 ? 'fa-solid fa-circle-arrow-up' : 'fa-solid fa-circle-minus'" />
+                                    </span>
+                                    <span>{{ activeSpending === 'week' ? Math.abs(weekComparison) : Math.abs(monthComparison) }}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <Bar :data="barChartData" :options="barChartOptions" class="w-full h-full mb-14" />
                     </div>
                 </swiper-slide>
             </swiper>
@@ -59,6 +92,7 @@
 
 <script setup>
 import { ref, watch, onMounted  } from 'vue';
+import { formatBalance } from '@/Helpers/Helpers';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -66,14 +100,15 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 
-import { Line } from 'vue-chartjs';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, Filler  } from 'chart.js';
+import { Line, Bar } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, LineElement, PointElement, LinearScale, CategoryScale, Filler  } from 'chart.js';
 
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, Filler);
+ChartJS.register(Title, Tooltip, Legend, BarElement, LineElement, PointElement, LinearScale, CategoryScale, Filler);
 
 const modules = [Navigation, Pagination, Scrollbar, A11y]; 
 
-const activeTab = ref('expense');
+const activeTrending = ref('expense');
+const activeSpending = ref('month');
 
 const reportTrending = ref({});
 const dates = ref([]);
@@ -86,34 +121,51 @@ const totalIncome = ref(0);
 
 const formattedDates = ref([]);
 
-const setActiveTab = (tab) => {
-    activeTab.value = tab;
-    if (tab === 'expense') {
-        chartData.value = {
-            labels: formattedDates.value,
-            datasets: [{
-                label: 'This month',
-                data: expense.value,
-                borderColor: '#FF6384',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderWidth: 2,
-                fill: true,
-            }]
-        };
-    } else {
-        chartData.value = {
-            labels: formattedDates.value,
-            datasets: [{
-                label: 'This month',
-                data: income.value,
-                borderColor: '#36A2EB',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderWidth: 2,
-                fill: true,
-            }]
-        };
-    }
+const weekExpense = ref([]);
+const monthExpense = ref([]);
+
+const spentThisMonth = ref(0);
+const spentThisWeek = ref(0);
+
+const monthComparison = ref(0);
+const weekComparison = ref(0);
+
+const barChartOptions = {
+    responsive: true,
+    plugins: {
+        legend: { display: false },
+    },
+    scales: {
+        x: {
+            type: 'category',
+            grid: {
+                display: false, 
+            },
+            ticks: { 
+                font: { size: 10 } },
+        },
+        y: {
+            beginAtZero: true,
+            position: 'right',
+            ticks: { 
+                callback: function(value) {
+                    return formatBalance(value, true, false); 
+                },
+                font: { size: 10 } },
+        },
+    },
 };
+
+const barChartData = ref({
+    labels:  [] ,
+    datasets: [{
+        label: 'Spending',
+        data: [],
+        backgroundColor: '#FF6384',
+        borderColor: 'rgba(255, 99, 132, 0.2)',
+        borderWidth: 1,
+    }]
+});
 
 const chartData = ref({
     labels: [], 
@@ -151,6 +203,9 @@ const chartOptions = {
     scales: {
         x: {
             type: 'category',
+            grid: {
+                display: false, 
+            },
             ticks: {
                 callback: function(value, index, values) {
                     const labels = formattedDates.value;
@@ -169,6 +224,9 @@ const chartOptions = {
             beginAtZero: true,
             position: 'right',
             ticks: {
+                callback: function(value) {
+                    return formatBalance(value, true, false);
+                },
                 font: {
                     size: 10, 
                 },
@@ -177,10 +235,43 @@ const chartOptions = {
     },
 };
 
+const setActiveTrending = (tab) => {
+    activeTrending.value = tab;
+
+    chartData.value = {
+        labels: formattedDates.value,
+        datasets: [{
+            label: 'This month',
+            data: tab === 'expense' ? expense.value : income.value,
+            borderColor: tab === 'expense' ? '#FF6384' : '#36A2EB',
+            backgroundColor: tab === 'expense' ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)',
+            borderWidth: 2,
+            fill: true,
+        }]
+    };
+};
+
+const setActiveSpending = (tab) => {
+    activeSpending.value = tab;
+    barChartData.value = {
+        labels: tab === 'week' ? ['Last week', 'This week'] : ['Last month', 'This month'],
+        datasets: [{
+            label: tab === 'week' ? 'Weekly Expenses' : 'Monthly Expenses',
+            data: tab === 'week' ? weekExpense.value : monthExpense.value,
+            borderColor: tab === 'week' ? '#36A2EB' : '#FF9F40',
+            backgroundColor: tab === 'week' ? 'rgba(54, 162, 235, 0.2)' : 'rgba(255, 159, 64, 0.2)',
+            borderWidth: 2,
+            fill: true,
+        }]
+    };
+};
+
 const fetchReportTrending = async () => {
     try {
         const response = await axios.get(route('HomeReport'));
         reportTrending.value = response.data.reportTrending;
+        const reportSpending = response.data.reportSpending;
+
         dates.value = reportTrending.value.dates;
         expense.value = reportTrending.value.expense;
         totalExpense.value = expense.value.reduce((acc, curr) => acc + curr, 0);
@@ -193,27 +284,20 @@ const fetchReportTrending = async () => {
             return `${day}/${month}`; 
         });
 
-        chartData.value = {
-            labels: formattedDates.value,
-            datasets: [{
-                label: 'This month',
-                data: expense.value,
-                borderColor: '#FF6384',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderWidth: 2,
-                fill: true,
-            }]
-        };
+        weekExpense.value = reportSpending.weekExpense;
+        monthExpense.value = reportSpending.monthExpense;
+
+        spentThisMonth.value = reportSpending.monthExpense[1];
+        spentThisWeek.value = reportSpending.weekExpense[1];
+
+        weekComparison.value = reportSpending.weekComparison;
+        monthComparison.value = reportSpending.monthComparison;
+
     } catch (error) {
         console.error('Error fetching report trending:', error);
     }
 };
 
-const formatBalance = (balance) => {
-  return balance === 0 
-    ? '$0' 
-    : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
-}
 
 watch(dates, (newDates) => {
     chartData.value.labels = newDates;
@@ -223,7 +307,11 @@ watch(expense, (newExpense) => {
     chartData.value.datasets[0].data = newExpense;
 });
 
-onMounted(fetchReportTrending);
+onMounted(async () => {
+    await fetchReportTrending(); 
+    setActiveTrending('expense');
+    setActiveSpending('month');
+});
 </script>
 
 <style>
@@ -235,7 +323,7 @@ onMounted(fetchReportTrending);
 }
 
 .swiper-button-prev, .swiper-button-next {
-    top: 78%;
+    top: 84%;
     color: #00BC2A;
     height: 20px !important;
     margin-top: 0 !important;

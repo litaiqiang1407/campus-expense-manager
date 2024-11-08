@@ -27,7 +27,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue']);
-const internalDate = ref(props.modelValue || ''); 
+const internalDate = ref(props.modelValue || '');
 
 const formatDateForPicker = (date) => {
     const parsedDate = new Date(date);
@@ -38,7 +38,11 @@ const formatDateForPicker = (date) => {
 
 watch(internalDate, (newDate) => {
     emit('update:modelValue', newDate);
+    if (newDate) {
+        localStorage.setItem('transactionDate', newDate);
+    }
 });
+
 </script>
 
 <style>

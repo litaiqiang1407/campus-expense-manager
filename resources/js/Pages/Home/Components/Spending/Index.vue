@@ -17,8 +17,8 @@
                 @click="setActive('month')">Month</button>
             </div>
             <div class="flex flex-col mt-2">
-                <div v-if="isLoading" class="w-full h-32 flex items-center justify-center">
-                      <Loading class="size-8"/>
+                <div v-if="isLoading" class="w-full h-[79px] flex items-center justify-center">
+                    <Loading class="size-8"/>
                 </div>
                 <div v-if="!isLoading && displayTopSpending.length === 0" class="flex flex-col items-center text-center py-8">
                     <span class="font-semibold text-[10px] text-secondaryText">Top spending categories will show up here 🙌</span>
@@ -46,6 +46,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
+import { formatBalance } from '@/Helpers/Helpers';
 import Loading  from '@/Components/Loading/Index.vue'; 
 
 const props = defineProps({
@@ -88,12 +89,6 @@ const fetchTopSpending = async (filter) => {
         isLoading.value = false;
     }
 };
-
-const formatBalance = (balance) => {
-    return balance === 0
-        ? '$0'
-        : `${balance < 0 ? '-$' : '$'}${Number.isInteger(Math.abs(balance)) ? Math.abs(balance) : Math.abs(balance).toFixed(2)}`;
-}
 
 const displayTopSpending = computed(() => topSpending.value);
 </script>

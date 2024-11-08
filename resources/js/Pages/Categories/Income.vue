@@ -6,7 +6,7 @@
         </button>
 
         <div v-for="category in getCategory()" :key="category.id" class="bg-white shadow my-2 py-2">
-            <div class="flex justify-between items-center py-2 px-4">
+            <div class="flex justify-between items-center py-2 px-4" @click="goToEditTransaction(category)">
                 <div class="flex items-center space-x-3">
                     <img :src="category.icon_path" alt="Category Icon" class="w-10 h-10 rounded-full">
                     <div>
@@ -24,8 +24,9 @@
                     :key="subcategory.id"
                     :class="[
                         'flex items-center space-x-2 py-2',
-                        index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2' 
+                        index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2'
                     ]"
+                    @click="goToEditTransaction(subcategory)"
                 >
                     <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                     <img :src="subcategory.icon_path" alt="Subcategory Icon" class="w-8 h-8 rounded-full">
@@ -42,18 +43,37 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'; // Import useRouter to handle navigation
+import { computed } from 'vue';
+
+const router = useRouter();
+
 const props = defineProps({
     categories: Array
 });
 
+// Filter categories to get main categories (without subcategories)
 const getCategory = () => {
-    const categories = props.categories.filter(category => category.parent_id !== null);
-    return categories;
+    return props.categories.filter(category => category.parent_id !== null);
 };
 
+// Filter subcategories based on parentId
 const getSubcategories = (parentId) => {
-    const subcategories = props.categories.filter(category => category.parent_id === parentId);
-    return subcategories;
+    return props.categories.filter(category => category.parent_id === parentId);
+};
+
+// Check if the current route is select-categories
+const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'select-categories');
+
+// Navigate to the EditTransaction page when clicking on a category or subcategory
+const goToEditTransaction = (category) => {
+    if (isSelectCategoryPage.value) {
+        // Only navigate if on select-categories page
+        router.push({
+            name: 'EditTransaction',
+            params: { id: category.id, name: category.name }
+        });
+    }
 };
 </script>
 
@@ -61,6 +81,7 @@ const getSubcategories = (parentId) => {
 .border-left-half {
     position: relative;
 }
+
 .border-left-half::before {
     content: '';
     position: absolute;

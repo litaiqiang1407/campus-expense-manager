@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, WriteNote } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
@@ -43,6 +43,14 @@ const routes = [
         component: CreateTransaction,
         meta: { layout: HeaderLayout, title: 'Add transaction', isBack: false, isCancel: true},
     },
+
+    {
+        path: '/transaction/edit/:transactionId',
+        name: 'EditTransaction',
+        component: EditTransaction,
+        meta: { layout: HeaderLayout, title: 'Edit transaction', isBack: false, isCancel: true},
+    },
+
     {
         path: '/note',
         name: 'Note',
@@ -102,12 +110,17 @@ const routes = [
         component: Categories
     },
     {
+        path: '/select-categories',
+        name: 'SelectCategories',
+        component: SelectCategories,
+    },
+    {
         path: '/my-wallet',
         name: 'MyWallet',
         component: MyWallet,
     },
     {
-        path: '/my-wallet/:walletTypeId/create',
+        path: '/my-wallet/:walletType/create',
         name: 'CreateWallet',
         component: CreateWallet,
         meta: { layout: HeaderLayout, title: 'Add wallet', isBack: false, isCancel: true },

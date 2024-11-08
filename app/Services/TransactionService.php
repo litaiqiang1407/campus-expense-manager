@@ -17,6 +17,24 @@ class TransactionService
         $this->walletRepository = $walletRepository;
     }
 
+    public function getTransactionDetails($transactionId)
+{
+    $transaction = $this->transactionRepository->getTransactionById($transactionId);
+
+    return [
+        'id' => $transaction->id,
+        'amount' => $transaction->amount,
+        'category_id'=> $transaction->category_id,
+        'type' => optional($transaction->category)->type,
+        'wallet_name' => optional($transaction->wallet)->name,
+        'wallet_id' => $transaction->wallet_id,
+        'note' => $transaction->note,
+        'iconPath' => optional($transaction->category->icon)->path,
+        'name' => optional($transaction->category)->name,
+        'date' => $transaction->date,
+    ];
+}
+
     public function getTransactionsAndWalletsByUser($userId)
     {
         $wallets = $this->walletRepository->getAllWallets($userId);
@@ -91,6 +109,12 @@ class TransactionService
     {
         return $this->transactionRepository->getReportTrending($userId);
     }
+
+    public function getReportSpending($userId)
+    {
+        return $this->transactionRepository->getReportSpending($userId);
+    }
+
     public function calculateTotalBalance($userId)
     {
         return $this->transactionRepository->calculateTotalBalance($userId);
