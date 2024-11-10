@@ -45,7 +45,7 @@ const props = defineProps({
 const fetchWalletData = async () => {
   try {
     loading.value = true;
-    const response = await axios.get(route('EditWallet', { walletId: props.walletId }));
+    const response = await axios.get(route('EditWallet', { walletId: props.walletId}));
     walletTypeList.value = response.data.walletTypes;
     wallet.value = response.data.wallet;
     walletTypeSelected.value = response.data.wallet.wallet_type_name;

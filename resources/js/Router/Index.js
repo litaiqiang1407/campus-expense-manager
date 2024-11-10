@@ -177,7 +177,7 @@ router.beforeEach(async (to, from, next) => {
         }
     }
 
-    if (!['Note', 'SelectCategories', 'SelectWallet', 'EditTransaction','CreateTransaction'].includes(to.name)) {
+    if (!['Note', 'SelectCategories', 'SelectWallet', 'EditTransaction','CreateTransaction','EditWallet'].includes(to.name)) {
         localStorage.clear();
     }
     next();
