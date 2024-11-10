@@ -9,7 +9,7 @@
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
             <Note v-model="note" fromPage="CreateTransaction" />
             <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :icon="'wallet'" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
+            <Select :iconSrc="null" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
 
             <Submit> Save</Submit>
@@ -19,7 +19,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
@@ -53,10 +53,8 @@ const wallets = ref([]);
 const fetchCreateTransactionData = async () => {
     try {
         loading.value = true;
-        const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
-        console.log("data",data)
+        const { data } = await axios.get('/transaction/create');
         categories.value = data.categories;
-        wallets.value = data.wallets;
     } catch (error) {
         toast.error('Failed to load data. Please try again.');
     } finally {
@@ -112,7 +110,6 @@ const submitForm = async () => {
         toast.error('Error creating Transaction: ' + message);
     }
 };
-
 
 onMounted(() => {
     fetchCreateTransactionData();
