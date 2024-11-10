@@ -83,8 +83,8 @@ class WalletRepository
                 'amount' => $wallet->balance,
                 'wallet_id' => $wallet->id,
                 'user_id' => $userId,
-                'date' => now(), 
-                'note' => 'Initial balance', 
+                'date' => now(),
+                'note' => 'Initial balance',
             ]);
         }
 
@@ -113,7 +113,7 @@ class WalletRepository
             'wallets.id',
             'wallets.name',
             'wallets.balance',
-            'wallets.wallet_type_name',
+            'wallets.wallet_type_id',
             'wallets.icon_id',
             'icons.path as icon_path',
             'icons.name as icon_name'
