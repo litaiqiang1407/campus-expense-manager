@@ -9,7 +9,7 @@
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
             <Note v-model="note" fromPage="CreateTransaction" />
             <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :iconSrc="'wallets'" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
+            <Select :icon="'wallet'" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
 
             <Submit> Save</Submit>
@@ -54,6 +54,7 @@ const fetchCreateTransactionData = async () => {
     try {
         loading.value = true;
         const { data } = await axios.get('/transaction/create', { params: { walletId: walletId.value } });
+        console.log("data",data)
         categories.value = data.categories;
         wallets.value = data.wallets;
     } catch (error) {
