@@ -1,14 +1,11 @@
 <template>
     <div>
-        <div v-if="loading" class="flex w-screen items-center justify-center h-64">
-            <Loading class="size-16" />
-        </div>
         <Form :action="'Save'" @submit="submitForm">
             <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
             <Select :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
             <Note v-model="note" fromPage="CreateTransaction" />
-            <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
+            <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
             <Select :iconSrc="null" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
 
@@ -18,13 +15,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
 import axios from 'axios';
-import Loading from '@/Components/Loading/Index.vue';
 
 const toast = useToast();
 
@@ -47,20 +43,7 @@ const category_id = ref(getLocalStorageItem('categoryId', null));
 const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
 
 const router = useRouter();
-const categories = ref([]);
 const wallets = ref([]);
-
-const fetchCreateTransactionData = async () => {
-    try {
-        loading.value = true;
-        const { data } = await axios.get('/transaction/create');
-        categories.value = data.categories;
-    } catch (error) {
-        toast.error('Failed to load data. Please try again.');
-    } finally {
-        loading.value = false;
-    }
-};
 
 const selectWallet = () => {
     router.push({
@@ -110,8 +93,4 @@ const submitForm = async () => {
         toast.error('Error creating Transaction: ' + message);
     }
 };
-
-onMounted(() => {
-    fetchCreateTransactionData();
-});
 </script>

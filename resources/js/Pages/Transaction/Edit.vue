@@ -19,7 +19,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
@@ -47,9 +47,8 @@ const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
 const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
 
-const router = useRoute();
 const routerr = useRouter();
-const transactionId = router.params.transactionId;
+const transactionId = routerr.currentRoute.value.params.transactionId;
 
 const fetchTransactionData = async () => {
     try {
@@ -61,7 +60,7 @@ const fetchTransactionData = async () => {
         if (!localStorage.getItem('note')) note.value = transactionData.note;
         if (!localStorage.getItem('categoryId')) category_id.value = transactionData.category_id;
         if (!localStorage.getItem('wallet_id')) wallet_id.value = transactionData.wallet_id;
-        if (!localStorage.getItem('selectedCategory')) selectedCategory.value = router.query.categoryName || transactionData.name;
+        if (!localStorage.getItem('selectedCategory')) selectedCategory.value = transactionData.name;
         if (!localStorage.getItem('selectedWallet')) selectedWallet.value = transactionData.wallet_name;
         if (!localStorage.getItem('transactionDate')) transactionDate.value = new Date(transactionData.date);
 

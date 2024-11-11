@@ -80,7 +80,7 @@ class TransactionController extends Controller
     {
         $user = $request->user();
         $categories = $this->transactionService->getCategories();
-        $transaction = $this->transactionService->getTransactionDetails($transactionId);
+        $transaction = $this->transactionService->getTransactionEdit($transactionId);
 
         if ($request->wantsJson()) {
             return response()->json(data: [
@@ -94,7 +94,7 @@ class TransactionController extends Controller
             'categories' => $categories,
         ]);
     }
-        public function update(Request $request, $transactionId)
+    public function update(Request $request, $transactionId)
     {
         $validatedData = $request->validate([
             'amount' => 'required|numeric|',
@@ -111,6 +111,21 @@ class TransactionController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Transaction updated successfully!',
+            'transaction' => $transaction,
+        ]);
+    }
+    public function transactionDetails(Request $request, $transactionId)
+    {
+        $user = $request->user();
+        $transaction = $this->transactionService->getTransactionDetails($transactionId);
+
+        if ($request->wantsJson()) {
+            return response()->json(data: [
+                'transaction' => $transaction,
+            ]);
+        }
+
+        return Inertia::render('Transaction/TransactionDetails/Index', [
             'transaction' => $transaction,
         ]);
     }

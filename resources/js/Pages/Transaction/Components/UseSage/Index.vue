@@ -43,7 +43,7 @@
                 <span class="block w-full h-px bg-[#A7A7A7] mx-auto"></span>
             </div>
             <div v-for="transaction in group.transactions" :key="transaction.id"
-                class="flex items-center px-4 py-2 relative cursor-pointer" @click="editTransaction(transaction.id)">
+                class="flex items-center px-4 py-2 relative cursor-pointer" @click="transactionDetails(transaction.id)">
                 <img :src="transaction.iconPath" alt="Icon" class="w-8 h-8">
                 <div class="flex justify-between w-full ml-2">
                     <span class="font-semibold text-[14px]">{{ transaction.name }}</span>
@@ -124,8 +124,8 @@ const calculateInflowAndOutflow = (transactions) => {
     totalFlow.value = inflow.value - outflow.value;
 };
 
-const editTransaction = (transactionId) => {
-    router.push({ name: 'EditTransaction', params: { transactionId } });
+const transactionDetails = (transactionId) => {
+    router.push({ name: 'TransactionDetails', params: { transactionId } });
 };
 
 watch(

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
@@ -48,6 +48,13 @@ const routes = [
         path: '/transaction/edit/:transactionId',
         name: 'EditTransaction',
         component: EditTransaction,
+        meta: { layout: HeaderLayout, title: 'Edit transaction', isBack: false, isCancel: true},
+    },
+
+    {
+        path: '/transaction/transaction-details/:transactionId',
+        name: 'TransactionDetails',
+        component: TransactionDetails,
         meta: { layout: HeaderLayout, title: 'Edit transaction', isBack: false, isCancel: true},
     },
 

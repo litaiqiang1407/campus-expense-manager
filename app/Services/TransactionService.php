@@ -16,6 +16,23 @@ class TransactionService
         $this->transactionRepository = $transactionRepository;
         $this->walletRepository = $walletRepository;
     }
+    public function getTransactionEdit($transactionId)
+    {
+        $transaction = $this->transactionRepository->getTransactionById($transactionId);
+
+        return [
+            'id' => $transaction->id,
+            'amount' => $transaction->amount,
+            'category_id'=> $transaction->category_id,
+            'type' => optional($transaction->category)->type,
+            'wallet_name' => optional($transaction->wallet)->name,
+            'wallet_id' => $transaction->wallet_id,
+            'note' => $transaction->note,
+            'iconPath' => optional($transaction->category->icon)->path,
+            'name' => optional($transaction->category)->name,
+            'date' => $transaction->date,
+        ];
+    }
 
     public function getTransactionDetails($transactionId)
 {
@@ -24,13 +41,11 @@ class TransactionService
     return [
         'id' => $transaction->id,
         'amount' => $transaction->amount,
-        'category_id'=> $transaction->category_id,
         'type' => optional($transaction->category)->type,
         'wallet_name' => optional($transaction->wallet)->name,
-        'wallet_id' => $transaction->wallet_id,
         'note' => $transaction->note,
         'iconPath' => optional($transaction->category->icon)->path,
-        'name' => optional($transaction->category)->name,
+        'category_name' => optional($transaction->category)->name,
         'date' => $transaction->date,
     ];
 }
