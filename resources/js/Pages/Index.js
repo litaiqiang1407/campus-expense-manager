@@ -15,6 +15,7 @@ export { default as MyAccount } from './MyAccount/Index.vue';
 export { default as Budget } from './Budget/Index.vue';
 export { default as CreateBudget } from './Budget/Create.vue';
 export { default as Categories } from './Categories/Index.vue';
+export { default as AddCategory } from './Categories/Create.vue';
 
 export { default as Notification } from './Notification/Index.vue';
 

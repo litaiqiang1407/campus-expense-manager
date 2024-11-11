@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, WriteNote } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, WriteNote, AddCategory } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
@@ -137,6 +137,13 @@ const routes = [
         component: SelectWallet,
         meta: { layout: HeaderLayout, title: 'Select wallet', isBack: false, isCancel: true },
         props: true,
+    },
+    {
+        path: '/add-category',
+        name: 'AddCategory',
+        component: AddCategory,
+        meta: { layout: HeaderLayout, title: 'New Category', isBack: true},
+        
     }
 ]
 

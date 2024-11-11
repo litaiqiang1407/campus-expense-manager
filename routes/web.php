@@ -26,6 +26,7 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
     Route::get('/categories', [CategoryController::class, 'index'])->name('Categories');
+    Route::get('/categories/add', [CategoryController::class, 'create'])->name('AddCategory');
 
     Route::group(['prefix' => 'transaction'], function ()
     {

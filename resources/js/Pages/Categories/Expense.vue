@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <button class="flex items-center p-4 bg-white w-full gap-4">
+        <button class="flex items-center p-4 bg-white w-full gap-4" @click="goPage('AddCategory')">
             <font-awesome-icon icon="circle-plus" class="text-primary size-8" />
             <span class="text-primary font-bold">NEW CATEGORY</span>
         </button>
@@ -65,6 +65,13 @@ const getSubcategories = (parentId) => {
     const subcategories = props.categories.filter(category => category.parent_id === parentId);
     return subcategories;
 };
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
+
+    function goPage(routeName) {
+        router.push({ name: routeName });
+}
 </script>
 
 <style>
