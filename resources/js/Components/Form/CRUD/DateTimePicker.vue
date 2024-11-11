@@ -23,7 +23,7 @@ import Datepicker from 'vue3-datepicker';
 
 const props = defineProps({
     modelValue: {
-        type: String,
+        type: [String, Date],
         default: '',
     },
     readonly: {

@@ -4,7 +4,7 @@
             <Loading class="size-16" />
         </div>
         <Form :action="'Save'" @submit="submitForm">
-            <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
+            <InputMoney :inputValue="amount.toString()" @update:inputValue="updateAmount" />
             <Select :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
             <Note v-model="note" fromPage="EditTransaction" />
