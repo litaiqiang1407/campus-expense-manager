@@ -1,7 +1,7 @@
-export { default as InputMoney } from './CRUD/InputMoney.vue';
-export { default as Select } from './CRUD/Select.vue';
-export { default as Note } from './CRUD/Note.vue';
-export { default as Form } from './CRUD/Form.vue';
-export { default as Input } from './CRUD/Input.vue';
-export { default as DateTimePicker } from './CRUD/DateTimePicker.vue';
-
+import { defineAsyncComponent } from 'vue';
+export const InputMoney = defineAsyncComponent(() => import('./CRUD/InputMoney.vue'));
+export const Select = defineAsyncComponent(() => import('./CRUD/Select.vue'));
+export const Note = defineAsyncComponent(() => import('./CRUD/Note.vue'));
+export const Form = defineAsyncComponent(() => import('./CRUD/Form.vue'));
+export const Input = defineAsyncComponent(() => import('./CRUD/Input.vue'));
+export const DateTimePicker = defineAsyncComponent(() => import('./CRUD/DateTimePicker.vue'));

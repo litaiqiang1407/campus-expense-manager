@@ -11,6 +11,7 @@
 import AuthForm from '@/Components/Form/AuthForm.vue';
 import { useRouter } from 'vue-router'; 
 import { ref } from 'vue';
+import { goPage } from '@/Helpers/Helpers';
 import { useToast } from 'vue-toastification';
 
 const router = useRouter(); 
@@ -25,16 +26,13 @@ const handleSignup = async (formData) => {
         router.push({ name: 'Home' });
     } catch (error) {
         errors.value = {};
-        if (error.response.data.type == 'email') {
-            errors.value.email = error.response.data.error;
-        } else if (error.response.data.type == 'password') {
-            errors.value.password = error.response.data.error;
+        if (error.response.data) {
+            errors.value[error.response.data.type] = error.response.data.error;
         }
-        console.log(errors.value);
     }
 };
 
 const goToSignin = () => {
-    router.push({ name: 'login' });
+    goPage(router, 'login');
 };
 </script>
