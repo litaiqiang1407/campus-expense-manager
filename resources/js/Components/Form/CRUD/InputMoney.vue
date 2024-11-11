@@ -60,7 +60,8 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, watch } from 'vue';
+import { evaluate } from 'mathjs';
 
 const emit = defineEmits(['update:inputValue']);
 
@@ -101,7 +102,7 @@ const clearInput = () => {
 
 const evaluateExpression = () => {
   try {
-    const result = eval(props.inputValue);
+    const result = evaluate(props.inputValue);
     emit('update:inputValue', result.toString());
   } catch (e) {
     console.error('Error in expression:', e);

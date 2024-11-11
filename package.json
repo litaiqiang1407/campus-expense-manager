@@ -33,6 +33,7 @@
         "express": "^4.21.0",
         "lodash": "^4.17.21",
         "lodash.debounce": "^4.0.8",
+        "mathjs": "^13.2.1",
         "sqlite3": "^5.1.7",
         "sweetalert2": "^11.14.3",
         "swiper": "^11.1.14",

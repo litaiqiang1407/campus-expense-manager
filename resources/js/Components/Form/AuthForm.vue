@@ -12,7 +12,7 @@
                 <img src="/assets/img/google.png" alt="Google" class="h-6 w-6"/>
                 <span class="uppercase font-semibold">Connect with Google</span>
             </button>
-            <span class="text-[#999] text-[10px]">We’ll never post without your permission.</span>
+            <span class="text-secondaryText text-[12px]">We’ll never post without your permission.</span>
         </div>
 
         <div class="flex items-center justify-between w-full">
@@ -23,15 +23,19 @@
 
         <form class="mt-8" @submit.prevent="submit">
             <div class="flex flex-col space-y-6">
-                <InputField v-model="email" type="text" placeholder="Email" />
-                <span v-if="errors.email" class="text-redText text-sm">
-                    {{ errors.email }}
-                </span>
+                <div class="flex flex-col gap-2">
+                    <InputField v-model="email" type="text" placeholder="Email" />
+                    <span v-if="errors.email" class="text-redText text-sm">
+                        {{ errors.email }}
+                    </span>
+                </div>
                 
-                <InputField v-model="password" type="password" placeholder="Password" />
-                <span v-if="errors.password" class="text-redText text-sm">
-                    {{ errors.password }}
-                </span> 
+                <div class="flex flex-col gap-2">
+                    <InputField v-model="password" type="password" placeholder="Password" />
+                    <span v-if="errors.password" class="text-redText text-sm">
+                        {{ errors.password }}
+                    </span> 
+                </div>
 
                 <button type="submit" class="bg-primary text-white rounded py-2 uppercase font-semibold">{{ title }}</button>
             </div>
@@ -43,12 +47,16 @@
 import Header from '@/Components/Header/Index.vue';
 import InputField from '@/Components/Form/InputField.vue';
 import { ref, defineEmits, watch, toRefs } from 'vue';
+import { useRouter } from 'vue-router'; 
+import { showAlert, goPage } from '@/Helpers/Helpers';
 
 const emit = defineEmits(['submitted']);
 const props = defineProps({
     title: String,
     errors: Object
 });
+
+const router = useRouter(); 
 
 const email = ref('');
 const password = ref('');
@@ -57,6 +65,17 @@ const { errors: propErrors } = toRefs(props);
 
 watch(propErrors, (newValue) => {
     errors.value = newValue;
+    if (newValue.emailExist || newValue.emailNotExist) {
+        const isExist = newValue.emailExist;
+        
+        showAlert({
+            title: isExist ? 'Email Already Registered' : 'Email Not Registered',
+            text: isExist ? 'This email is already registered. Do you want to sign in instead?' 
+                          : 'This email is not registered. Do you want to sign up instead?',
+            confirmText: isExist ? 'Yes, sign in' : 'Yes, sign up',
+            onConfirm: isExist ? goPage(router, 'login') : goPage(router, 'Signup')
+        });
+    }
 });
 
 const validateEmpty = (field, name) => {
