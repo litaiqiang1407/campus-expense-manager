@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, watch } from 'vue';
 import { evaluate } from 'mathjs';
 
 const emit = defineEmits(['update:inputValue']);
