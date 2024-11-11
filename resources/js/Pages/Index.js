@@ -13,17 +13,10 @@ export const WriteNote = () => import('./Transaction/WriteNote/Index.vue');
 
 export const MyAccount = () => import('./MyAccount/Index.vue');
 
-<<<<<<< HEAD
-export { default as Budget } from './Budget/Index.vue';
-export { default as CreateBudget } from './Budget/Create.vue';
-export { default as Categories } from './Categories/Index.vue';
-export { default as AddCategory } from './Categories/Create.vue';
-=======
 export const Budget = () => import('./Budget/Index.vue');
 export const CreateBudget = () => import('./Budget/Create.vue');
 export const Categories = () => import('./Categories/Index.vue');
->>>>>>> 8632e9840f26082ca617f6db1c05d1d014bce27c
-
+export const AddCategory = () => import('./Categories/Create.vue');
 export const Notification = () => import('./Notification/Index.vue');
 
 export const MyWallet = () => import('./MyWallet/Index.vue');
