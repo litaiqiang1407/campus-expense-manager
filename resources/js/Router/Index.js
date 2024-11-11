@@ -55,7 +55,7 @@ const routes = [
         path: '/transaction/transaction-details/:transactionId',
         name: 'TransactionDetails',
         component: TransactionDetails,
-        meta: { layout: HeaderLayout, title: 'Edit transaction', isBack: false, isCancel: true},
+        meta: { layout: HeaderLayout, title: 'Transactiton Details', isBack: true, isCancel: false},
     },
 
     {

@@ -45,6 +45,7 @@ class TransactionService
         'wallet_name' => optional($transaction->wallet)->name,
         'note' => $transaction->note,
         'iconPath' => optional($transaction->category->icon)->path,
+        'walletIcon' => optional($transaction->wallet->icon)->path,
         'category_name' => optional($transaction->category)->name,
         'date' => $transaction->date,
     ];
@@ -74,7 +75,10 @@ class TransactionService
             'wallets' => $wallets,
         ];
     }
-
+    public function deleteTransaction($transactionId, $userId)
+    {
+        $this->transactionRepository->deleteTransaction($transactionId);
+    }
     public function createTransaction($data, $userId)
     {
         $category = $this->transactionRepository->getCategoryById($data['category_id']);

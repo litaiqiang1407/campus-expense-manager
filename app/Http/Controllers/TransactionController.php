@@ -129,4 +129,14 @@ class TransactionController extends Controller
             'transaction' => $transaction,
         ]);
     }
+    public function delete(Request $request, $transactionId)
+    {
+        $user_id = $request->user()->id;
+        $this->transactionService->deleteTransaction($transactionId, $user_id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'transaction deleted successfully!',
+        ]);
+    }
 }

@@ -9,6 +9,8 @@
                     v-model="internalDate"
                     :format="formatDateForPicker"
                     @close="isDropdownOpen = false"
+                    class="datepicker"
+                    :disabled="readonly"
                 />
             </div>
         </button>
@@ -24,6 +26,10 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    readonly: {
+        type: Boolean,
+        default: false,
+    }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -42,10 +48,10 @@ watch(internalDate, (newDate) => {
         localStorage.setItem('transactionDate', newDate);
     }
 });
-
 </script>
 
 <style>
+/* Các style trước đó của bạn */
 .v3dp__datepicker {
     width: 100%;
 }

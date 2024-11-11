@@ -25,8 +25,30 @@ class TransactionRepository
             ->orderBy('date', 'desc')
             ->get();
     }
+    public function deleteTransaction($transactionId)
+    {
+        // Lấy thông tin giao dịch cần xóa
+        $transaction = Transaction::findOrFail($transactionId);
+        $userId = $transaction->user_id;
+        $walletId = $transaction->wallet_id;
+        $amount = $transaction->amount;
+        $categoryType = optional($transaction->category)->type;  // Loại giao dịch (thu nhập hay chi phí)
 
-    public function createTransaction($data, $userId)
+        // Cập nhật lại số dư ví
+        if ($categoryType === 'income') {
+            // Nếu là thu nhập, trừ số tiền từ ví vì giao dịch thu nhập bị xóa
+            $this->updateWalletBalance($walletId, $amount, false);  // Trừ tiền khỏi ví
+        } else {
+            // Nếu là chi phí, cộng số tiền vào ví vì giao dịch chi phí bị xóa
+            $this->updateWalletBalance($walletId, $amount, true);   // Cộng tiền vào ví
+        }
+
+        // Xóa giao dịch
+        $transaction->delete();
+
+        return true;
+    }
+        public function createTransaction($data, $userId)
     {
         return Transaction::create(array_merge($data, ['user_id' => $userId]));
     }

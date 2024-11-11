@@ -1,6 +1,11 @@
 <template>
     <div class="py-4">
-        <button type="button" class="flex w-full space-x-2 items-center" @click="goToNote">
+        <button
+            type="button"
+            class="flex w-full space-x-2 items-center"
+            @click="goToNote"
+            :disabled="readonly.value"
+        >
             <div class="size-[20px] flex items-center justify-center">
                 <font-awesome-icon icon="fa-regular fa-comment" class="text-black text-[16px]" />
             </div>
@@ -15,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watch, defineEmits, onMounted } from 'vue';
+import { ref, defineProps, watch, defineEmits, onMounted, readonly } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps({
@@ -26,6 +31,10 @@ const props = defineProps({
     fromPage: {
         type: String,
         default: 'EditTransaction'
+    },
+    readonly: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -45,7 +54,10 @@ watch(() => props.modelValue, (newValue) => {
     noteContent.value = newValue;
 });
 
+// Hàm goToNote chỉ chạy khi readonly là false
 const goToNote = () => {
+    if (props.readonly) return;  // Nếu readonly là true thì không thực hiện gì cả
+
     const transactionId = router.currentRoute.value.params.transactionId;
     router.push({
         name: 'Note',

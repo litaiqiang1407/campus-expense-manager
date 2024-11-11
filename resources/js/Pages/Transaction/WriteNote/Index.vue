@@ -8,7 +8,7 @@
             placeholder="Write note here..."
         ></textarea>
         <button
-            class="mt-4 p-2 bg-blue-500 text-white rounded"
+            class="mt-4 p-2 bg-primary text-white text-[16px] rounded"
             @click="saveNote"
         >
             Save
