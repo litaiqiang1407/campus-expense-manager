@@ -145,26 +145,26 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach(async (to, from, next) => {
-    if (to.name === 'CreateWallet') {
-        const walletTypeId = to.params.walletTypeId;
+// router.beforeEach(async (to, from, next) => {
+//     if (to.name === 'CreateWallet') {
+//         const walletTypeId = to.params.walletTypeId;
 
-        try {
-            const response = await axios.get(route('CreateWallet', { walletTypeId }));
-            const isFirstTime = response.data.isFirstTime;
+//         try {
+//             const response = await axios.get(route('CreateWallet', { walletTypeId }));
+//             const isFirstTime = response.data.isFirstTime;
 
-            if (isFirstTime) {
-                to.meta.layout = NoneLayout;
-                delete to.meta.title;
-                delete to.meta.isBack;
-                delete to.meta.isCancel;
-            }
-        } catch (error) {
-            console.error('Error checking wallet:', error);
-        }
-    }
+//             if (isFirstTime) {
+//                 to.meta.layout = NoneLayout;
+//                 delete to.meta.title;
+//                 delete to.meta.isBack;
+//                 delete to.meta.isCancel;
+//             }
+//         } catch (error) {
+//             console.error('Error checking wallet:', error);
+//         }
+//     }
 
-    next();
-});
+//     next();
+// });
 
 export default router;
