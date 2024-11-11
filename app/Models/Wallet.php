@@ -16,7 +16,7 @@ class Wallet extends Model
 
     const DEFAULT_WALLET_NAME = 'Cash';
 
-    const DEFAULT_WALLET_ICON = '/assets/icon/cash.png';
+    const DEFAULT_WALLET_ICON = '/assets/icon/default-wallet.png';
 
     public function isTotalWallet()
     {
@@ -36,6 +36,13 @@ class Wallet extends Model
     // {
     //     return $this->belongsTo(WalletType::class);
     // }
+
+    public static function hasNonTotalWallet($userId)
+    {
+        return self::where('user_id', $userId)
+            ->where('name', '!=', self::TOTAL_WALLET_NAME)
+            ->exists();
+    }
 
     public function transactions()
     {
