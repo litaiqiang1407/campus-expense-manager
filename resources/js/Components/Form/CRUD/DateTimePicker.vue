@@ -7,7 +7,7 @@
             <div class="text-secondaryText font-medium text-[14px] w-full">
                 <Datepicker
                     v-model="internalDate"
-                    :format="formatDateForPicker"
+                    :inputFormat="'dd-MM-yyyy'"
                     @close="isDropdownOpen = false"
                     class="datepicker"
                     :disabled="readonly"

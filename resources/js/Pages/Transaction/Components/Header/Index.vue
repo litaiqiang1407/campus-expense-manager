@@ -4,7 +4,7 @@
         <div
             class="balance-section flex flex-col items-center justify-center flex-1 absolute left-1/2 transform -translate-x-1/2">
             <h2 class="balance-label text-gray-400 font-bold text-center text-xs">Balance</h2>
-            <p class="balance-amount text-black text-xl font-bold">{{ formatCurrency(selectedWallet?.balance || 0) }}</p>
+            <p class="balance-amount text-black text-xl font-bold">{{ formatBalance(selectedWallet?.balance || 0) }}</p>
         </div>
         <div class="icons-section flex space-x-4 ml-auto">
             <span class="search-icon cursor-pointer text-black text-lg font-normal">
@@ -38,6 +38,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { formatBalance } from '@/Helpers/Helpers';
 
 const props = defineProps({
     wallets: Array,
@@ -47,14 +48,6 @@ const emit = defineEmits(['walletSelected']);
 
 const isDropdownVisible = ref(false);
 const selectedWallet = ref(props.wallets[0] || null);
-
-const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2,
-    }).format(amount);
-};
 
 const toggleDropdown = () => {
     isDropdownVisible.value = !isDropdownVisible.value;
@@ -72,9 +65,3 @@ document.addEventListener('click', (event) => {
     }
 });
 </script>
-
-<style scoped>
-.transaction-type-container {
-    min-width: 180px;
-}
-</style>

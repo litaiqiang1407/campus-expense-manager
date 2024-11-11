@@ -67,7 +67,6 @@ const routes = [
             title: 'Note',
             isBack: false,
             isCancel: true,
-            headerComponent: [SaveButton]
         },
     },
     {

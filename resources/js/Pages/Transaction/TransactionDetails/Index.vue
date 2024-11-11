@@ -15,11 +15,11 @@
                 :readonly="true" />
 
             <Select :iconSrc="walletIcon" :selectText="wallet_name ? wallet_name : 'Select Wallet'"/>
-            <button class="mt-4 mr-1 p-2 bg-primary text-white text-[16px] rounded"
+            <button class="mt-4 mr-1 w-full p-2 bg-primary text-white text-[16px] rounded-[1000px]"
                 @click="editTransaction(transactionId)">
                 Edit
             </button>
-            <button class="mt-4 p-2 bg-primary text-white text-[16px] rounded" @click="confirmDelete(transactionId)">
+            <button class="mt-4 p-2 bg-[#8B0000] w-full text-white text-[16px] rounded-[1000px]" @click="confirmDelete(transactionId)">
                 Delete
             </button>
         </div>
