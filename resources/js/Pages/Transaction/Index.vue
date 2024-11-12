@@ -109,14 +109,14 @@ const createAvailableMonths = () => {
         transactionMonths.add(monthYear);
     });
 
-    // Lấy tất cả các tháng có giao dịch từ những năm trong quá khứ
+    // Lấy tất cả các năm có giao dịch
     const yearsWithTransactions = new Set();
     transactions.value.forEach(transaction => {
         const transactionDate = new Date(transaction.date);
         yearsWithTransactions.add(transactionDate.getFullYear());
     });
 
-    // Duyệt qua các năm trong quá khứ và lấy các tháng có giao dịch
+    // Duyệt qua các năm và các tháng trong năm đó
     yearsWithTransactions.forEach(year => {
         for (let month = 1; month <= 12; month++) {
             const monthYear = `${month}-${year}`;
@@ -129,7 +129,16 @@ const createAvailableMonths = () => {
         }
     });
 
-    availableMonths.value = months.reverse();
+    availableMonths.value = months.sort((a, b) => {
+        const [monthA, yearA] = a.value.split('-').map(Number);
+        const [monthB, yearB] = b.value.split('-').map(Number);
+
+        if (yearA !== yearB) {
+            return yearA - yearB;
+        } else {
+            return monthA - monthB; 
+        }
+    });
 };
 
 // Lọc giao dịch theo tháng

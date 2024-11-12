@@ -4,7 +4,7 @@
             <Loading class="size-16" />
         </div>
 
-        <div class="pl-4 mt-4">
+        <div class="pl-4 mt-4 pr-4">
             <InputMoney :inputValue="amount.toString()" />
 
             <Select :iconSrc="categoryIcon" :selectText="category_name ? category_name : 'Select category'"
@@ -56,7 +56,8 @@ const fetchTransactionDetailsData = async () => {
         wallet_name.value = response.data.transaction.wallet_name;
         categoryIcon.value = response.data.transaction.iconPath;
         walletIcon.value = response.data.transaction.walletIcon;
-
+        localStorage.setItem('CategoryIcon', categoryIcon.value);
+        localStorage.setItem('WalletIcon', walletIcon.value);
     } catch (error) {
         console.error("Error fetching transaction details:", error);
     } finally {

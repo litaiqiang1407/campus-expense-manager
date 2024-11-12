@@ -5,11 +5,11 @@
         </div>
         <Form :action="'Save'" @submit="submitForm">
             <InputMoney :inputValue="amount.toString()" @update:inputValue="updateAmount" />
-            <Select :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
+            <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
             <Note v-model="note" fromPage="EditTransaction" />
             <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :iconSrc="null" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
+            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
 
             <Submit> Save</Submit>
@@ -46,6 +46,8 @@ const note = ref(getLocalStorageItem('note', ''));
 const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
 const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
+const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
+const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
 
 const routerr = useRouter();
 const transactionId = routerr.currentRoute.value.params.transactionId;

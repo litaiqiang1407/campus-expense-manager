@@ -66,6 +66,7 @@ const isSelectCategoryPage = computed(() => router.currentRoute.value.name === '
 const goToEditTransaction = (category) => {
     localStorage.setItem('categoryId', category.id);
     localStorage.setItem('selectedCategory', category.name);
+    localStorage.setItem('CategoryIcon', category.icon_path);
 
     const fromPage = router.currentRoute.value.query.fromPage
     const transactionId = router.currentRoute.value.query.transactionId
