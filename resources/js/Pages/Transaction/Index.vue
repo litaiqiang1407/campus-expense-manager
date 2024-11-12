@@ -98,6 +98,11 @@ const fetchTransactions = async () => {
     }
 };
 
+const handleWalletSelected = (wallet) => {
+    selectedWallet.value = wallet;
+    filterTransactions();
+};
+
 const createAvailableMonths = () => {
     const months = [];
     const currentDate = new Date();
@@ -136,7 +141,7 @@ const createAvailableMonths = () => {
         if (yearA !== yearB) {
             return yearA - yearB;
         } else {
-            return monthA - monthB; 
+            return monthA - monthB;
         }
     });
 };
