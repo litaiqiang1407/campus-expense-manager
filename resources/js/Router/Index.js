@@ -186,7 +186,7 @@ const router = createRouter({
 // });
 
 router.beforeEach(async (to, from, next) => {
-    if (!['Note', 'SelectCategories', 'SelectWallet', 'EditTransaction','CreateTransaction','CreateWallet','Icon'].includes(to.name)) {
+    if (!['Note', 'SelectCategories', 'SelectWallet','EditWallet', 'EditTransaction','CreateTransaction','CreateWallet','Icon'].includes(to.name)) {
         localStorage.clear();
     }
     next();

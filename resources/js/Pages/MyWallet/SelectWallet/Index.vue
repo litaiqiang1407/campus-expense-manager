@@ -134,13 +134,17 @@ const performSearch = async (query) => {
 const selectWallet = (wallets) => {
     localStorage.setItem('wallet_id', wallets.id);
     localStorage.setItem('selectedWallet', wallets.name);
-    localStorage.setItem('WalletIcon',wallets.icon_path);
+    localStorage.setItem('WalletIcon', wallets.icon_path);
+
     const fromPage = router.currentRoute.value.query.fromPage;
     const transactionId = router.currentRoute.value.query.transactionId;
+
     if (fromPage) {
+        const query = { walletId: wallets.id };
         router.push({
             name: fromPage,
-            params: { transactionId: transactionId }
+            query: query,
+            params: {transactionId: transactionId},
         });
     } else {
         console.error('fromPage is missing in query parameters');

@@ -49,8 +49,8 @@ const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(ge
 const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
 const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
 
-const routerr = useRouter();
-const transactionId = routerr.currentRoute.value.params.transactionId;
+const router = useRouter();
+const transactionId = router.currentRoute.value.params.transactionId;
 
 const fetchTransactionData = async () => {
     try {
@@ -75,7 +75,7 @@ const fetchTransactionData = async () => {
 };
 
 const selectWallet = () => {
-    routerr.push({
+    router.push({
         name: 'SelectWallet',
         query: {
             transactionId: transactionId,
@@ -89,7 +89,7 @@ const updateAmount = (value) => {
 };
 
 const goToSelectCategories = () => {
-    routerr.push({
+    router.push({
         name: 'SelectCategories',
         query: {
             transactionId: transactionId,

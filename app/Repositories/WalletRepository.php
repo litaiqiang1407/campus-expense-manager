@@ -96,7 +96,7 @@ class WalletRepository
     public function createFirstWallet($userId)
     {
         $walletType = $this->getDefaultWalletType();
-        
+
         $iconPath = Wallet::DEFAULT_WALLET_ICON;
         $iconName = Wallet::DEFAULT_WALLET_NAME;
 
@@ -107,27 +107,27 @@ class WalletRepository
 
         $wallet = Wallet::create([
             'name' => Wallet::DEFAULT_WALLET_NAME,
-            'balance' => 0,  
+            'balance' => 0,
             'user_id' => $userId,
             'icon_id' => $defaultIcon->id,
             'wallet_type_name' => $walletType,
         ]);
-    
+
         $category = Category::where('name', 'Other Income')->first();
-    
+
         if ($category) {
             Transaction::create([
                 'category_id' => $category->id,
-                'amount' => 0,  
+                'amount' => 0,
                 'wallet_id' => $wallet->id,
                 'user_id' => $userId,
-                'date' => now(), 
-                'note' => 'Initial balance',  
+                'date' => now(),
+                'note' => 'Initial balance',
             ]);
         }
-    
+
         $this->recalculateTotalWalletBalance($userId);
-    
+
         return $wallet;
     }
 
@@ -137,7 +137,7 @@ class WalletRepository
             'wallets.id',
             'wallets.name',
             'wallets.balance',
-            'wallets.wallet_type_id',
+            'wallets.wallet_type_name',
             'wallets.icon_id',
             'icons.path as icon_path',
             'icons.name as icon_name'
@@ -145,7 +145,6 @@ class WalletRepository
         ->join('icons', 'wallets.icon_id', '=', 'icons.id')
         ->findOrFail($walletId);
     }
-
     public function getWalletNameById($userId, $walletId = null)
     {
         if ($walletId) {
