@@ -9,10 +9,14 @@ class Wallet extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'wallet_type_id', 'balance', 'user_id', 'icon_id'];
+    protected $fillable = ['name', 'wallet_type_name', 'balance', 'user_id', 'icon_id'];
 
     const TOTAL_WALLET_NAME = 'Total';
     const TOTAL_WALLET_ICON = '/assets/icon/total.png';
+
+    const DEFAULT_WALLET_NAME = 'Cash';
+
+    const DEFAULT_WALLET_ICON = '/assets/icon/default-wallet.png';
 
     public function isTotalWallet()
     {
@@ -28,9 +32,16 @@ class Wallet extends Model
         return parent::delete();
     }
 
-    public function walletType()
+    // public function walletType()
+    // {
+    //     return $this->belongsTo(WalletType::class);
+    // }
+
+    public static function hasNonTotalWallet($userId)
     {
-        return $this->belongsTo(WalletType::class);
+        return self::where('user_id', $userId)
+            ->where('name', '!=', self::TOTAL_WALLET_NAME)
+            ->exists();
     }
 
     public function transactions()

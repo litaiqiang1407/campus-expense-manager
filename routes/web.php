@@ -18,21 +18,31 @@ use App\Http\Middleware\HandleInertiaRequests;
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('Welcome');
 
 Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->group(function () {
+    Route::group(['prefix' => ''], function () {
+        Route::get('/', [HomeController::class, 'index'])->name('Home');
+        Route::get('/report', [HomeController::class, 'report'])->name('HomeReport');
+    });
     Route::get('/', [HomeController::class, 'index'])->name('Home');
-    Route::get('/transaction', [TransactionController::class, 'index'])->name('Transaction');
     Route::get('/notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
     Route::get('/categories', [CategoryController::class, 'index'])->name('Categories');
     Route::get('/recurring', [TransactionController::class, 'index'])->name('Recurring');
 
 
+    Route::group(['prefix' => 'transaction'], function ()
+    {
+        Route::get('/', [TransactionController::class, 'index'])->name('Transaction');
+        Route::get('/create', [TransactionController::class, 'create'])->name('CreateTransaction');
+        Route::post('/store', [TransactionController::class, 'store'])->name('StoreTransaction');
+    });
     Route::group(['prefix' => 'my-wallet'], function () {
         Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');
-        Route::get('/{walletTypeId}/create', [MyWalletController::class, 'create'])->name('CreateWallet');
+        Route::get('/create', [MyWalletController::class, 'create'])->name('CreateWallet');
         Route::post('/store', [MyWalletController::class, 'store'])->name('StoreWallet');
         Route::get('/edit/{walletId}', [MyWalletController::class, 'edit'])->name('EditWallet');
         Route::post('/update/{walletId}', [MyWalletController::class, 'update'])->name('UpdateWallet');
         Route::post('/delete/{walletId}', [MyWalletController::class, 'delete'])->name('DeleteWallet');
+        Route::get('/search', [MyWalletController::class, 'search'])->name('SearchWallets');
     });
 
     Route::group(['prefix' => 'budget'], function () {

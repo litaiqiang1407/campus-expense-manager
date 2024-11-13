@@ -3,28 +3,26 @@
 namespace App\Repositories;
 
 use App\Models\Wallet;
-use App\Models\WalletType;
 use App\Models\Icon;
-
+use App\Models\Category;
+use App\Models\Transaction;
 use App\Repositories\IconRepository;
-use App\Repositories\WalletTypeRepository;
 
 class WalletRepository
 {
     protected $iconRepo;
     protected $walletTypeRepo;
 
-    public function __construct(IconRepository $iconRepo, WalletTypeRepository $walletTypeRepo)
+    public function __construct(IconRepository $iconRepo)
     {
         $this->iconRepo = $iconRepo;
-        $this->walletTypeRepo = $walletTypeRepo;
     }
 
     public function userHasWallet($userId)
     {
         return Wallet::where('user_id', $userId)->exists();
     }
-    public function getAllWallets($userId)
+    public function getAllWallets($userId,  $limit = null)
     {
         return Wallet::select(
             'wallets.id',
@@ -35,20 +33,101 @@ class WalletRepository
         )
         ->where('user_id', $userId)
         ->join('icons', 'wallets.icon_id', '=', 'icons.id')
+        ->limit($limit)
         ->get();
     }
 
+    public function getThreeWallets($userId)
+    {
+        return Wallet::select(
+            'wallets.id',
+            'wallets.name',
+            'wallets.balance',
+            'icons.path as icon_path',
+            'icons.name as icon_name'
+        )
+        ->where('user_id', $userId)
+        ->where('wallets.name', '!=', Wallet::TOTAL_WALLET_NAME) 
+        ->join('icons', 'wallets.icon_id', '=', 'icons.id')
+        ->limit(3)
+        ->get();
+    }
+        
+
     public function getWalletTypes()
     {
-        return WalletType::select('id', 'name')->get();
+        return ['Basic', 'Linked', 'Credit', 'Goal'];
+    }
+
+    public function getDefaultWalletType()
+    {
+        return $this->getWalletTypes()[0];
+    }
+
+    public function walletExistsWithName($userId, $walletName)
+    {
+        return Wallet::where('user_id', $userId)
+            ->where('name', $walletName)
+            ->exists();
     }
 
     public function createWallet($data, $userId)
     {
         $wallet = Wallet::create(array_merge($data, ['user_id' => $userId]));
 
+        $category = Category::where('name', 'Other Income')->first();
+
+        if ($category) {
+            Transaction::create([
+                'category_id' => $category->id,
+                'amount' => $wallet->balance,
+                'wallet_id' => $wallet->id,
+                'user_id' => $userId,
+                'date' => now(), 
+                'note' => 'Initial balance', 
+            ]);
+        }
+
         $this->recalculateTotalWalletBalance($userId);
 
+        return $wallet;
+    }
+
+    public function createFirstWallet($userId)
+    {
+        $walletType = $this->getDefaultWalletType();
+        
+        $iconPath = Wallet::DEFAULT_WALLET_ICON;
+        $iconName = Wallet::DEFAULT_WALLET_NAME;
+
+        $defaultIcon = Icon::create([
+            'name' => $iconName,
+            'path' => $iconPath,
+        ]);
+
+        $wallet = Wallet::create([
+            'name' => Wallet::DEFAULT_WALLET_NAME,
+            'balance' => 0,  
+            'user_id' => $userId,
+            'icon_id' => $defaultIcon->id,
+            'wallet_type_name' => $walletType,
+        ]);
+    
+        $category = Category::where('name', 'Other Income')->first();
+    
+        if ($category) {
+            Transaction::create([
+                'category_id' => $category->id,
+                'amount' => 0,  
+                'wallet_id' => $wallet->id,
+                'user_id' => $userId,
+                'date' => now(), 
+                'note' => 'Initial balance',  
+            ]);
+        }
+    
+        $this->recalculateTotalWalletBalance($userId);
+    
         return $wallet;
     }
 
@@ -58,13 +137,11 @@ class WalletRepository
             'wallets.id',
             'wallets.name',
             'wallets.balance',
-            'wallets.wallet_type_id',
-            'wallet_types.name as walletTypeName',
+            'wallets.wallet_type_name',
             'wallets.icon_id',
             'icons.path as icon_path',
             'icons.name as icon_name'
         )
-        ->join('wallet_types', 'wallets.wallet_type_id', '=', 'wallet_types.id')
         ->join('icons', 'wallets.icon_id', '=', 'icons.id')
         ->findOrFail($walletId);
     }
@@ -124,12 +201,32 @@ class WalletRepository
                 'balance' => $totalBalance,
                 'user_id' => $userId,
                 'icon_id' => $this->iconRepo->getIconByPath(Wallet::TOTAL_WALLET_ICON)->id,
-                'wallet_type_id' => $this->walletTypeRepo->getDefaultWalletTypeId(),
+                'wallet_type_name' => $this->getDefaultWalletType(),
             ]);
         } else {
             $totalWallet->update(['balance' => $totalBalance]);
         }
 
         return $totalWallet;
+    }
+
+    public function searchWallets($userId, $search, $limit = null)
+    {
+        if (empty($search)) {
+            return $this->getAllWallets($userId, $limit);
+        }
+        return Wallet::select(
+                'wallets.id',
+                'wallets.name',
+                'wallets.balance',
+                'icons.path as icon_path',
+                'icons.name as icon_name'
+            )
+            ->where('user_id', $userId)
+            ->where('wallets.name', 'LIKE', '%' . $search . '%') 
+            ->orWhere('wallets.balance', 'LIKE', '%' . $search . '%')
+            ->join('icons', 'wallets.icon_id', '=', 'icons.id')
+            ->limit($limit)
+            ->get();
     }
 }

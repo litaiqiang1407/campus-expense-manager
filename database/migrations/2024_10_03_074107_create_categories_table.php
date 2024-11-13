@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->string('name'); // Name of the category (e.g., Food, Entertainment)
             $table->string('parent_id');
+            $table->enum('type', ['expense', 'income']);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key to the Users table
             $table->foreignId('icon_id')->constrained('icons')->onDelete('cascade'); // Foreign key to the Icons table
             $table->timestamps();

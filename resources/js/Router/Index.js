@@ -1,12 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
+ feat/recurringtransaction
 import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, RecurringTransaction } from "../Pages/Index";
+
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, WriteNote } from "../Pages/Index";
+ master
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
 
-import { Support, Menu, Search } from "../Components/Header/Components/Index";
+import { Support, Menu, Search, SelectWallet as SelectComponent, SaveButton} from "../Components/Header/Components/Index";
 
 const routes = [
     {
@@ -42,6 +46,18 @@ const routes = [
         name: 'CreateTransaction',
         component: CreateTransaction,
         meta: { layout: HeaderLayout, title: 'Add transaction', isBack: false, isCancel: true},
+    },
+    {
+        path: '/note',
+        name: 'Note',
+        component: WriteNote,
+        meta: {
+            layout: HeaderLayout,
+            title: 'Note',
+            isBack: false,
+            isCancel: true,
+            headerComponent: [SaveButton]
+        },
     },
     {
         path: '/signin',
@@ -87,17 +103,15 @@ const routes = [
     {
         path: '/categories',
         name: 'Categories',
-        meta: { layout: DefaultLayout, title: 'Categories', isBack: false, headerComponent: [SelectWallet,Menu] },
         component: Categories
     },
     {
         path: '/my-wallet',
         name: 'MyWallet',
         component: MyWallet,
-        meta: { layout: HeaderLayout, title: 'My Wallet', isBack: true, isCancel: false, headerComponent: [Search]},
     },
     {
-        path: '/my-wallet/:walletTypeId/create',
+        path: '/my-wallet/:walletType/create',
         name: 'CreateWallet',
         component: CreateWallet,
         meta: { layout: HeaderLayout, title: 'Add wallet', isBack: false, isCancel: true },
@@ -112,7 +126,7 @@ const routes = [
     },
     {
         path: '/logout',
-        name: 'Logout',        
+        name: 'Logout',
     },
     {
         path: '/icon',
@@ -120,7 +134,7 @@ const routes = [
         component: Icon,
         meta: { layout: HeaderLayout, title: 'Icon', isBack: true, isCancel: false },
         props: true,
-    },  
+    },
     {
         path: '/select-wallet',
         name: 'SelectWallet',
@@ -142,26 +156,26 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach(async (to, from, next) => {
-    if (to.name === 'CreateWallet') {
-        const walletTypeId = to.params.walletTypeId;
+// router.beforeEach(async (to, from, next) => {
+//     if (to.name === 'CreateWallet') {
+//         const walletTypeId = to.params.walletTypeId;
 
-        try {
-            const response = await axios.get(route('CreateWallet', { walletTypeId }));
-            const isFirstTime = response.data.isFirstTime;
+//         try {
+//             const response = await axios.get(route('CreateWallet', { walletTypeId }));
+//             const isFirstTime = response.data.isFirstTime;
 
-            if (isFirstTime) {
-                to.meta.layout = NoneLayout;
-                delete to.meta.title;
-                delete to.meta.isBack;
-                delete to.meta.isCancel;
-            }
-        } catch (error) {
-            console.error('Error checking wallet:', error);
-        }
-    }
+//             if (isFirstTime) {
+//                 to.meta.layout = NoneLayout;
+//                 delete to.meta.title;
+//                 delete to.meta.isBack;
+//                 delete to.meta.isCancel;
+//             }
+//         } catch (error) {
+//             console.error('Error checking wallet:', error);
+//         }
+//     }
 
-    next();
-});
+//     next();
+// });
 
 export default router;

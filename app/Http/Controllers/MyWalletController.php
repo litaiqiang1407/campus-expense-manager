@@ -43,25 +43,29 @@ class MyWalletController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'wallet_type_id' => 'required|exists:wallet_types,id',
+            'wallet_type_name' => 'required|string',
             'balance' => 'numeric|min:0',
             'icon_id' => 'required|exists:icons,id',
         ]);
 
         $userHasWallet = $this->walletService->userHasWallet($user_id);
-        $this->walletService->createWallet($validatedData, $user_id);
+        $result = $this->walletService->createWallet($validatedData, $user_id);
+
+        if (!$result['success']) {
+            return response()->json(['message' => $result['message']], 400);
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'Wallet created successfully!',
+            'message' => $result['message'],
             'userHasWallet' => !$userHasWallet,
         ]);
     }
 
     public function create(Request $request)
     {
-        $walletTypeID = $request->walletTypeId;
-        $walletType = $this->walletService->getWalletTypes()->find($walletTypeID);
+        // $walletTypeID = $request->walletTypeId;
+        // $walletType = $this->walletService->getWalletTypes()->find($walletTypeID);
         $walletTypeList = $this->walletService->getWalletTypes();
         $icons = $this->walletService->getIcons();
 
@@ -72,7 +76,7 @@ class MyWalletController extends Controller
         if ($request->wantsJson()) {
             return response()->json([
                 'isFirstTime' => $isFirstTime,
-                'walletType' => $walletType,
+                // 'walletType' => $walletType,
                 'walletTypeList' => $walletTypeList,
                 'icons' => $icons,
             ]);
@@ -80,7 +84,7 @@ class MyWalletController extends Controller
 
         return Inertia::render('MyWallet/Create', [
             'isFirstTime' => $isFirstTime,
-            'walletType' => $walletType,
+            // 'walletType' => $walletType,
             'walletTypeList' => $walletTypeList,
             'icons' => $icons,
         ]);
@@ -109,7 +113,7 @@ class MyWalletController extends Controller
         $user_id = $request->user()->id;
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'wallet_type_id' => 'required|exists:wallet_types,id',
+            'wallet_type_name' => 'required|string',
             'balance' => 'required|numeric|min:0',
             'icon_id' => 'required|exists:icons,id',
         ]);
@@ -130,6 +134,17 @@ class MyWalletController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Wallet deleted successfully!',
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $userId = $request->user()->id;
+        $search = $request->search;
+        $wallets = $this->walletService->searchWallets($userId, $search);
+
+        return response()->json([
+            'wallets' => $wallets,
         ]);
     }
 }
