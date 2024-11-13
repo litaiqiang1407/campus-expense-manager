@@ -113,12 +113,15 @@ const routes = [
     {
         path: '/categories',
         name: 'Categories',
-        component: Categories
+        component: Categories,
+        meta: { layout: HeaderLayout, title: 'Categories', isBack: false, isCancel: true},
     },
     {
         path: '/select-categories',
         name: 'SelectCategories',
         component: SelectCategories,
+        meta: { layout: HeaderLayout, title: 'Select Wallet', isBack: true, isCancel: false},
+
     },
     {
         path: '/my-wallet',

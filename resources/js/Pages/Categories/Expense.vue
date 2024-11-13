@@ -8,7 +8,7 @@
 
         <!-- Categories List -->
         <div v-for="category in getCategory()" :key="category.id" class="bg-white shadow my-2 py-2">
-            <div class="flex justify-between items-center py-2 px-4" @click="goToEditTransaction(category)">
+            <div class="flex justify-between items-center py-2 px-4" @click="gotoback(category)">
                 <div class="flex items-center space-x-3">
                     <img :src="category.icon_path" alt="Category Icon" class="w-10 h-10 rounded-full">
                     <div>
@@ -27,7 +27,7 @@
                     :key="subcategory.id"
                     :class="[ 'flex items-center space-x-2 py-2',
                         index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2' ]"
-                    @click="goToEditTransaction(subcategory)"
+                    @click="gotoback(subcategory)"
                 >
                     <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                     <img :src="subcategory.icon_path" alt="Subcategory Icon" class="w-8 h-8 rounded-full">
@@ -63,7 +63,7 @@ const getSubcategories = (parentId) => {
 
 const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'SelectCategories');
 
-const goToEditTransaction = (category) => {
+const gotoback = (category) => {
     localStorage.setItem('categoryId', category.id);
     localStorage.setItem('selectedCategory', category.name);
     localStorage.setItem('CategoryIcon', category.icon_path);

@@ -6,7 +6,7 @@
         </button>
 
         <div v-for="category in getCategory()" :key="category.id" class="bg-white shadow my-2 py-2">
-            <div class="flex justify-between items-center py-2 px-4" @click="goToEditTransaction(category)">
+            <div class="flex justify-between items-center py-2 px-4" @click="gotoback(category)">
                 <div class="flex items-center space-x-3">
                     <img :src="category.icon_path" alt="Category Icon" class="w-10 h-10 rounded-full">
                     <div>
@@ -19,15 +19,10 @@
             </div>
 
             <ul v-if="getSubcategories(category.parent_id).length" class="pl-8">
-                <li
-                    v-for="(subcategory, index) in getSubcategories(category.id)"
-                    :key="subcategory.id"
-                    :class="[
-                        'flex items-center space-x-2 py-2',
-                        index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2'
-                    ]"
-                    @click="goToEditTransaction(subcategory)"
-                >
+                <li v-for="(subcategory, index) in getSubcategories(category.id)" :key="subcategory.id" :class="[
+                    'flex items-center space-x-2 py-2',
+                    index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2'
+                ]" @click="gotoback(subcategory)">
                     <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                     <img :src="subcategory.icon_path" alt="Subcategory Icon" class="w-8 h-8 rounded-full">
                     <div>
@@ -63,16 +58,23 @@ const getSubcategories = (parentId) => {
 };
 
 // Check if the current route is select-categories
-const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'select-categories');
-
-// Navigate to the EditTransaction page when clicking on a category or subcategory
-const goToEditTransaction = (category) => {
+const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'SelectCategories');
+const gotoback = (category) => {
+    console.log('Selected Category:', category);
+    localStorage.setItem('categoryId', category.id);
+    localStorage.setItem('selectedCategory', category.name);
+    localStorage.setItem('CategoryIcon', category.icon_path);
+    const fromPage = router.currentRoute.value.query.fromPage;
+    const transactionId = router.currentRoute.value.query.transactionId;
     if (isSelectCategoryPage.value) {
-        // Only navigate if on select-categories page
-        router.push({
-            name: 'EditTransaction',
-            params: { id: category.id, name: category.name }
-        });
+        if (fromPage) {
+            router.push({
+                name: fromPage,
+                params: { transactionId: transactionId },
+            });
+        } else {
+            console.error('fromPage is not defined or is invalid');
+        }
     }
 };
 </script>
