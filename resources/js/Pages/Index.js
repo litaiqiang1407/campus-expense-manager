@@ -15,7 +15,9 @@ export const MyAccount = () => import('./MyAccount/Index.vue');
 
 export const Budget = () => import('./Budget/Index.vue');
 export const CreateBudget = () => import('./Budget/Create.vue');
+
 export const Categories = () => import('./Categories/Index.vue');
+export const SelectCategory = () => import('./Categories/SelectCategory/Index.vue');
 
 export const Notification = () => import('./Notification/Index.vue');
 

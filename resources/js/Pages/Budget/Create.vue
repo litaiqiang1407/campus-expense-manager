@@ -20,12 +20,12 @@
               <div v-if="selectedDateOption === 'Custom'" class="mt-4 flex items-center justify-center">
                 <div class="flex items-center">
                   <span class="mr-2 text-lg font-medium tracking-normal">From</span>
-                  <input type="date" v-model="customFrom" class="border-gray-300 rounded-md shadow-sm text-lg" />
+                  <input type="date" v-model="customFrom" class="border-gray-300 rounded-md shadow-sm text-base w-32" />
                 </div>
-                <span class="mx-2 text-lg font-medium tracking-normal">-</span>
+                <span class="mx-2 text-base font-medium tracking-normal">-</span>
                 <div class="flex items-center">
-                  <span class="mr-2 text-lg font-medium tracking-normal">To</span>
-                  <input type="date" v-model="customTo" class="border-gray-300 rounded-md shadow-sm text-lg" />
+                  <span class="mr-2 text-base font-medium tracking-normal">To</span>
+                  <input type="date" v-model="customTo" class="border-gray-300 rounded-md shadow-sm text-base w-32" />
                 </div>
               </div>
           </div>
