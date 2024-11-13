@@ -35,13 +35,6 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 const internalDate = ref(props.modelValue || '');
 
-const formatDateForPicker = (date) => {
-    const parsedDate = new Date(date);
-    return isNaN(parsedDate.getTime())
-        ? 'Select Date'
-        : parsedDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-};
-
 watch(internalDate, (newDate) => {
     emit('update:modelValue', newDate);
     if (newDate) {
@@ -52,6 +45,9 @@ watch(internalDate, (newDate) => {
 
 <style>
 /* Các style trước đó của bạn */
+.datepicker{
+    background-color: white;
+}
 .v3dp__datepicker {
     width: 100%;
 }
