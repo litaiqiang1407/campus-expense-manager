@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-white">
         <div v-if="loading" class="flex w-screen items-center justify-center h-64">
             <Loading class="size-16" />
         </div>

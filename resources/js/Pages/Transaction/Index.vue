@@ -114,26 +114,35 @@ const createAvailableMonths = () => {
         transactionMonths.add(monthYear);
     });
 
-    // Lấy tất cả các năm có giao dịch
-    const yearsWithTransactions = new Set();
-    transactions.value.forEach(transaction => {
-        const transactionDate = new Date(transaction.date);
-        yearsWithTransactions.add(transactionDate.getFullYear());
-    });
+    // Get the current month and year for comparisons
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    // Define dates for "Last Month" and "Future"
+    const lastMonthDate = new Date(currentYear, currentMonth - 1, 1);
+    const futureDate = new Date(currentYear, currentMonth + 1, 1);
 
     // Duyệt qua các năm và các tháng trong năm đó
-    yearsWithTransactions.forEach(year => {
-        for (let month = 1; month <= 12; month++) {
-            const monthYear = `${month}-${year}`;
-            if (transactionMonths.has(monthYear)) {
-                months.push({
-                    label: `${month}-${year}`,
-                    value: monthYear
-                });
-            }
+    transactionMonths.forEach(monthYear => {
+        const [month, year] = monthYear.split('-').map(Number);
+        const transactionDate = new Date(year, month - 1, 1);
+
+        // Check if the month is not in "Last Month," "This Month," or "Future"
+        if (
+            !(
+                (transactionDate.getMonth() === lastMonthDate.getMonth() && transactionDate.getFullYear() === lastMonthDate.getFullYear()) ||
+                (transactionDate.getMonth() === currentMonth && transactionDate.getFullYear() === currentYear) ||
+                transactionDate > currentDate
+            )
+        ) {
+            months.push({
+                label: `${month}-${year}`,
+                value: monthYear
+            });
         }
     });
 
+    // Sort the months
     availableMonths.value = months.sort((a, b) => {
         const [monthA, yearA] = a.value.split('-').map(Number);
         const [monthB, yearB] = b.value.split('-').map(Number);
