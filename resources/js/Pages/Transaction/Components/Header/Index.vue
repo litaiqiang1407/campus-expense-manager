@@ -52,7 +52,6 @@ const emit = defineEmits(['walletSelected']);
 
 // Get walletId from the query string
 const walletId = router.currentRoute.value.query.walletId;
-console.log("walletID", walletId);
 
 const isDropdownVisible = ref(false);
 

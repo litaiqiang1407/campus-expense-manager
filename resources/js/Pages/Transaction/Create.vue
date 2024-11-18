@@ -1,14 +1,13 @@
 <template>
     <div>
         <Form :action="'Save'" @submit="submitForm">
-            <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
+            <InputMoney :inputValue="String(amount)" @update:inputValue="updateAmount" />
             <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
             <Note v-model="note" fromPage="CreateTransaction" />
             <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
             <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
-
             <Submit> Save</Submit>
         </Form>
     </div>
@@ -57,7 +56,7 @@ const selectWallet = () => {
 };
 
 const updateAmount = (value) => {
-    amount.value = value;
+    amount.value = String(value);
 };
 
 const goToSelectCategories = () => {
