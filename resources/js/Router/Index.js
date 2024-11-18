@@ -1,14 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// Import pages
- feat/recurringtransaction
- feat/recurringtransaction
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, RecurringTransaction } from "../Pages/Index";
-
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, WriteNote } from "../Pages/Index";
- master
-
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction } from "../Pages/Index";
 
 
 // Import layout components
