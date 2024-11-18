@@ -116,5 +116,9 @@ const hideKeyboard = () => {
     showKeyboard.value = false;
   }
 };
+
+watch(() => props.inputValue, (newValue) => {
+  localStorage.setItem('amount', newValue);
+});
 </script>
 

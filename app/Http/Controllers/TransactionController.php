@@ -78,34 +78,33 @@ class TransactionController extends Controller
 
     public function edit(Request $request, $transactionId)
     {
-        $transaction = $this->transactionService->getTransactionById($transactionId);
-        // $categories = $this->transactionService->getCategories(); // Giả sử bạn có phương thức này
-        // $wallets = $this->transactionService->getWallets(); // Giả sử bạn có phương thức này
+        $user = $request->user();
+        $categories = $this->transactionService->getCategories();
+        $transaction = $this->transactionService->getTransactionEdit($transactionId);
 
         if ($request->wantsJson()) {
-            return response()->json([
+            return response()->json(data: [
                 'transaction' => $transaction,
-                // 'categories' => $categories,
-                // 'wallets' => $wallets,
+                'categories' => $categories,
             ]);
         }
 
         return Inertia::render('Transaction/Edit', [
             'transaction' => $transaction,
-            // 'categories' => $categories,
-            // 'wallets' => $wallets,
+            'categories' => $categories,
         ]);
     }
-
     public function update(Request $request, $transactionId)
     {
         $validatedData = $request->validate([
-            'amount' => 'required|numeric|min:0',
+            'amount' => 'required|numeric|',
             'type' => 'required|in:expense,income',
             'category_id' => 'required|exists:categories,id',
             'wallet_id' => 'required|exists:wallets,id',
             'note' => 'nullable|string',
+            'date' => 'required|date|',
         ]);
+
 
         $transaction = $this->transactionService->updateTransaction($transactionId, $validatedData);
 
@@ -113,6 +112,31 @@ class TransactionController extends Controller
             'success' => true,
             'message' => 'Transaction updated successfully!',
             'transaction' => $transaction,
+        ]);
+    }
+    public function transactionDetails(Request $request, $transactionId)
+    {
+        $user = $request->user();
+        $transaction = $this->transactionService->getTransactionDetails($transactionId);
+
+        if ($request->wantsJson()) {
+            return response()->json(data: [
+                'transaction' => $transaction,
+            ]);
+        }
+
+        return Inertia::render('Transaction/TransactionDetails/Index', [
+            'transaction' => $transaction,
+        ]);
+    }
+    public function delete(Request $request, $transactionId)
+    {
+        $user_id = $request->user()->id;
+        $this->transactionService->deleteTransaction($transactionId, $user_id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'transaction deleted successfully!',
         ]);
     }
 }
