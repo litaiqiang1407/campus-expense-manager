@@ -8,7 +8,7 @@
             placeholder="Write note here..."
         ></textarea>
         <button
-            class="mt-4 p-2 bg-blue-500 text-white rounded"
+            class="mt-4 p-2 bg-primary w-full text-white text-[16px] rounded-[1000px]"
             @click="saveNote"
         >
             Save
@@ -18,18 +18,22 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const route = useRoute();
 const noteContent = ref('');
 
 onMounted(() => {
-    noteContent.value = route.query.note || '';
+    noteContent.value = router.currentRoute.value.query.value || '';
 });
 
 function saveNote() {
-    console.log("Save button clicked!", noteContent.value);
-    router.push({ name: 'CreateTransaction', query: { note: noteContent.value } });
+    localStorage.setItem('note', noteContent.value);
+    const fromPage = router.currentRoute.value.query.fromPage;
+    const transactionId = router.currentRoute.value.query.transactionId;
+    router.push({
+        name: fromPage,
+        params: { transactionId: transactionId },
+    });
 }
 </script>

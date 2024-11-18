@@ -1,30 +1,52 @@
 <template>
     <div v-if="isLoading" class="w-full h-screen flex items-center justify-center">
-        <Loading class="size-8"/>
+        <Loading class="size-8" />
     </div>
 
     <div v-else class="flex flex-col">
         <Header :totalFlow="totalFlow" :wallets="wallets" @walletSelected="handleWalletSelected" />
 
-        <div class="flex justify-between items-center m-0 pt-2 w-full max-w mx-auto px-4 bg-white text-sm">
-            <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('last')">
-                LAST MONTH
-                <span v-if="selectedMonth === 'last'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
-            </span>
-            <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('this')">
-                THIS MONTH
-                <span v-if="selectedMonth === 'this'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
-            </span>
-            <span class="text-black cursor-pointer font-medium uppercase relative pb-1" @click="selectMonth('future')">
-                FUTURE
-                <span v-if="selectedMonth === 'future'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
-            </span>
+
+        <div class="overflow-x-auto w-full pb-2 scroll-container" ref="scrollContainer">
+            <!-- Sử dụng justify-between hoặc justify-evenly để phân bổ đều các tab -->
+            <div class="flex justify-evenly items-center space-x-4 min-w-max snap-x snap-mandatory">
+                <span v-for="month in availableMonths" :key="month.value"
+                    class="text-black cursor-pointer font-medium uppercase relative pb-1 min-w-[110px] snap-start text-center"
+                    :class="{ 'font-bold': selectedMonth === month.value }" @click="selectMonth(month.value)">
+                    {{ month.label }}
+                    <span v-if="selectedMonth === month.value"
+                        class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
+                </span>
+
+                <span
+                    class="text-black cursor-pointer font-medium uppercase relative pb-1 min-w-[110px] snap-start text-center" style="margin-right:20px;"
+                    :class="{ 'font-bold': selectedMonth === 'last' }" @click="selectMonth('last')">
+                    LAST MONTH
+                    <span v-if="selectedMonth === 'last'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
+                </span>
+
+                <span
+                    class="text-black cursor-pointer font-medium uppercase relative pb-1 min-w-[110px] snap-start text-center"
+                    :class="{ 'font-bold': selectedMonth === 'this' }" @click="selectMonth('this')">
+                    THIS MONTH
+                    <span v-if="selectedMonth === 'this'" class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
+                </span>
+
+                <span
+                    class="text-black cursor-pointer font-medium uppercase relative pb-1 min-w-[110px] snap-start text-center"
+                    :class="{ 'font-bold': selectedMonth === 'future' }" @click="selectMonth('future')">
+                    FUTURE
+                    <span v-if="selectedMonth === 'future'"
+                        class="w-full h-0.5 bg-black absolute bottom-0 left-0"></span>
+                </span>
+            </div>
         </div>
 
         <main class="bg-primaryBackground">
             <div>
                 <UseSage v-if="filteredTransactions.length" :transactions="filteredTransactions" />
-                <NoData v-else message="You don't have any transactions yet" :action="true" :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
+                <NoData v-else message="You don't have any transactions yet" :action="true"
+                    :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
             </div>
         </main>
     </div>
@@ -46,14 +68,28 @@ const selectedMonth = ref('this');
 const wallets = ref([]);
 const isLoading = ref(false);
 const selectedWallet = ref(null);
-
+const availableMonths = ref([]);
+const scrollContainer = ref(null);
 const fetchTransactions = async () => {
     try {
         isLoading.value = true;
         const response = await axios.get(route('Transaction'));
         transactions.value = response.data.transactions;
         wallets.value = response.data.wallets;
+
+        wallets.value.sort((a, b) => {
+            if (a.name === 'Total') return -1;
+            if (b.name === 'Total') return 1;
+            return 0;
+        });
+
         hasData.value = transactions.value.length > 0;
+
+        if (wallets.value.length > 0 && !selectedWallet.value) {
+            selectedWallet.value = wallets.value[0];
+        }
+
+        createAvailableMonths();
         filterTransactions();
     } catch (error) {
         console.error(error);
@@ -62,10 +98,67 @@ const fetchTransactions = async () => {
     }
 };
 
+const handleWalletSelected = (wallet) => {
+    selectedWallet.value = wallet;
+    filterTransactions();
+};
+
+const createAvailableMonths = () => {
+    const months = [];
+    const currentDate = new Date();
+
+    const transactionMonths = new Set();
+    transactions.value.forEach(transaction => {
+        const transactionDate = new Date(transaction.date);
+        const monthYear = `${transactionDate.getMonth() + 1}-${transactionDate.getFullYear()}`;
+        transactionMonths.add(monthYear);
+    });
+
+    // Get the current month and year for comparisons
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    // Define dates for "Last Month" and "Future"
+    const lastMonthDate = new Date(currentYear, currentMonth - 1, 1);
+    const futureDate = new Date(currentYear, currentMonth + 1, 1);
+
+    // Duyệt qua các năm và các tháng trong năm đó
+    transactionMonths.forEach(monthYear => {
+        const [month, year] = monthYear.split('-').map(Number);
+        const transactionDate = new Date(year, month - 1, 1);
+
+        // Check if the month is not in "Last Month," "This Month," or "Future"
+        if (
+            !(
+                (transactionDate.getMonth() === lastMonthDate.getMonth() && transactionDate.getFullYear() === lastMonthDate.getFullYear()) ||
+                (transactionDate.getMonth() === currentMonth && transactionDate.getFullYear() === currentYear) ||
+                transactionDate > currentDate
+            )
+        ) {
+            months.push({
+                label: `${month}-${year}`,
+                value: monthYear
+            });
+        }
+    });
+
+    // Sort the months
+    availableMonths.value = months.sort((a, b) => {
+        const [monthA, yearA] = a.value.split('-').map(Number);
+        const [monthB, yearB] = b.value.split('-').map(Number);
+
+        if (yearA !== yearB) {
+            return yearA - yearB;
+        } else {
+            return monthA - monthB;
+        }
+    });
+};
+
+// Lọc giao dịch theo tháng
 const filterTransactions = () => {
     let filtered = transactions.value;
-
-    if (selectedWallet.value) {
+    if (selectedWallet.value && selectedWallet.value.name !== 'Total') {
         filtered = filtered.filter(transaction => transaction.wallet_id === selectedWallet.value.id);
     }
 
@@ -79,28 +172,33 @@ const filterTransactions = () => {
         case 'future':
             filtered = filtered.filter(transaction => isFuture(transaction.date));
             break;
+        default:
+            const [month, year] = selectedMonth.value.split('-');
+            filtered = filtered.filter(transaction => {
+                const transactionDate = new Date(transaction.date);
+                return transactionDate.getMonth() + 1 == parseInt(month) && transactionDate.getFullYear() == parseInt(year);
+            });
+            break;
     }
 
     filteredTransactions.value = filtered;
     calculateInflowAndOutflow(filteredTransactions.value);
 };
 
-const handleWalletSelected = (wallet) => {
-    selectedWallet.value = wallet;
-    filterTransactions();
-};
-
+// Tính tổng inflow và outflow
 const calculateInflowAndOutflow = (transactions) => {
     inflow.value = transactions.reduce((total, transaction) => transaction.type === 'income' ? total + transaction.amount : total, 0);
     outflow.value = transactions.reduce((total, transaction) => transaction.type === 'expense' ? total + transaction.amount : total, 0);
     totalFlow.value = inflow.value - outflow.value;
 };
 
+// Xử lý chọn tháng
 const selectMonth = (month) => {
     selectedMonth.value = month;
     filterTransactions();
 };
 
+// Kiểm tra tháng hiện tại
 const isThisMonth = (date) => {
     const transactionDate = new Date(date);
     const today = new Date();
@@ -121,6 +219,29 @@ const isFuture = (date) => {
 };
 
 onMounted(() => {
-    fetchTransactions();
+    fetchTransactions().then(() => {
+        if (scrollContainer.value) {
+            scrollContainer.value.scrollLeft = scrollContainer.value.scrollWidth;
+        }
+    });
 });
+
 </script>
+<style>
+/* Hide scrollbar but still allow scrolling */
+.scroll-container {
+    overflow-x: scroll;
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none;
+    /* Hide the scrollbar for WebKit browsers (Chrome, Safari) */
+}
+
+.scroll-container {
+    -ms-overflow-style: none;
+    /* Hide scrollbar for Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+}
+</style>

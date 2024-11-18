@@ -47,12 +47,12 @@ class WalletRepository
             'icons.name as icon_name'
         )
         ->where('user_id', $userId)
-        ->where('wallets.name', '!=', Wallet::TOTAL_WALLET_NAME) 
+        ->where('wallets.name', '!=', Wallet::TOTAL_WALLET_NAME)
         ->join('icons', 'wallets.icon_id', '=', 'icons.id')
         ->limit(3)
         ->get();
     }
-        
+
 
     public function getWalletTypes()
     {
@@ -83,8 +83,8 @@ class WalletRepository
                 'amount' => $wallet->balance,
                 'wallet_id' => $wallet->id,
                 'user_id' => $userId,
-                'date' => now(), 
-                'note' => 'Initial balance', 
+                'date' => now(),
+                'note' => 'Initial balance',
             ]);
         }
 
@@ -96,7 +96,7 @@ class WalletRepository
     public function createFirstWallet($userId)
     {
         $walletType = $this->getDefaultWalletType();
-        
+
         $iconPath = Wallet::DEFAULT_WALLET_ICON;
         $iconName = Wallet::DEFAULT_WALLET_NAME;
 
@@ -107,27 +107,27 @@ class WalletRepository
 
         $wallet = Wallet::create([
             'name' => Wallet::DEFAULT_WALLET_NAME,
-            'balance' => 0,  
+            'balance' => 0,
             'user_id' => $userId,
             'icon_id' => $defaultIcon->id,
             'wallet_type_name' => $walletType,
         ]);
-    
+
         $category = Category::where('name', 'Other Income')->first();
-    
+
         if ($category) {
             Transaction::create([
                 'category_id' => $category->id,
-                'amount' => 0,  
+                'amount' => 0,
                 'wallet_id' => $wallet->id,
                 'user_id' => $userId,
-                'date' => now(), 
-                'note' => 'Initial balance',  
+                'date' => now(),
+                'note' => 'Initial balance',
             ]);
         }
-    
+
         $this->recalculateTotalWalletBalance($userId);
-    
+
         return $wallet;
     }
 
@@ -145,7 +145,6 @@ class WalletRepository
         ->join('icons', 'wallets.icon_id', '=', 'icons.id')
         ->findOrFail($walletId);
     }
-
     public function getWalletNameById($userId, $walletId = null)
     {
         if ($walletId) {
@@ -223,7 +222,7 @@ class WalletRepository
                 'icons.name as icon_name'
             )
             ->where('user_id', $userId)
-            ->where('wallets.name', 'LIKE', '%' . $search . '%') 
+            ->where('wallets.name', 'LIKE', '%' . $search . '%')
             ->orWhere('wallets.balance', 'LIKE', '%' . $search . '%')
             ->join('icons', 'wallets.icon_id', '=', 'icons.id')
             ->limit($limit)

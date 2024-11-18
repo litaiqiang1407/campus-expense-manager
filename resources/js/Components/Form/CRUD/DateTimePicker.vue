@@ -7,8 +7,10 @@
             <div class="text-secondaryText font-medium text-[14px] w-full">
                 <Datepicker
                     v-model="internalDate"
-                    :format="formatDateForPicker"
+                    :inputFormat="'dd-MM-yyyy'"
                     @close="isDropdownOpen = false"
+                    class="datepicker"
+                    :disabled="readonly"
                 />
             </div>
         </button>
@@ -21,27 +23,31 @@ import Datepicker from 'vue3-datepicker';
 
 const props = defineProps({
     modelValue: {
-        type: String,
+        type: [String, Date],
         default: '',
     },
+    readonly: {
+        type: Boolean,
+        default: false,
+    }
 });
 
 const emit = defineEmits(['update:modelValue']);
-const internalDate = ref(props.modelValue || ''); 
-
-const formatDateForPicker = (date) => {
-    const parsedDate = new Date(date);
-    return isNaN(parsedDate.getTime())
-        ? 'Select Date'
-        : parsedDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-};
+const internalDate = ref(props.modelValue || '');
 
 watch(internalDate, (newDate) => {
     emit('update:modelValue', newDate);
+    if (newDate) {
+        localStorage.setItem('transactionDate', newDate);
+    }
 });
 </script>
 
 <style>
+/* Các style trước đó của bạn */
+.datepicker{
+    background-color: white;
+}
 .v3dp__datepicker {
     width: 100%;
 }

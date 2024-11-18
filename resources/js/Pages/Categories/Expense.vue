@@ -1,12 +1,14 @@
 <template>
     <div class="">
         <button class="flex items-center p-4 bg-white w-full gap-4" @click="goPage('AddCategory')">
+        <!-- Button to add new category -->
             <font-awesome-icon icon="circle-plus" class="text-primary size-8" />
             <span class="text-primary font-bold">NEW CATEGORY</span>
         </button>
 
+        <!-- Categories List -->
         <div v-for="category in getCategory()" :key="category.id" class="bg-white shadow my-2 py-2">
-            <div class="flex justify-between items-center py-2 px-4">
+            <div class="flex justify-between items-center py-2 px-4" @click="gotoback(category)">
                 <div class="flex items-center space-x-3">
                     <img :src="category.icon_path" alt="Category Icon" class="w-10 h-10 rounded-full">
                     <div>
@@ -18,14 +20,14 @@
                 </button>
             </div>
 
+            <!-- Subcategories List -->
             <ul v-if="getSubcategories(category.parent_id).length" class="pl-8">
                 <li
                     v-for="(subcategory, index) in getSubcategories(category.id)"
                     :key="subcategory.id"
-                    :class="[
-                        'flex items-center space-x-2 py-2',
-                        index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2' 
-                    ]"
+                    :class="[ 'flex items-center space-x-2 py-2',
+                        index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2' ]"
+                    @click="gotoback(subcategory)"
                 >
                     <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                     <img :src="subcategory.icon_path" alt="Subcategory Icon" class="w-8 h-8 rounded-full">
@@ -42,18 +44,21 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'; // Import useRouter to handle navigation
+import { computed } from 'vue';
+
+const router = useRouter();
+
 const props = defineProps({
     categories: Array
 });
 
 const getCategory = () => {
-    const categories = props.categories.filter(category => category.parent_id === null && category.name !== "Expenses");
-    return categories;
+    return props.categories.filter(category => category.parent_id === null && category.name !== "Expenses");
 };
 
 const getSubcategories = (parentId) => {
-    const subcategories = props.categories.filter(category => category.parent_id === parentId);
-    return subcategories;
+    return props.categories.filter(category => category.parent_id === parentId);
 };
     import { useRouter } from 'vue-router';
 
@@ -62,12 +67,31 @@ const getSubcategories = (parentId) => {
     function goPage(routeName) {
         router.push({ name: routeName });
 }
+
+const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'SelectCategories');
+
+const gotoback = (category) => {
+    localStorage.setItem('categoryId', category.id);
+    localStorage.setItem('selectedCategory', category.name);
+    localStorage.setItem('CategoryIcon', category.icon_path);
+
+    const fromPage = router.currentRoute.value.query.fromPage
+    const transactionId = router.currentRoute.value.query.transactionId
+    if (isSelectCategoryPage.value) {
+        router.push({
+            name: fromPage,
+            params: { transactionId: transactionId },
+        });
+    }
+};
+
 </script>
 
 <style>
 .border-left-half {
     position: relative;
 }
+
 .border-left-half::before {
     content: '';
     position: absolute;
