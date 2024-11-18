@@ -2,12 +2,13 @@
     <div>
         <Form :action="'Save'" @submit="submitForm">
             <InputMoney :inputValue="String(amount)" @update:inputValue="updateAmount" />
-            <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
-                :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
+            <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'"
+                :sizeText="'16'" :getItemLabel="item => item.name" @update:selectText="updateCategory"
+                @click="goToSelectCategories" />
             <Note v-model="note" fromPage="CreateTransaction" />
             <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
-                :getItemLabel="item => item.name" @click="selectWallet" />
+            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
+                :items="wallets" :getItemLabel="item => item.name" @click="selectWallet" />
             <Submit> Save</Submit>
         </Form>
     </div>
@@ -31,8 +32,6 @@ const getLocalStorageItem = (key, defaultValue = null) => {
         return item || defaultValue;
     }
 };
-
-const loading = ref(false);
 const amount = ref(getLocalStorageItem('amount', '0'));
 const note = ref(getLocalStorageItem('note', ''));
 const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
