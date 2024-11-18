@@ -164,7 +164,7 @@ const routes = [
     {
         path: '/select-category',
         name: 'SelectCategory',
-        component: SelectCategory,
+        component: SelectCategories,
         meta: { layout: HeaderLayout, title: 'Select Category', isBack: true, isCancel: false },
         props: true,
     }
