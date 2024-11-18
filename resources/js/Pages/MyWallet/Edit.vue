@@ -22,10 +22,10 @@ import Dropdown from '@/Components/Dropdown/Index.vue';
 import Submit from '@/Components/Button/Submit/Index.vue';
 import Loading from '@/Components/Loading/Index.vue';
 import { useToast } from 'vue-toastification';
-import { useRouter } from 'vue-router'; 
+import { useRouter } from 'vue-router';
 
 const toast = useToast();
-const router = useRouter(); 
+const router = useRouter();
 
 const wallet = ref({});
 const walletTypeList = ref([]);
@@ -46,16 +46,15 @@ const fetchWalletData = async () => {
   try {
     loading.value = true;
     const response = await axios.get(route('EditWallet', { walletId: props.walletId }));
-    console.log(response.data);
     walletTypeList.value = response.data.walletTypes;
     wallet.value = response.data.wallet;
     walletTypeSelected.value = response.data.wallet.wallet_type_name;
 
     const queryIcon = router.currentRoute.value.query.icon;
-  
+
     const defaultIcon = { id: wallet.value.icon_id, path: wallet.value.icon_path };
     const selectedIcon = queryIcon ? JSON.parse(queryIcon) : defaultIcon;
-  
+
     iconSrc.value = selectedIcon.path;
     iconID.value = selectedIcon.id;
 
@@ -90,7 +89,7 @@ const submitForm = async () => {
     if (response.data.success) {
       toast.success(response.data.message);
       window.location.href = route('MyWallet');
-      localStorage.clear(); 
+      localStorage.clear();
     } else {
       toast.error('Failed to update wallet.');
       isEditing.value = false
