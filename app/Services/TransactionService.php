@@ -16,6 +16,40 @@ class TransactionService
         $this->transactionRepository = $transactionRepository;
         $this->walletRepository = $walletRepository;
     }
+    public function getTransactionEdit($transactionId)
+    {
+        $transaction = $this->transactionRepository->getTransactionById($transactionId);
+
+        return [
+            'id' => $transaction->id,
+            'amount' => $transaction->amount,
+            'category_id'=> $transaction->category_id,
+            'type' => optional($transaction->category)->type,
+            'wallet_name' => optional($transaction->wallet)->name,
+            'wallet_id' => $transaction->wallet_id,
+            'note' => $transaction->note,
+            'iconPath' => optional($transaction->category->icon)->path,
+            'name' => optional($transaction->category)->name,
+            'date' => $transaction->date,
+        ];
+    }
+
+    public function getTransactionDetails($transactionId)
+{
+    $transaction = $this->transactionRepository->getTransactionById($transactionId);
+
+    return [
+        'id' => $transaction->id,
+        'amount' => $transaction->amount,
+        'type' => optional($transaction->category)->type,
+        'wallet_name' => optional($transaction->wallet)->name,
+        'note' => $transaction->note,
+        'iconPath' => optional($transaction->category->icon)->path,
+        'walletIcon' => optional($transaction->wallet->icon)->path,
+        'category_name' => optional($transaction->category)->name,
+        'date' => $transaction->date,
+    ];
+}
 
     public function getTransactionsAndWalletsByUser($userId)
     {
@@ -28,8 +62,8 @@ class TransactionService
                 'id' => $transaction->id,
                 'amount' => $transaction->amount,
                 'type' => optional($transaction->category)->type,
+                'wallet_id' => $transaction -> wallet_id,
                 'note' => $transaction->note,
-                'wallet_id' => $transaction ->wallet_id,
                 'iconPath' => optional($transaction->category->icon)->path,
                 'name' => optional($transaction->category)->name,
                 'date' => $transaction->date,
@@ -41,7 +75,10 @@ class TransactionService
             'wallets' => $wallets,
         ];
     }
-
+    public function deleteTransaction($transactionId, $userId)
+    {
+        $this->transactionRepository->deleteTransaction($transactionId);
+    }
     public function createTransaction($data, $userId)
     {
         $category = $this->transactionRepository->getCategoryById($data['category_id']);

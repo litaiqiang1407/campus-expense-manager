@@ -6,7 +6,7 @@
         </button>
 
         <div v-for="category in getCategory()" :key="category.id" class="bg-white shadow my-2 py-2">
-            <div class="flex justify-between items-center py-2 px-4">
+            <div class="flex justify-between items-center py-2 px-4" @click="gotoback(category)">
                 <div class="flex items-center space-x-3">
                     <img :src="category.icon_path" alt="Category Icon" class="w-10 h-10 rounded-full">
                     <div>
@@ -19,14 +19,10 @@
             </div>
 
             <ul v-if="getSubcategories(category.parent_id).length" class="pl-8">
-                <li
-                    v-for="(subcategory, index) in getSubcategories(category.id)"
-                    :key="subcategory.id"
-                    :class="[
-                        'flex items-center space-x-2 py-2',
-                        index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2' 
-                    ]"
-                >
+                <li v-for="(subcategory, index) in getSubcategories(category.id)" :key="subcategory.id" :class="[
+                    'flex items-center space-x-2 py-2',
+                    index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2'
+                ]" @click="gotoback(subcategory)">
                     <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                     <img :src="subcategory.icon_path" alt="Subcategory Icon" class="w-8 h-8 rounded-full">
                     <div>
@@ -42,18 +38,44 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'; // Import useRouter to handle navigation
+import { computed } from 'vue';
+
+const router = useRouter();
+
 const props = defineProps({
     categories: Array
 });
 
+// Filter categories to get main categories (without subcategories)
 const getCategory = () => {
-    const categories = props.categories.filter(category => category.parent_id !== null);
-    return categories;
+    return props.categories.filter(category => category.parent_id !== null);
 };
 
+// Filter subcategories based on parentId
 const getSubcategories = (parentId) => {
-    const subcategories = props.categories.filter(category => category.parent_id === parentId);
-    return subcategories;
+    return props.categories.filter(category => category.parent_id === parentId);
+};
+
+// Check if the current route is select-categories
+const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'SelectCategories');
+const gotoback = (category) => {
+    console.log('Selected Category:', category);
+    localStorage.setItem('categoryId', category.id);
+    localStorage.setItem('selectedCategory', category.name);
+    localStorage.setItem('CategoryIcon', category.icon_path);
+    const fromPage = router.currentRoute.value.query.fromPage;
+    const transactionId = router.currentRoute.value.query.transactionId;
+    if (isSelectCategoryPage.value) {
+        if (fromPage) {
+            router.push({
+                name: fromPage,
+                params: { transactionId: transactionId },
+            });
+        } else {
+            console.error('fromPage is not defined or is invalid');
+        }
+    }
 };
 </script>
 
@@ -61,6 +83,7 @@ const getSubcategories = (parentId) => {
 .border-left-half {
     position: relative;
 }
+
 .border-left-half::before {
     content: '';
     position: absolute;

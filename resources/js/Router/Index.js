@@ -2,10 +2,14 @@ import { createRouter, createWebHistory } from "vue-router";
 
 // Import pages
  feat/recurringtransaction
+ feat/recurringtransaction
 import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, RecurringTransaction } from "../Pages/Index";
 
 import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories, SelectWallet, WriteNote } from "../Pages/Index";
  master
+
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails } from "../Pages/Index";
+
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
@@ -47,6 +51,21 @@ const routes = [
         component: CreateTransaction,
         meta: { layout: HeaderLayout, title: 'Add transaction', isBack: false, isCancel: true},
     },
+
+    {
+        path: '/transaction/edit/:transactionId',
+        name: 'EditTransaction',
+        component: EditTransaction,
+        meta: { layout: HeaderLayout, title: 'Edit transaction', isBack: false, isCancel: true},
+    },
+
+    {
+        path: '/transaction/transaction-details/:transactionId',
+        name: 'TransactionDetails',
+        component: TransactionDetails,
+        meta: { layout: HeaderLayout, title: 'Transactiton Details', isBack: true, isCancel: false},
+    },
+
     {
         path: '/note',
         name: 'Note',
@@ -56,7 +75,6 @@ const routes = [
             title: 'Note',
             isBack: false,
             isCancel: true,
-            headerComponent: [SaveButton]
         },
     },
     {
@@ -103,7 +121,15 @@ const routes = [
     {
         path: '/categories',
         name: 'Categories',
-        component: Categories
+        component: Categories,
+        meta: { layout: HeaderLayout, title: 'Categories', isBack: false, isCancel: true},
+    },
+    {
+        path: '/select-categories',
+        name: 'SelectCategories',
+        component: SelectCategories,
+        meta: { layout: HeaderLayout, title: 'Select Wallet', isBack: true, isCancel: false},
+
     },
     {
         path: '/my-wallet',
@@ -174,8 +200,14 @@ const router = createRouter({
 //             console.error('Error checking wallet:', error);
 //         }
 //     }
-
 //     next();
 // });
+
+router.beforeEach(async (to, from, next) => {
+    if (!['Note', 'SelectCategories', 'SelectWallet','EditWallet', 'EditTransaction','CreateTransaction','CreateWallet','Icon'].includes(to.name)) {
+        localStorage.clear();
+    }
+    next();
+});
 
 export default router;
