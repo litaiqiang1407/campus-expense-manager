@@ -169,7 +169,6 @@ const submitForm = async () => {
         start_date: getStartAndEndDay(selectedDateOption.value).start,
         end_date: getStartAndEndDay(selectedDateOption.value).end,
     };
-    console.log("data", formData)
     try {
         const response = await axios.post('/budget/store', formData);
         if (response.data.success) {
