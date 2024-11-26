@@ -2,7 +2,7 @@
     <div class="flex flex-col space-y-2">
         <div class="flex items-center justify-between">
             <span class="font-semibold text-[10px] text-secondaryText">Report this month</span>
-            <button class="text-primary font-semibold text-[10px]">See report</button>
+            <button class="text-primary font-semibold text-[10px]" @click="showPopup">See report</button>
         </div>
         <div class="p-4 rounded-lg shadow bg-white">
             <swiper
@@ -86,6 +86,7 @@
                     </div>
                 </swiper-slide>
             </swiper>
+            <Popup ref="popup" title="Coming Soon!" message="This feature is under development." />
         </div>
     </div>
 </template>
@@ -93,6 +94,7 @@
 <script setup>
 import { ref, watch, onMounted  } from 'vue';
 import { formatBalance } from '@/Helpers/Helpers';
+import Popup from '@/Components/Popup/Index.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -129,6 +131,12 @@ const spentThisWeek = ref(0);
 
 const monthComparison = ref(0);
 const weekComparison = ref(0);
+
+const popup = ref(null);
+
+const showPopup = () => {
+    popup.value.openPopup();
+};
 
 const barChartOptions = {
     responsive: true,

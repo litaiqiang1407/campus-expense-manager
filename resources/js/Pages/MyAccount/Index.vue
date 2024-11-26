@@ -69,9 +69,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
 
 const account = ref({});
 const isLoading = ref(true); 
@@ -80,7 +77,6 @@ const fetchAccount = async () => {
     try {
         const response = await axios.get(route('Account')); 
         account.value = response.data; 
-        console.log('Account:', account.value);
     } catch (error) {
         console.error('Error fetching Account:', error);
     } finally {
@@ -101,8 +97,4 @@ const logout = () => {
 onMounted(() => {
     fetchAccount();
 });
-
-const goPage = (page) => {
-    router.push({ name: page });
-};
 </script>
