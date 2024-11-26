@@ -58,4 +58,10 @@ watch(internalDate, (newDate) => {
 .v3dp__popout {
     width: 100% !important;
 }
+.v3dp__input_wrapper input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
 </style>

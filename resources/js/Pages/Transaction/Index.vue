@@ -33,7 +33,7 @@
                 </span>
 
                 <span
-                    class="text-black cursor-pointer font-medium uppercase relative pb-1 min-w-[110px] snap-start text-center"
+                    class="text-black cursor-pointer font-medium uppercase relative pb-1 min-w-[80px] snap-start text-center"
                     :class="{ 'font-bold': selectedMonth === 'future' }" @click="selectMonth('future')">
                     FUTURE
                     <span v-if="selectedMonth === 'future'"

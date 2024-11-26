@@ -51,6 +51,7 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
 
     Route::group(['prefix' => 'budget'], function () {
         Route::get('/', [BudgetController::class, 'index'])->name('Budget');
+        Route::post('/store', [BudgetController::class, 'store'])->name('StoreBudget');
     });
 
     Route::get('/icon', [IconController::class, 'index'])->name('Icon');

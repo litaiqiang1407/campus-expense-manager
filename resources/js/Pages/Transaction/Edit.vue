@@ -1,16 +1,17 @@
 <template>
     <div>
-        <div v-if="loading" class="flex w-screen items-center justify-center h-64">
-            <Loading class="size-16" />
+        <div v-if="isLoading" class="w-full h-screen flex items-center justify-center">
+            <Loading class="size-8" />
         </div>
         <Form :action="'Save'" @submit="submitForm">
             <InputMoney :inputValue="amount.toString()" @update:inputValue="updateAmount" />
-            <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
-                :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
+            <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'"
+                :sizeText="'16'" :getItemLabel="item => item.name" @update:selectText="updateCategory"
+                @click="goToSelectCategories" />
             <Note v-model="note" fromPage="EditTransaction" />
             <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
-                :getItemLabel="item => item.name" @click="selectWallet" />
+            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
+                :items="wallets" :getItemLabel="item => item.name" @click="selectWallet" />
 
             <Submit> Save</Submit>
         </Form>
@@ -36,8 +37,7 @@ const getLocalStorageItem = (key, defaultValue = null) => {
         return item || defaultValue;
     }
 };
-
-const loading = ref(false);
+const isLoading = ref(false);
 const category_id = ref(getLocalStorageItem('categoryId', []));
 const wallets = ref([]);
 const wallet_id = ref(getLocalStorageItem('wallet_id', []));
@@ -54,7 +54,7 @@ const transactionId = router.currentRoute.value.params.transactionId;
 
 const fetchTransactionData = async () => {
     try {
-        loading.value = true;
+        isLoading.value = true;
         const response = await axios.get(route('EditTransaction', { transactionId }));
         const transactionData = response.data.transaction;
 
@@ -70,7 +70,7 @@ const fetchTransactionData = async () => {
         console.error('Error fetching transaction data:', error);
         toast.error('Failed to load data. Please try again.');
     } finally {
-        loading.value = false;
+        isLoading.value = false;
     }
 };
 
