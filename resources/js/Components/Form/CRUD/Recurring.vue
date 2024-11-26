@@ -8,13 +8,11 @@
             <div class="flex items-center justify-center">
                 <font-awesome-icon icon="fa-regular fa-calendar" class="text-black text-[16px]" />
             </div>
-            <span class="font-medium text-secondaryText pl-1">{{ selectText }}</span>
+            <span class="font-medium text-secondaryText pl-1">{{ repeatText }}</span>
         </button>
 
-        <!-- Pop-up -->
         <div v-if="isPopupVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white rounded-lg shadow-lg w-auto p-4 m-4">
-                <!-- Dropdown để chọn Repeat -->
                 <div class="relative mb-5">
                     <button type="button" @click="toggleDropdown"
                         class="w-full text-[16px] font-bold py-2 mb-4 rounded-md flex justify-between items-center">
@@ -29,21 +27,16 @@
                         </div>
                         <div class="time-picker relative cursor-pointer flex items-center -ml-14 space-x-2">
                             <h1 class=" relative cursor-pointer -ml-5">at:</h1>
-                            <!-- Time Picker Section -->
                             <div @click="toggleTimePickerPopup">
-                                <span >{{ timeText || "Select Time" }}</span>
+                                <span class="text-primary">{{ timeText || "Select Time" }}</span>
                             </div>
                         </div>
-                        <!-- Pop-up chọn thời gian -->
                         <div v-if="isTimePickerPopupVisible"
                             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                             <div class="bg-white p-5 rounded-lg shadow-lg w-72 m-5">
                                 <h2 class="font-bold mb-4 text-center text-lg">Choose Time</h2>
-
-                                <!-- Đồng hồ hình tròn -->
                                 <div
                                     class="relative w-full h-60 rounded-full border-2 border-gray-300 mx-auto mb-6 flex items-center justify-center">
-                                    <!-- Các mốc giờ -->
                                     <div class="absolute w-full h-full flex items-center justify-center">
                                         <div v-for="hour in 12" :key="hour" :class="{
                                             'absolute': true,
@@ -57,17 +50,12 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Input giờ và phút -->
                                 <div class="flex mb-4">
-                                    <!-- Input giờ -->
                                     <div class="w-1/3 mr-2">
                                         <label for="hour" class="block text-sm font-medium text-gray-700">Hour</label>
                                         <input v-model="selectedHour" type="number" min="1" max="12"
                                             class="w-full text-center text-xl p-2.5 border border-gray-300 " readonly />
                                     </div>
-
-                                    <!-- Input phút -->
                                     <div class="w-1/3 mr-2">
                                         <label for="minute"
                                             class="block text-sm font-medium text-gray-700">Minute</label>
@@ -92,8 +80,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Nút Done -->
                                 <div class="flex justify-center">
                                     <button @click="confirmTime"
                                         class="w-full bg-primary text-white py-2 rounded-md">Done</button>
@@ -117,7 +103,6 @@
                         <h1 class="text-sm">day</h1>
                     </div>
                 </div>
-                <!-- Chọn "Repeat Weekly" -->
                 <div v-if="selectedRepeat === 'Repeat Weekly'" class="space-y-4">
                     <div class="flex flex-wrap space-x-2">
                         <button type="button" v-for="(day, index) in weekDays" :key="index" class="w-8 h-8 rounded-full flex items-center justify-center border-2
@@ -129,24 +114,30 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Các form khác (Monthly, Yearly) -->
                 <div v-if="selectedRepeat === 'Repeat Monthly'">
-                    <!-- Form Repeat Monthly -->
-                    <h1>Repeat Monthly Form</h1>
+                    <div class="flex items-center mb-4 space-x-2">
+                        <h1 class="text-sm">Every:</h1>
+                        <input type="number" class="w-8 text-center border-b border-b-black" min="1"
+                            v-model="repeatInterval" />
+                        <h1 class="text-sm">month</h1>
+                    </div>
+                    <p class="text-sm">On the same day each month ({{ currentDate }})</p>
                 </div>
                 <div v-if="selectedRepeat === 'Repeat Yearly'">
-                    <!-- Form Repeat Yearly -->
-                    <h1>Repeat Yearly Form</h1>
+                    <div class="flex items-center mb-4 space-x-2">
+                        <h1 class="text-sm">Every:</h1>
+                        <input type="number" class="w-8 text-center border-b border-b-black" min="1"
+                            v-model="repeatInterval" />
+                        <h1 class="text-sm">year</h1>
+                    </div>
                 </div>
-
-                <!-- Button group -->
                 <div class="flex justify-end mt-4">
                     <button type="button" class="bg-white text-primary font-medium py-2 px-4 rounded-md"
                         @click="togglePopup">
                         CANCEL
                     </button>
-                    <button type="button" class="bg-primary text-white font-medium py-2 px-4 rounded-md">
+                    <button type="button" class="bg-primary text-white font-medium py-2 px-4 rounded-md"
+                    @click="updateRepeatText">
                         DONE
                     </button>
                 </div>
@@ -156,16 +147,18 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, defineEmits } from "vue";
 import Datepicker from "vue3-datepicker";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
+const emit = defineEmits();
+const currentDate = ref('');
+const today = new Date();
+currentDate.value = today.getDate();
 const props = defineProps({
     iconSrc: { type: String, default: null },
-    selectText: { type: String, default: "No repeat" },
+    repeatText: { type: String, default: "No repeat" },
 });
 
-// Reactive properties
 const isPopupVisible = ref(false);
 const isDropdownOpen = ref(false);
 const selectedRepeat = ref("Repeat Daily");
@@ -203,7 +196,6 @@ const selectPeriod = (period) => {
     selectedPeriod.value = period;
 };
 
-// Toggle popup visibility
 const togglePopup = () => {
     isPopupVisible.value = !isPopupVisible.value;
 };
@@ -216,23 +208,25 @@ const confirmTime = () => {
     isTimePickerPopupVisible.value = false;
 };
 
-// Toggle dropdown for repeat options
 const toggleDropdown = () => {
     isDropdownOpen.value = !isDropdownOpen.value;
 };
 
-// Select a repeat option
 const selectRepeat = (option) => {
     selectedRepeat.value = option;
     isDropdownOpen.value = false;
 };
 
-// Toggle day selection for Repeat Weekly
+const updateRepeatText = () => {
+    emit('update:repeatText', selectedRepeat.value);
+    togglePopup();
+};
+
 const toggleDay = (day) => {
     if (selectedDays.value.includes(day)) {
-        selectedDays.value = selectedDays.value.filter(d => d !== day); // Remove day from selected days
+        selectedDays.value = selectedDays.value.filter(d => d !== day);
     } else {
-        selectedDays.value.push(day); // Add day to selected days
+        selectedDays.value.push(day);
     }
 };
 </script>

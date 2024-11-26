@@ -5,7 +5,7 @@
             <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
             <Note v-model="note" fromPage="AddRecurringTransaction" />
-            <Recurring />
+            <Recurring :repeatText="repeatText" @update:repeatText="updateRepeatTextHandler" />
             <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
             <Submit> Save</Submit>
@@ -19,10 +19,12 @@ import { useRouter } from 'vue-router';
 import { InputMoney, Select, Note, Form,Recurring } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
-import axios from 'axios';
 
 const toast = useToast();
-
+const repeatText = ref("No repeat");
+const updateRepeatTextHandler = (value) => {
+    repeatText.value = value;  
+};
 const getLocalStorageItem = (key, defaultValue = null) => {
     const item = localStorage.getItem(key);
     try {
@@ -32,7 +34,6 @@ const getLocalStorageItem = (key, defaultValue = null) => {
     }
 };
 
-const loading = ref(false);
 const amount = ref(getLocalStorageItem('amount', '0'));
 const note = ref(getLocalStorageItem('note', ''));
 const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
@@ -74,24 +75,5 @@ const updateCategory = (value) => {
 };
 
 const submitForm = async () => {
-    try {
-        const formData = {
-            category_id: category_id.value,
-            amount: amount.value,
-            wallet_id: wallet_id.value,
-            note: note.value,
-            date: transactionDate.value,
-        };
-        const response = await axios.post('/transaction/store', formData);
-        if (response.data.success) {
-            toast.success(response.data.message);
-            window.location.href = '/transaction';
-        } else {
-            toast.error('Failed to create Transaction.');
-        }
-    } catch (error) {
-        const message = error.response?.data?.message || error.message || 'An unknown error occurred';
-        toast.error('Error creating Transaction: ' + message);
-    }
 };
 </script>
