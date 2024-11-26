@@ -4,11 +4,10 @@
             <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
             <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
                 :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
-            <Note v-model="note" fromPage="CreateTransaction" />
-            <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
+            <Note v-model="note" fromPage="AddRecurringTransaction" />
+            <Recurring />
             <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
                 :getItemLabel="item => item.name" @click="selectWallet" />
-
             <Submit> Save</Submit>
         </Form>
     </div>
@@ -17,7 +16,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/Form/Index';
+import { InputMoney, Select, Note, Form,Recurring } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
 import axios from 'axios';
@@ -51,7 +50,7 @@ const selectWallet = () => {
     router.push({
         name: 'SelectWallet',
         query: {
-            fromPage: 'CreateTransaction'
+            fromPage: 'AddRecurringTransaction'
         }
     });
 };
@@ -64,7 +63,7 @@ const goToSelectCategories = () => {
     router.push({
         name: 'SelectCategories',
         query: {
-            fromPage: 'CreateTransaction'
+            fromPage: 'AddRecurringTransaction'
         }
     });
 };

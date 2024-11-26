@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction, AddRecurringTransaction } from "../Pages/Index";
 
 
 // Import layout components
@@ -166,7 +166,14 @@ const routes = [
         component: RecurringTransaction,
         meta: { layout: DefaultLayout, title: 'RecurringTransaction', isBack: true, isCancel: false },
         props: true,
-    },  
+    },
+    {
+        path: '/transaction/add-recurring',
+        name: 'AddRecurringTransaction',
+        component: AddRecurringTransaction,
+        meta: { layout: DefaultLayout, title: 'Add Recurring Transaction', isBack: true, isCancel: false },
+        props: true,
+    },
 ]
 
 const router = createRouter({
@@ -196,7 +203,7 @@ const router = createRouter({
 // });
 
 router.beforeEach(async (to, from, next) => {
-    if (!['Note', 'SelectCategories', 'SelectWallet','EditWallet', 'EditTransaction','CreateTransaction','CreateWallet','Icon'].includes(to.name)) {
+    if (!['Note', 'SelectCategories', 'SelectWallet','EditWallet', 'EditTransaction','AddRecurringTransaction','CreateTransaction','CreateWallet','Icon'].includes(to.name)) {
         localStorage.clear();
     }
     next();

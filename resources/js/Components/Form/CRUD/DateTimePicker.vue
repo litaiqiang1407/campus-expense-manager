@@ -44,7 +44,6 @@ watch(internalDate, (newDate) => {
 </script>
 
 <style>
-/* Các style trước đó của bạn */
 .datepicker{
     background-color: white;
 }

@@ -9,7 +9,7 @@
         </button>
       </div>
     </div>
-    <div class="pl-4 relative -translate-y-5  ">
+    <div class="pl-4 relative -translate-y-5" @click="goPage('AddRecurringTransaction')">
       <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
         <!-- Circle background -->
         <circle cx="20" cy="20" r="20" fill="green" />
@@ -42,7 +42,7 @@
       </svg>
       to add one
     </p>
-    
+
       <Add v-if="action" :text="actionText" :destinationPage="destinationPage" />
     </div>
 
@@ -53,6 +53,8 @@
 
 <script setup>
 import { Add } from '@/Components/Button/Index';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const props = defineProps({
   message: {
     type: String,
@@ -75,4 +77,7 @@ const props = defineProps({
     default: ''
   }
 });
+const goPage = (pagename) => {
+    router.push({name: pagename})
+}
 </script>
