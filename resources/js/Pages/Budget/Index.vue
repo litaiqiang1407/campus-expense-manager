@@ -225,9 +225,13 @@ const fetchBudgets = async () => {
 }
 
 const selectWallet = () => {
-    router.push({ name: 'SelectWallet', query: { walletId: walletId } });
+    router.push({
+        name: 'SelectWallet',
+        query: {
+            fromPage: 'Budget'
+        }
+    });
 };
-
 const timeRangeBudgets = () => {
     if (activeTimeRange.value) {
         timeRangeBudgetList.value = budgetList.value.filter(budget => budget.time_range === activeTimeRange.value);

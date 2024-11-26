@@ -51,7 +51,7 @@
             <p class="text-xs text-secondaryText">{{  account.email  }}</p>
         </div>
         <div class="h-28 bg-gray-200 border border-gray-300 flex items-center justify-center text-center">
-            <video class="w-full h-full object-cover" autoplay controls loop>
+            <video class="w-full h-full object-cover" autoplay loop muted>
                 <source src="/assets/video/doodle.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
@@ -142,7 +142,7 @@ const isLoading = ref(true);
 const fetchAccount = async () => {
     try {
         const response = await axios.get(route('Account'));
-        account.value = response.data; 
+        account.value = response.data;
     } catch (error) {
         console.error('Error fetching Account:', error);
     } finally {

@@ -174,7 +174,7 @@ const routes = [
         component: RecurringTransaction,
         meta: { layout: DefaultLayout, title: 'RecurringTransaction', isBack: true, isCancel: false },
         props: true,
-    },  
+    },
 ]
 
 const router = createRouter({
@@ -204,7 +204,7 @@ const router = createRouter({
 // });
 
 router.beforeEach(async (to, from, next) => {
-    if (!['Note', 'SelectCategories', 'SelectWallet','EditWallet', 'EditTransaction','CreateTransaction','CreateWallet','Icon'].includes(to.name)) {
+    if (!['Note', 'SelectCategories', 'SelectWallet','EditWallet', 'EditTransaction','CreateTransaction',"CreateBudget",'CreateWallet','Icon'].includes(to.name)) {
         localStorage.clear();
     }
     next();
