@@ -209,6 +209,7 @@ const fetchBudgets = async () => {
                 walletId: walletId,
             },
         });
+        console.log("data",response.data)
         budgetList.value = response.data.budgets;
         wallet.value = response.data.wallet;
         timeRanges.value = [...new Set(budgetList.value.map(budget => budget.time_range))];

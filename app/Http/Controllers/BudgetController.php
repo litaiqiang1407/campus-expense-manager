@@ -40,10 +40,10 @@ class BudgetController extends Controller
             'wallet_id' => 'required|exists:wallets,id',
             'amount' => 'numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            'start_day' => 'nullable|date_format:d/m/Y',
-            'end_day' => 'nullable|date_format:d/m/Y',
+            'start_date' => 'required',
+            'end_date' => 'required',
         ]);
-
+       // dd($validatedData);
         Budget::create(array_merge($validatedData, ['user_id' => $user_id]));
 
         return response()->json([
