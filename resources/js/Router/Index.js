@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction } from "../Pages/Index";
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction, SelectCategory } from "../Pages/Index";
 
 
 // Import layout components
@@ -158,6 +158,14 @@ const routes = [
         name: 'SelectWallet',
         component: SelectWallet,
         meta: { layout: HeaderLayout, title: 'Select wallet', isBack: false, isCancel: true },
+        props: true,
+    },
+
+    {
+        path: '/select-category',
+        name: 'SelectCategory',
+        component: SelectCategory,
+        meta: { layout: HeaderLayout, title: 'Select Category', isBack: true, isCancel: false },
         props: true,
     },
     {
