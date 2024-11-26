@@ -27,8 +27,8 @@
                             <Datepicker v-model="internalDate" :inputFormat="'dd-MM-yyyy'"
                                 class="datepicker relative" />
                         </div>
-                        <div class="time-picker relative cursor-pointer z-20 flex items-center -ml-14 space-x-2">
-                            <h1 class=" relative cursor-pointer z-20 -ml-5">at:</h1>
+                        <div class="time-picker relative cursor-pointer flex items-center -ml-14 space-x-2">
+                            <h1 class=" relative cursor-pointer -ml-5">at:</h1>
                             <!-- Time Picker Section -->
                             <div @click="toggleTimePickerPopup">
                                 <span >{{ timeText || "Select Time" }}</span>
@@ -76,15 +76,14 @@
                                     </div>
                                     <div class="w-1/3">
                                         <label class="block text-sm font-medium text-gray-700">AM/PM</label>
-                                        <!-- Sử dụng flex-col để xếp AM/PM theo chiều dọc -->
                                         <div class="flex flex-col space-y-1">
-                                            <button @click="selectPeriod('AM')" :class="{
+                                            <button type="button" @click="selectPeriod('AM')" :class="{
                                                 'bg-primary text-white': selectedPeriod === 'AM',
                                                 'bg-white text-primary': selectedPeriod !== 'AM'
                                             }" class="w-full text-[14px] border">
                                                 AM
                                             </button>
-                                            <button @click="selectPeriod('PM')" :class="{
+                                            <button type="button" @click="selectPeriod('PM')" :class="{
                                                 'bg-primary text-white': selectedPeriod === 'PM',
                                                 'bg-white text-primary': selectedPeriod !== 'PM'
                                             }" class="w-full text-[14px] border">
@@ -147,8 +146,7 @@
                         @click="togglePopup">
                         CANCEL
                     </button>
-                    <button type="button" class="bg-primary text-white font-medium py-2 px-4 rounded-md"
-                        @click="saveChanges">
+                    <button type="button" class="bg-primary text-white font-medium py-2 px-4 rounded-md">
                         DONE
                     </button>
                 </div>
@@ -179,14 +177,10 @@ const selectedHour = ref(12);
 const selectedMinute = ref(0);
 const selectedPeriod = ref("AM");
 
-const vTime = computed(() => {
-    return `${selectedHour.value}:${selectedMinute.value < 10 ? '0' : ''}${selectedMinute.value} ${selectedPeriod.value}`;
-});
 
 const repeatOptions = ["Repeat Daily", "Repeat Weekly", "Repeat Monthly", "Repeat Yearly"];
 const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const selectedDays = ref([]); // Store selected days for Repeat Weekly
-
+const selectedDays = ref([]);
 const timeText = computed(() => {
     const hour = selectedHour.value;
     const minute = selectedMinute.value < 10 ? '0' + selectedMinute.value : selectedMinute.value;
@@ -201,6 +195,12 @@ const getHourPosition = (hour) => {
         left: `${x}%`,
         top: `${y}%`,
     };
+};
+const selectHour = (hour) => {
+    selectedHour.value = hour;
+};
+const selectPeriod = (period) => {
+    selectedPeriod.value = period;
 };
 
 // Toggle popup visibility
@@ -227,14 +227,6 @@ const selectRepeat = (option) => {
     isDropdownOpen.value = false;
 };
 
-// Save changes and close popup
-const saveChanges = () => {
-    console.log(`Selected Date: ${internalDate.value}`);
-    console.log(`Selected Time: ${vTime.value}`);
-    console.log(`Repeat Option: ${selectedRepeat.value}`);
-    isPopupVisible.value = false;
-};
-
 // Toggle day selection for Repeat Weekly
 const toggleDay = (day) => {
     if (selectedDays.value.includes(day)) {
@@ -245,7 +237,13 @@ const toggleDay = (day) => {
 };
 </script>
 
-<style scoped>
+<style>
+.v3dp__input_wrapper input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
 button {
     border-color: #3490dc;
     transition: background-color 0.3s ease, color 0.3s ease;
