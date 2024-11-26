@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <Form :action="'Save'" @submit="submitForm">
         <!-- Category Selection -->
         <Select :iconSrc="categoryIcon" :selectText="selectedCategory || 'Select category'"
@@ -35,6 +36,30 @@
                             <input type="date" v-model="customTo" class="border-gray-300 rounded-md shadow-sm text-base w-32" />
                         </div>
                     </div>
+=======
+  <Form :action="'Save'" @submit="submitForm">
+      <Select :iconSrc="selectedCategoryIcon" :selectText="selectedCategoryName || 'Select category'" @click="goToPage('SelectCategory')"/>
+      <InputMoney :inputValue="amount" @update:inputValue="amount = $event" />
+
+      <div class="relative">
+        <Select :icon="'fa-regular fa-calendar'" :selectText="formattedDateOption || 'Today'" @click="toggleDateOptions" />
+
+        <div v-if="showDateOptions" class="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50" @click="cancelDateSelection"></div>
+        <div v-if="showDateOptions" class="fixed inset-x-0 bottom-0 z-50 w-full bg-white border-t border-gray-300 rounded-t-lg shadow-lg transform transition-transform duration-300 ease-out"
+             :class="{'translate-y-full': !showDateOptions, 'translate-y-0': showDateOptions}">
+          <div class="p-4">
+            <h3 class="text-2xl font-bold tracking-wide">Select time range</h3>
+              <ul class="mt-2">
+                <li v-for="option in dateOptions" :key="option.value" @click="selectDateOption(option.value)" class="flex items-center py-2 cursor-pointer text-lg">
+                  <input type="radio" :value="option.value" v-model="selectedDateOption" class="mr-2 h-5 w-5" />
+                  <span class="text-lg font-medium tracking-normal">{{ option.label }}</span>
+                </li>
+              </ul>
+              <div v-if="selectedDateOption === 'Custom'" class="mt-4 flex items-center justify-center">
+                <div class="flex items-center">
+                  <span class="mr-2 text-lg font-medium tracking-normal">From</span>
+                  <input type="date" v-model="customFrom" class="border-gray-300 rounded-md shadow-sm text-base w-32" />
+>>>>>>> c7bb6b0dc34cf3ef4cff944ac299dec8959eff58
                 </div>
 
                 <!-- Save & Cancel Buttons -->
@@ -159,6 +184,7 @@ const formatDateForServer = (date) => {
     const year = d.getFullYear();
     return `${day}/${month}/${year}`;
 };
+<<<<<<< HEAD
 
 // Form Submission
 const submitForm = async () => {
@@ -188,3 +214,11 @@ const goPage = (page) => {
     router.push({ name: page, query: { fromPage: 'CreateBudget' } });
 };
 </script>
+=======
+
+  const goToPage = (page) => {
+      goPage(router, page);
+  };
+  </script>
+
+>>>>>>> c7bb6b0dc34cf3ef4cff944ac299dec8959eff58
