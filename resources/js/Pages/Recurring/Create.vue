@@ -2,12 +2,13 @@
     <div>
         <Form :action="'Save'" @submit="submitForm">
             <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
-            <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
-                :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
+            <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'"
+                :sizeText="'16'" :getItemLabel="item => item.name" @update:selectText="updateCategory"
+                @click="goPage('SelectCategories')" />
             <Note v-model="note" fromPage="AddRecurringTransaction" />
             <Recurring :repeatText="repeatText" @update:repeatText="updateRepeatTextHandler" />
-            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
-                :getItemLabel="item => item.name" @click="selectWallet" />
+            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
+                :items="wallets" :getItemLabel="item => item.name" @click="goPage('SelectWallet')" />
             <Submit> Save</Submit>
         </Form>
     </div>
@@ -16,14 +17,14 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { InputMoney, Select, Note, Form,Recurring } from '@/Components/Form/Index';
+import { InputMoney, Select, Note, Form, Recurring } from '@/Components/Form/Index';
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
 
 const toast = useToast();
 const repeatText = ref("No repeat");
 const updateRepeatTextHandler = (value) => {
-    repeatText.value = value;  
+    repeatText.value = value;
 };
 const getLocalStorageItem = (key, defaultValue = null) => {
     const item = localStorage.getItem(key);
@@ -60,10 +61,9 @@ const updateAmount = (value) => {
     amount.value = value;
 };
 
-const goToSelectCategories = () => {
+const goPage = (page) => {
     router.push({
-        name: 'SelectCategories',
-        query: {
+        name: page, query: {
             fromPage: 'AddRecurringTransaction'
         }
     });

@@ -171,7 +171,7 @@ const routes = [
         path: '/transaction/add-recurring',
         name: 'AddRecurringTransaction',
         component: AddRecurringTransaction,
-        meta: { layout: DefaultLayout, title: 'Add Recurring Transaction', isBack: true, isCancel: false },
+        meta: { layout: HeaderLayout, title: 'Add Recurring Transaction', isBack: true, isCancel: false },
         props: true,
     },
 ]

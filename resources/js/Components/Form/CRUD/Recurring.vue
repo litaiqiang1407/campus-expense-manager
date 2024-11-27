@@ -1,6 +1,5 @@
 <template>
     <div class="py-4 pl-0.5">
-        <!-- Nút bấm để mở pop-up -->
         <button type="button" class="flex w-full space-x-2 items-center" @click="togglePopup">
             <div v-if="iconSrc" class="w-15 flex items-center justify-start">
                 <img :src="iconSrc" class="w-11 h-11" />
@@ -121,7 +120,7 @@
                             v-model="repeatInterval" />
                         <h1 class="text-sm">month</h1>
                     </div>
-                    <p class="text-sm">On the same day each month ({{ currentDate }})</p>
+                    <p class="text-sm py-2">On the same day each month ({{ currentDate }})</p>
                 </div>
                 <div v-if="selectedRepeat === 'Repeat Yearly'">
                     <div class="flex items-center mb-4 space-x-2">
@@ -131,13 +130,42 @@
                         <h1 class="text-sm">year</h1>
                     </div>
                 </div>
-                <div class="flex justify-end mt-4">
+                <div class="relative">
+                    <div class="flex space-x-2">
+                        <button type="button" @click="toggleRepeatTypeDropdown"
+                            class="w-auto text-[16px] py-2 mb-4 rounded-md flex justify-between items-center">
+                            {{ selectedRepeatType || 'Forever' }}
+                            <font-awesome-icon class="pl-2 text-[12px] text-gray-500" icon="chevron-down" />
+                        </button>
+                        <div v-if="selectedRepeatType === 'Untill'">
+                            <div class="flex items-center space-x-2">
+                                <Datepicker class="mt-1.5 text-primary" v-model="internalForDate"
+                                    :inputFormat="'dd-MM-yyyy'"></Datepicker>
+                            </div>
+                        </div>
+                        <div v-if="selectedRepeatType === 'For'" class="flex">
+                            <div class="flex items-center mb-4 space-x-2">
+                                <input type="number" class="w-8 text-center border-b border-b-black" min="1"
+                                    v-model="times" />
+                                <h1 class="text-sm">time</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <ul v-if="isDropdownRepeatTypeOpen"
+                        class="absolute left-0 top-0 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10 text-left">
+                        <li v-for="option in repeatType" :key="option" @click="selectRepeatType(option)"
+                            class="px-4 py-2 text-gray-600 text-[12px] hover:bg-gray-100 cursor-pointer">
+                            {{ option }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex justify-end">
                     <button type="button" class="bg-white text-primary font-medium py-2 px-4 rounded-md"
                         @click="togglePopup">
                         CANCEL
                     </button>
                     <button type="button" class="bg-primary text-white font-medium py-2 px-4 rounded-md"
-                    @click="updateRepeatText">
+                        @click="updateRepeatText">
                         DONE
                     </button>
                 </div>
@@ -147,12 +175,21 @@
 </template>
 
 <script setup>
-import { ref, computed, defineEmits } from "vue";
+import { ref, computed, defineEmits, watch } from "vue";
 import Datepicker from "vue3-datepicker";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 const emit = defineEmits();
 const currentDate = ref('');
 const today = new Date();
+const selectedDays = ref([]);
+const getLocalStorageItem = (key, defaultValue = null) => {
+    const item = localStorage.getItem(key);
+    try {
+        return item ? JSON.parse(item) : defaultValue;
+    } catch (error) {
+        return item || defaultValue;
+    }
+};
 currentDate.value = today.getDate();
 const props = defineProps({
     iconSrc: { type: String, default: null },
@@ -161,23 +198,38 @@ const props = defineProps({
 
 const isPopupVisible = ref(false);
 const isDropdownOpen = ref(false);
+const isDropdownRepeatTypeOpen = ref(false);
 const selectedRepeat = ref("Repeat Daily");
-const internalDate = ref(new Date());
+const selectedRepeatType = ref("Forever");
+const internalDate = ref(getLocalStorageItem('selectedInternalDate', new Date()));
+const internalForDate = ref(getLocalStorageItem('selectedForDate', new Date()));
 const repeatInterval = ref(1);
+const times = ref(1);
 const isTimePickerPopupVisible = ref(false);
-
-const selectedHour = ref(12);
-const selectedMinute = ref(0);
-const selectedPeriod = ref("AM");
-
-
 const repeatOptions = ["Repeat Daily", "Repeat Weekly", "Repeat Monthly", "Repeat Yearly"];
+const repeatType = ["Forever", "Untill", "For"];
 const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const selectedDays = ref([]);
+
+const storedTime = getLocalStorageItem('timetext', null);
+const [storedHour, storedMinute, storedPeriod] = storedTime
+    ? storedTime.split(/[: ]/) // Splitting stored time into hour, minute, and period
+    : [12, '00', 'AM']; // Default values
+const selectedHour = ref(Number(storedHour)); // Parse hour as a number
+const selectedMinute = ref(Number(storedMinute)); // Parse minute as a number
+const selectedPeriod = ref(storedPeriod); // Period remains a string (AM/PM)
 const timeText = computed(() => {
     const hour = selectedHour.value;
     const minute = selectedMinute.value < 10 ? '0' + selectedMinute.value : selectedMinute.value;
-    return `${hour}:${minute} ${selectedPeriod.value}`;
+    const timeString = `${hour}:${minute} ${selectedPeriod.value}`;
+    localStorage.setItem('timetext', timeString); // Save computed time string to localStorage
+    return timeString; // Return the formatted time string
+});
+
+watch(internalDate, (newDate) => {
+    localStorage.setItem('selectedInternalDate', newDate);
+});
+watch(internalForDate, (newDate) => {
+    localStorage.setItem('selectedForDate', newDate);
 });
 
 const getHourPosition = (hour) => {
@@ -195,7 +247,6 @@ const selectHour = (hour) => {
 const selectPeriod = (period) => {
     selectedPeriod.value = period;
 };
-
 const togglePopup = () => {
     isPopupVisible.value = !isPopupVisible.value;
 };
@@ -205,16 +256,29 @@ const toggleTimePickerPopup = () => {
 };
 
 const confirmTime = () => {
-    isTimePickerPopupVisible.value = false;
+    if (selectedMinute.value > 59) {
+        alert('Minute must be between 0 and 59');
+    } else {
+        isTimePickerPopupVisible.value = false;
+    }
 };
 
 const toggleDropdown = () => {
     isDropdownOpen.value = !isDropdownOpen.value;
 };
+const toggleRepeatTypeDropdown = () => {
+    isDropdownRepeatTypeOpen.value = !isDropdownOpen.value;
+};
 
 const selectRepeat = (option) => {
     selectedRepeat.value = option;
+    localStorage.setItem('repeatName', selectedRepeat.value);
     isDropdownOpen.value = false;
+};
+const selectRepeatType = (option) => {
+    selectedRepeatType.value = option;
+    localStorage.setItem('repeatType', selectedRepeatType.value);
+    isDropdownRepeatTypeOpen.value = false;
 };
 
 const updateRepeatText = () => {
@@ -224,9 +288,12 @@ const updateRepeatText = () => {
 
 const toggleDay = (day) => {
     if (selectedDays.value.includes(day)) {
+        console.log("Removing day:", selectedDays.value);
         selectedDays.value = selectedDays.value.filter(d => d !== day);
     } else {
         selectedDays.value.push(day);
+        repeatInterval.value = selectedDays.value[0]
+        localStorage.setItem('intervalValue',  repeatInterval.value)
     }
 };
 </script>
