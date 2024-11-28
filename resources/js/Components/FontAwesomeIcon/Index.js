@@ -33,7 +33,14 @@ import {
   faCircleMinus,
   faCheck,
   faCircleArrowDown,
-  faCircleArrowUp
+  faCircleArrowUp,
+  faCalendarDay,
+  faCalendarWeek,
+  faCalendarDays,
+  faSun,
+  faSpinner,
+  faTableCellsLarge,
+  faCalendar as faCalendarSolid,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCalendar, faCircleQuestion as faCircleQuestionRegular, faComment as faCommentRegular, faCircleXmark as faXmarkRegular } from '@fortawesome/free-regular-svg-icons';
@@ -79,7 +86,14 @@ library.add(
   faCheck,
   faXmarkRegular,
   faCircleArrowDown,
-  faCircleArrowUp
+  faCircleArrowUp,
+  faCalendarDay,
+  faCalendarWeek,
+  faCalendarDays,
+  faSun,
+  faSpinner,
+  faTableCellsLarge,
+  faCalendarSolid
 );
 
 export default FontAwesomeIcon;

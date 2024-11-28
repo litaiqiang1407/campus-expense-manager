@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction, SelectCategory } from "../Pages/Index";
-
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction, SelectCategory, Reports } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
@@ -174,6 +173,11 @@ const routes = [
         component: RecurringTransaction,
         meta: { layout: DefaultLayout, title: 'RecurringTransaction', isBack: true, isCancel: false },
         props: true,
+    },  
+    {
+        path: '/reports',
+        name: 'Reports',
+        component: Reports,
     },  
 ]
 
