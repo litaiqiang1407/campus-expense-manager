@@ -200,11 +200,11 @@ const isPopupVisible = ref(false);
 const isDropdownOpen = ref(false);
 const isDropdownRepeatTypeOpen = ref(false);
 const selectedRepeat = ref("Repeat Daily");
-const selectedRepeatType = ref("Forever");
+const selectedRepeatType = ref(getLocalStorageItem('repeatType','Forever'), null);
 const internalDate = ref(new Date(getLocalStorageItem('selectedInternalDate', new Date())));
 const internalForDate = ref(new Date(getLocalStorageItem('selectedForDate', new Date())));
-const repeatInterval = ref(1);
-const times = ref(1);
+const repeatInterval = ref(getLocalStorageItem('intervalValue',1), null);
+const times = ref(getLocalStorageItem('times',1), null);
 const isTimePickerPopupVisible = ref(false);
 const repeatOptions = ["Repeat Daily", "Repeat Weekly", "Repeat Monthly", "Repeat Yearly"];
 const repeatType = ["Forever", "Untill", "For"];
@@ -221,7 +221,6 @@ const timeText = computed(() => {
     const hour = selectedHour.value;
     const minute = selectedMinute.value < 10 ? '0' + selectedMinute.value : selectedMinute.value;
     const timeString = `${hour}:${minute} ${selectedPeriod.value}`;
-    localStorage.setItem('timetext', timeString); // Save computed time string to localStorage
     return timeString; // Return the formatted time string
 });
 watch(internalDate, (newDate) => {
@@ -287,16 +286,23 @@ const selectRepeatType = (option) => {
     localStorage.setItem('repeatType', selectedRepeatType.value);
     isDropdownRepeatTypeOpen.value = false;
 };
-
 const updateRepeatText = () => {
-    emit('update:repeatText', selectedRepeat.value);
-    localStorage.setItem('intervalValue', repeatInterval.value)
+    emit('update:repeatText', {
+        repeatName: selectedRepeat.value,
+        intervalValue: repeatInterval.value,
+        repeatType: selectedRepeatType.value,
+        selectedForDate: internalForDate.value,
+        selectedInternalDate: internalDate.value,
+        times: times.value,
+        timeText: timeText.value
+    });
+    localStorage.setItem('intervalValue', repeatInterval.value);
     localStorage.setItem('repeatType', selectedRepeatType.value);
     localStorage.setItem('repeatName', selectedRepeat.value);
     localStorage.setItem('selectedForDate', internalForDate.value);
     localStorage.setItem('selectedInternalDate', internalDate.value);
     localStorage.setItem('times', times.value);
-    //localStorage.setItem('timetext', timeText.value);
+    localStorage.setItem('timeText', timeText.value);
     togglePopup();
 };
 

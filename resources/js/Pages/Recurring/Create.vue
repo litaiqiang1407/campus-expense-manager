@@ -41,16 +41,22 @@ const category_id = ref(getLocalStorageItem('categoryId', null));
 const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
 const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
 
-const timetext = ref(getLocalStorageItem('timetext'), null);
+const repeatName = ref(getLocalStorageItem('repeatName', "No Repeat"));
+const timetext = ref(getLocalStorageItem('timeText'), null);
 const intervalValue = ref(getLocalStorageItem('intervalValue'), null);
 const repeatType = ref(getLocalStorageItem('repeatType'), null);
-const repeatName = ref(getLocalStorageItem('repeatName', "No Repeat"));
-const updateRepeatTextHandler = (value) => {
-    repeatName.value = value;
-};
 const selectedForDate = ref(new Date(getLocalStorageItem('selectedForDate', new Date())));
 const selectedInternalDate = ref(new Date(getLocalStorageItem('selectedInternalDate', new Date())));
 const times = ref(getLocalStorageItem('times'), null);
+const updateRepeatTextHandler = (data) => {
+    repeatName.value = data.repeatName;
+    intervalValue.value = data.intervalValue;
+    repeatType.value = data.repeatType;
+    selectedForDate.value = new Date(data.selectedForDate);
+    selectedInternalDate.value = new Date(data.selectedInternalDate);
+    times.value = data.times;
+    timetext.value = data.timeText;
+};
 
 const router = useRouter();
 const wallets = ref([]);
@@ -82,8 +88,9 @@ const formatDate = (date) => {
 
 const submitForm = async () => {
     const startDate = new Date(selectedInternalDate.value);
-    const formattedDate = formatDate(startDate);
-    const start_date = `${formattedDate} ${timetext.value}`;
+    const endDate = new Date(selectedForDate.value);
+    const start_date = `${formatDate(startDate)} ${timetext.value}`;
+    const end_day = `${formatDate(endDate)} ${timetext.value}`;
     try {
         const formData = {
             category_id: category_id.value,
@@ -91,9 +98,13 @@ const submitForm = async () => {
             wallet_id: wallet_id.value,
             note: note.value,
             start_date: start_date,
-            interval: repeatType.value === "Untill" ? selectedForDate.value : times.value,
+            interval: repeatType.value === "Untill"
+                ? end_day
+                : repeatType.value === "Forever"
+                    ? 30
+                    : times.value,
             type: repeatName.value,
-            frequency:  intervalValue.value,
+            frequency: intervalValue.value,
         };
         console.log(formData);
         const response = await axios.post(route('CreateRecurringTransaction'), formData);
