@@ -1,9 +1,8 @@
 <template>
     <div class="bg-white">
-        <div v-if="loading" class="flex w-screen items-center justify-center h-64">
-            <Loading class="size-16" />
+        <div v-if="loading" class="w-full h-screen flex items-center justify-center">
+            <Loading class="size-8" />
         </div>
-
         <div class="pl-4 mt-4 pr-4">
             <InputMoney :inputValue="amount.toString()" />
 
