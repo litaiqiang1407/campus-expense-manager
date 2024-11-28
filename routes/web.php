@@ -9,6 +9,7 @@ use App\Http\Controllers\MyWalletController;
 use App\Http\Controllers\NotFoundController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\RecurringController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
 use App\Http\Middleware\CheckWallet;
@@ -33,6 +34,7 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
     {
         Route::get('/', [TransactionController::class, 'index'])->name('Transaction');
         Route::get('/create', [TransactionController::class, 'create'])->name('CreateTransaction');
+        Route::post('/store/recurring', [RecurringController::class, 'store'])->name('CreateRecurringTransaction');
         Route::post('/store', [TransactionController::class, 'store'])->name('StoreTransaction');
         Route::get('/edit/{transactionId}', [TransactionController::class, 'edit'])->name('EditTransaction');
         Route::post('/update/{transactionId}', [TransactionController::class, 'update'])->name('UpdateTransaction');

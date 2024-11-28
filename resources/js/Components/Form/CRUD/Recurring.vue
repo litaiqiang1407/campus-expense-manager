@@ -201,8 +201,8 @@ const isDropdownOpen = ref(false);
 const isDropdownRepeatTypeOpen = ref(false);
 const selectedRepeat = ref("Repeat Daily");
 const selectedRepeatType = ref("Forever");
-const internalDate = ref(getLocalStorageItem('selectedInternalDate', new Date()));
-const internalForDate = ref(getLocalStorageItem('selectedForDate', new Date()));
+const internalDate = ref(new Date(getLocalStorageItem('selectedInternalDate', new Date())));
+const internalForDate = ref(new Date(getLocalStorageItem('selectedForDate', new Date())));
 const repeatInterval = ref(1);
 const times = ref(1);
 const isTimePickerPopupVisible = ref(false);
@@ -224,13 +224,20 @@ const timeText = computed(() => {
     localStorage.setItem('timetext', timeString); // Save computed time string to localStorage
     return timeString; // Return the formatted time string
 });
-
 watch(internalDate, (newDate) => {
     localStorage.setItem('selectedInternalDate', newDate);
 });
+
 watch(internalForDate, (newDate) => {
     localStorage.setItem('selectedForDate', newDate);
 });
+
+watch(times, (newValue) => {
+    localStorage.setItem('times', newValue);
+});
+
+watch(repeatInterval, (newValue) => {
+    localStorage.setItem('intervalValue', newValue)});
 
 const getHourPosition = (hour) => {
     const angle = (hour - 3) * 30;
@@ -283,6 +290,13 @@ const selectRepeatType = (option) => {
 
 const updateRepeatText = () => {
     emit('update:repeatText', selectedRepeat.value);
+    localStorage.setItem('intervalValue', repeatInterval.value)
+    localStorage.setItem('repeatType', selectedRepeatType.value);
+    localStorage.setItem('repeatName', selectedRepeat.value);
+    localStorage.setItem('selectedForDate', internalForDate.value);
+    localStorage.setItem('selectedInternalDate', internalDate.value);
+    localStorage.setItem('times', times.value);
+    //localStorage.setItem('timetext', timeText.value);
     togglePopup();
 };
 
@@ -293,7 +307,7 @@ const toggleDay = (day) => {
     } else {
         selectedDays.value.push(day);
         repeatInterval.value = selectedDays.value[0]
-        localStorage.setItem('intervalValue',  repeatInterval.value)
+        localStorage.setItem('intervalValue', repeatInterval.value)
     }
 };
 </script>
