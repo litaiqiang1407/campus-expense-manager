@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction, SelectCategory, AddRecurringTransaction } from "../Pages/Index";
-
+import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction, SelectCategory, AddRecurringTransaction, RecurringTransactionDetails } from "../Pages/Index";
 
 // Import layout components
 import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
@@ -172,7 +171,7 @@ const routes = [
         path: '/transaction/recurring',
         name: 'RecurringTransaction',
         component: RecurringTransaction,
-        meta: { layout: DefaultLayout, title: 'RecurringTransaction', isBack: true, isCancel: false },
+        meta: { layout: MenuLayout, title: 'RecurringTransaction', isBack: true, isCancel: false },
         props: true,
     },
     {
@@ -180,6 +179,13 @@ const routes = [
         name: 'AddRecurringTransaction',
         component: AddRecurringTransaction,
         meta: { layout: HeaderLayout, title: 'Add Recurring Transaction', isBack: true, isCancel: false },
+        props: true,
+    },
+    {
+        path: '/transaction/recurring/details/:transactionRecurringId',
+        name: 'TransactionRecurringDetails',
+        component: RecurringTransactionDetails,
+        meta: { layout: HeaderLayout, title: 'Recurring Transaction Details', isBack: true, isCancel: false },
         props: true,
     },
 ]
@@ -211,7 +217,7 @@ const router = createRouter({
 // });
 
 router.beforeEach(async (to, from, next) => {
-    if (!['Note', 'SelectCategories', 'SelectWallet','EditWallet', 'EditTransaction','AddRecurringTransaction','CreateTransaction','CreateWallet','Icon'].includes(to.name)) {
+    if (!['Note','RecurringTransaction', 'SelectCategories', 'SelectWallet','EditWallet', 'EditTransaction','AddRecurringTransaction','CreateTransaction','CreateWallet','Icon'].includes(to.name)) {
         localStorage.clear();
     }
     next();

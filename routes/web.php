@@ -33,13 +33,16 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
     Route::group(['prefix' => 'transaction'], function ()
     {
         Route::get('/', [TransactionController::class, 'index'])->name('Transaction');
+        Route::get('/recurring', [RecurringController::class, 'index'])->name('TransactionRecurring');
         Route::get('/create', [TransactionController::class, 'create'])->name('CreateTransaction');
         Route::post('/store/recurring', [RecurringController::class, 'store'])->name('CreateRecurringTransaction');
         Route::post('/store', [TransactionController::class, 'store'])->name('StoreTransaction');
         Route::get('/edit/{transactionId}', [TransactionController::class, 'edit'])->name('EditTransaction');
         Route::post('/update/{transactionId}', [TransactionController::class, 'update'])->name('UpdateTransaction');
         Route::get('/transaction-details/{transactionId}', [TransactionController::class, 'transactionDetails'])->name('TransactionDetails');
+        Route::get('/recurring/{transactionRecurringId}', [RecurringController::class, 'transactionRecurringDetails'])->name('TransactionRecurringDetails');
         Route::post('/delete/{transactionId}', [TransactionController::class, 'delete'])->name('DeleteTransaction');
+        Route::post('/delete-recurring/{transactionRecurringId}', [RecurringController::class, 'delete'])->name('DeleteRecurringTransaction');
     });
     Route::group(['prefix' => 'my-wallet'], function () {
         Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');

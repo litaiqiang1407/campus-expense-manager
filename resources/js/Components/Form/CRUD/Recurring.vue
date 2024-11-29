@@ -178,6 +178,8 @@
 import { ref, computed, defineEmits, watch } from "vue";
 import Datepicker from "vue3-datepicker";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Swal from 'sweetalert2';
+
 const emit = defineEmits();
 const currentDate = ref('');
 const today = new Date();

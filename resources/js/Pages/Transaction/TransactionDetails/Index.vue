@@ -4,7 +4,7 @@
             <Loading class="size-8" />
         </div>
         <div class="pl-4 mt-4 pr-4">
-            <InputMoney :inputValue="amount.toString()" />
+            <InputMoney :inputValue="amount.toString()":readonly="true" />
 
             <Select :iconSrc="categoryIcon" :selectText="category_name ? category_name : 'Select category'"
                 :sizeText="'16'" :getItemLabel="item => item.name" />

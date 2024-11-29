@@ -17,21 +17,21 @@ class RecurringController extends Controller
     }
     public function index(Request $request)
     {
-        // $user = $request->user();
+        $user = $request->user();
 
-        // $data = $this->transactionRecurringService->getTransactionsAndWalletsByUser($user->id);
+        $data = $this->transactionRecurringService->getIndexRecurringTransaction($user->id);
 
-        // if ($request->wantsJson()) {
-        //     return response()->json([
-        //         'transactions' => $data['transactions'],
-        //         'wallets' => $data['wallets'],
-        //     ]);
-        // }
+        if ($request->wantsJson()) {
+            return response()->json([
+                'transactionsRecurring' => $data['transactionsRecurring'],
+                //'wallets' => $data['wallets'],
+            ]);
+        }
 
-        // return Inertia::render('Transaction/Index', [
-        //     'transactions' => $data['transactions'],
-        //     'wallets' => $data['wallets'],
-        // ]);
+        return Inertia::render('Recurring/Index', [
+            'transactionsRecurring' => $data['transactionsRecurring'],
+            //'wallets' => $data['wallets'],
+        ]);
     }
     public function create(Request $request)
     {
@@ -74,5 +74,32 @@ class RecurringController extends Controller
             'success' => true,
             'message' => 'Transaction created successfully!',
         ], 201);
+    }
+    public function transactionRecurringDetails(Request $request, $transactionRecurringId)
+    {
+        $user = $request->user();
+        $transactionRecurring = $this->transactionRecurringService->getDetailsRecurringTransaction($transactionRecurringId);
+
+        if ($request->wantsJson()) {
+            // Trả về dữ liệu trực tiếp mà không cần bọc trong mảng
+            return response()->json(data: [
+                'transactionRecurring' => $transactionRecurring,
+            ]);
+        }
+
+        return Inertia::render('Recurring/Details', [
+            'transactionRecurring' => $transactionRecurring,
+        ]);
+    }
+
+    public function delete(Request $request, $transactionId)
+    {
+        $user_id = $request->user()->id;
+        $this->transactionRecurringService->deleteTransaction($transactionId, $user_id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'transaction recurring deleted successfully!',
+        ]);
     }
 }

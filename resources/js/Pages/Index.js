@@ -15,6 +15,7 @@ export const EditTransaction = () => import('./Transaction/Edit.vue');
 export const WriteNote = () => import('./Transaction/WriteNote/Index.vue');
 export const RecurringTransaction = () => import('./Recurring/Index.vue');
 export const AddRecurringTransaction = () => import('./Recurring/Create.vue');
+export const RecurringTransactionDetails = () => import('./Recurring/Details.vue');
 
 export const MyAccount = () => import('./MyAccount/Index.vue');
 export const Budget = () => import('./Budget/Index.vue');

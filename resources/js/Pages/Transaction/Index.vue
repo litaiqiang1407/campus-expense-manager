@@ -39,7 +39,7 @@
             <div>
                 <UseSage v-if="filteredTransactions.length" :transactions="filteredTransactions" />
                 <NoData v-else message="You don't have any transactions yet" :action="true"
-                    :actionText="'Create a transaction'" :destinationPage="'CreateTransaction'" />
+                    :actionText="'Create a transaction'" :destinationPage="'AddRecurringTransaction'" />
             </div>
         </main>
     </div>
@@ -98,7 +98,7 @@ const handleWalletSelected = (wallet) => {
 
 const availableMonths = computed(() => {
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // Tháng hiện tại
+    const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();
 
     const availableMonthsArray = [];
