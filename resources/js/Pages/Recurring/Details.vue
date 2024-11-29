@@ -59,7 +59,7 @@ const fetchTransactionDetailsData = async () => {
 };
 
 const editTransaction = (transactionRecurringId) => {
-    router.push({ name: 'EditTransaction', params: { transactionRecurringId } });
+    router.push({ name: 'EditRecurringTransaction', params: { transactionRecurringId } });
 };
 
 const confirmDelete = (transactionRecurringId) => {

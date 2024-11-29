@@ -80,6 +80,8 @@ class TransactionRecurringService
                 'start_date' => $transaction->start_date,
                 'category_name' => $transaction->category->name ?? null,
                 'icon_path' => $transaction->category->icon->path ?? null,
+                'type' => optional($transaction->category)->type,
+
             ];
         });
 

@@ -109,6 +109,7 @@ const submitForm = async () => {
         console.log(formData);
         const response = await axios.post(route('CreateRecurringTransaction'), formData);
         if (response.data.success) {
+            localStorage.clear()
             toast.success(response.data.message);
             window.location.href = '/transaction/recurring';
         } else {
