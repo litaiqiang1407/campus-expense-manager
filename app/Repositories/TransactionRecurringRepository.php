@@ -40,7 +40,22 @@ class TransactionRecurringRepository
 
         return $transaction;
     }
-    public function deleteTransactionByIdAndUserId(int $transactionId, int $userId): bool
+
+    public function getEditRecurringTransaction($transactionRecurringId)
+    {
+        $transaction = RecurringTransaction::with(['category.icon', 'wallet.icon'])
+            ->select('id', 'amount', 'type', 'category_id', 'wallet_id', 'user_id', 'start_date', 'frequency', 'note', 'interval')
+            ->where('id', $transactionRecurringId)
+            ->first(); // Use first() to get a single record
+
+        if (!$transaction) {
+            // Handle the case where the transaction does not exist
+            throw new \Exception('Transaction not found');
+        }
+
+        return $transaction;
+    }
+    public function deleteTransactionByIdAndUserId(int $transactionId, int $userId, int $total): bool
     {
         try {
             $transaction = RecurringTransaction::join('categories', 'recurring_transactions.category_id', '=', 'categories.id')
@@ -54,7 +69,7 @@ class TransactionRecurringRepository
             }
 
             $isIncome = ($transaction->type != 'income');
-            $this->transactionRepo->updateWalletBalance($transaction->wallet_id, $transaction->amount, $isIncome);
+            $this->transactionRepo->updateWalletBalance($transaction->wallet_id, $total, $isIncome);
 
             // Xoá giao dịch
             return RecurringTransaction::where('id', $transactionId)
@@ -64,4 +79,41 @@ class TransactionRecurringRepository
             return false;
         }
     }
+    public function updateRecurringTransaction(
+        $transactionRecurringId,
+        $newAmount,
+        $oldAmount,
+        $data,
+        $oldWalletId,
+        $newWalletId,
+        $oldType,
+        $newType
+    ) {
+        $transaction = RecurringTransaction::findOrFail($transactionRecurringId);
+
+        if ($oldType === 'income') {
+            $this->transactionRepo->updateWalletBalance($oldWalletId, $oldAmount, false);  // Trừ số tiền cũ nếu là thu nhập
+        } else {
+            $this->transactionRepo->updateWalletBalance($oldWalletId, $oldAmount, true);   // Cộng lại số tiền cũ nếu là chi phí
+        }
+
+        if ($newWalletId === $oldWalletId) {
+            if ($newType === 'income') {
+                $this->transactionRepo->updateWalletBalance($newWalletId, $newAmount, true);  // Cộng số tiền mới nếu là thu nhập
+            } else {
+                $this->transactionRepo->updateWalletBalance($newWalletId, $newAmount, false); // Trừ số tiền mới nếu là chi phí
+            }
+        } else {
+            if ($newType === 'income') {
+                $this->transactionRepo->updateWalletBalance($newWalletId, $newAmount, true);   // Cộng số tiền mới vào ví mới nếu là thu nhập
+            } else {
+                $this->transactionRepo->updateWalletBalance($newWalletId, $newAmount, false);  // Trừ số tiền mới từ ví mới nếu là chi phí
+            }
+        }
+        $transaction->fill($data);
+        $transaction->save();
+
+        return $transaction;
+    }
+
 }

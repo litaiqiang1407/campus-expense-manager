@@ -2,7 +2,7 @@
     <div class="bg-white">
         <div v-if="loading" class="w-full h-screen flex items-center justify-center">
             <Loading class="size-8" />
-        </div>
+        </div>  
         <div class="pl-4 mt-4 pr-4">
             <Select :iconSrc="categoryIcon" :selectText="category_name ? category_name : 'Select category'"
                 :sizeText="'16'" :getItemLabel="item => item.name" />
@@ -35,11 +35,11 @@ const wallet_name = ref(null);
 const categoryIcon = ref(null);
 const walletIcon = ref(null);
 const router = useRouter();
-const transactionRecurringId = router.currentRoute.value.params.transactionRecurringId;
+const id = router.currentRoute.value.params.id;
 const fetchTransactionDetailsData = async () => {
     try {
         loading.value = true;
-        const response = await axios.get(route('TransactionRecurringDetails', { transactionRecurringId }));
+        const response = await axios.get(route('TransactionRecurringDetails', { id }));
         console.log("data", response.data.transactionRecurring)
         amount.value = response.data.transactionRecurring?.amount ?? 0;
         category_name.value = response.data.transactionRecurring?.category_name ?? 'Unknown';
@@ -58,8 +58,8 @@ const fetchTransactionDetailsData = async () => {
     }
 };
 
-const editTransaction = (transactionRecurringId) => {
-    router.push({ name: 'EditRecurringTransaction', params: { transactionRecurringId } });
+const editTransaction = (id) => {
+    router.push({ name: 'EditRecurringTransaction', params: { id } });
 };
 
 const confirmDelete = (transactionRecurringId) => {
@@ -74,14 +74,14 @@ const confirmDelete = (transactionRecurringId) => {
         cancelButtonText: 'No, cancel!',
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteRecurringTransaction(transactionRecurringId);
+            deleteRecurringTransaction(id);
         }
     });
 };
 
-const deleteRecurringTransaction = async (transactionRecurringId) => {
+const deleteRecurringTransaction = async (id) => {
     try {
-        await axios.post(route('DeleteRecurringTransaction', { transactionRecurringId }));
+        await axios.post(route('DeleteRecurringTransaction', { id }));
         window.location.href = '/transaction/recurring';
     } catch (error) {
         console.error('Error deleting transaction:', error);
@@ -90,6 +90,7 @@ const deleteRecurringTransaction = async (transactionRecurringId) => {
 };
 
 onMounted(() => {
+    localStorage.clear();
     fetchTransactionDetailsData();
 });
 </script>

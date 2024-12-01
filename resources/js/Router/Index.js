@@ -94,7 +94,7 @@ const routes = [
     },
 
     {
-        path: "/transaction/edit/:transactionId",
+        path: "/transaction/edit/:id",
         name: "EditTransaction",
         component: EditTransaction,
         meta: {
@@ -106,7 +106,7 @@ const routes = [
     },
 
     {
-        path: "/transaction/transaction-details/:transactionId",
+        path: "/transaction/transaction-details/:id",
         name: "TransactionDetails",
         component: TransactionDetails,
         meta: {
@@ -301,7 +301,7 @@ const routes = [
         props: true,
     },
     {
-        path: "/transaction/recurring/details/:transactionRecurringId",
+        path: "/transaction/recurring/details/:id",
         name: "TransactionRecurringDetails",
         component: RecurringTransactionDetails,
         meta: {
@@ -313,7 +313,7 @@ const routes = [
         props: true,
     },
     {
-        path: "/transaction/recurring/edit/:transactionRecurringId",
+        path: "/transaction/edit-recurring/:id",
         name: "EditRecurringTransaction",
         component: EditRecurringTransaction,
         meta: {
@@ -365,6 +365,7 @@ router.beforeEach(async (to, from, next) => {
             "CreateTransaction",
             "CreateWallet",
             "Icon",
+            "EditRecurringTransaction"
         ].includes(to.name)
     ) {
         localStorage.clear();

@@ -27,7 +27,7 @@
                         <div class="time-picker relative cursor-pointer flex items-center -ml-14 space-x-2">
                             <h1 class=" relative cursor-pointer -ml-5">at:</h1>
                             <div @click="toggleTimePickerPopup">
-                                <span class="text-primary">{{ timeText || "Select Time" }}</span>
+                                <span class="text-primary">{{ time || "Select Time" }}</span>
                             </div>
                         </div>
                         <div v-if="isTimePickerPopupVisible"
@@ -179,11 +179,28 @@ import { ref, computed, defineEmits, watch } from "vue";
 import Datepicker from "vue3-datepicker";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Swal from 'sweetalert2';
+import { isNumber } from "lodash";
+const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
 
+    return `${day}/${month}/${year}`;
+};
+const formatDateMMDDYYY = (dateString) => {
+    const [day, month, year] = dateString.split('/').map(Number);
+
+    const date = new Date(year, month - 1, day);
+
+    const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+    const formattedDay = String(date.getDate()).padStart(2, '0');
+    const formattedYear = date.getFullYear();
+
+    return `${formattedMonth}/${formattedDay}/${formattedYear}`;
+};
 const emit = defineEmits();
 const currentDate = ref('');
 const today = new Date();
-const selectedDays = ref([]);
 const getLocalStorageItem = (key, defaultValue = null) => {
     const item = localStorage.getItem(key);
     try {
@@ -193,44 +210,89 @@ const getLocalStorageItem = (key, defaultValue = null) => {
     }
 };
 currentDate.value = today.getDate();
+
 const props = defineProps({
-    iconSrc: { type: String, default: null },
-    repeatText: { type: String, default: "No repeat" },
+    repeatText: {
+        type: String,
+        default: 'No Repeat'
+    },
+    start_date: {
+        type: String,
+        default: ''
+    },
+    end_date: {
+        type: String,
+        default: ''
+    },
+    frequency: {
+        type: String,
+        default: ''
+    },
+    timeText: {
+        type: String,
+        default: ''
+    },
+    repeatType: {
+        type: String,
+        default: "Forever"
+    },
+    times: {
+        type: String,
+        default: "1"
+    }
 });
 
 const isPopupVisible = ref(false);
 const isDropdownOpen = ref(false);
 const isDropdownRepeatTypeOpen = ref(false);
-const selectedRepeat = ref("Repeat Daily");
-const selectedRepeatType = ref(getLocalStorageItem('repeatType','Forever'), null);
-const internalDate = ref(new Date(getLocalStorageItem('selectedInternalDate', new Date())));
-const internalForDate = ref(new Date(getLocalStorageItem('selectedForDate', new Date())));
-const repeatInterval = ref(getLocalStorageItem('intervalValue',1), null);
-const times = ref(getLocalStorageItem('times',1), null);
+const storedTime = getLocalStorageItem('timetext', null);
+const [storedHour, storedMinute, storedPeriod] = storedTime
+    ? storedTime.split(/[: ]/)
+    : [12, '00', 'AM'];
+const selectedHour = ref(Number(storedHour));
+const selectedMinute = ref(Number(storedMinute));
+const selectedPeriod = ref(storedPeriod);
+const timeText = computed(() => {
+    const hour = selectedHour.value;
+    const minute = selectedMinute.value < 10 ? '0' + selectedMinute.value : selectedMinute.value;
+    const timeString = `${hour}:${minute} ${selectedPeriod.value}`;
+    return timeString;
+});
+const selectedRepeat = ref(props.repeatText || ref(getLocalStorageItem('repeatName', 'No Repeat'), null))
+//const selectedRepeatType = ref(getLocalStorageItem('repeatType', 'Forever'), null);
+// const selectedInternalDate = ref(new Date(getLocalStorageItem('selectedForDate', new Date())));
+// const selectedDays = ref(
+//     props.repeatText === 'Repeat Weekly' ?
+//         localStorage.getItem('intervalValue') : []
+// );
+console.log("Final",props.frequency)
+const selectedRepeatType = ref(props.repeatType ? props.repeatType : repeatType.value)
+const mmStart_date = formatDateMMDDYYY(props.start_date);
+const mmEnd_date = formatDateMMDDYYY(props.end_date);
+const internalDate = ref(
+    props.start_date ? new Date(mmStart_date) : new Date()
+);
+const internalForDate = ref(
+    props.end_date ? new Date(mmEnd_date) : new Date()
+);
+const time = ref(props.timeText ? props.timeText : timeText.value)
+const repeatInterval = ref( props.frequency ? props.frequency : null)
+const selectedDays = ref(typeof props.frequency === 'number' ? null : props.frequency);
+// const repeatInterval = ref(getLocalStorageItem('intervalValue', 1), 1);
+const times = ref(getLocalStorageItem('times', 1), null);
 const isTimePickerPopupVisible = ref(false);
 const repeatOptions = ["Repeat Daily", "Repeat Weekly", "Repeat Monthly", "Repeat Yearly"];
 const repeatType = ["Forever", "Untill", "For"];
 const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-const storedTime = getLocalStorageItem('timetext', null);
-const [storedHour, storedMinute, storedPeriod] = storedTime
-    ? storedTime.split(/[: ]/) // Splitting stored time into hour, minute, and period
-    : [12, '00', 'AM']; // Default values
-const selectedHour = ref(Number(storedHour)); // Parse hour as a number
-const selectedMinute = ref(Number(storedMinute)); // Parse minute as a number
-const selectedPeriod = ref(storedPeriod); // Period remains a string (AM/PM)
-const timeText = computed(() => {
-    const hour = selectedHour.value;
-    const minute = selectedMinute.value < 10 ? '0' + selectedMinute.value : selectedMinute.value;
-    const timeString = `${hour}:${minute} ${selectedPeriod.value}`;
-    return timeString; // Return the formatted time string
-});
 watch(internalDate, (newDate) => {
-    localStorage.setItem('selectedInternalDate', newDate);
+    const start_day = formatDate(newDate)
+    localStorage.setItem('selectedInternalDate', start_day);
 });
 
 watch(internalForDate, (newDate) => {
-    localStorage.setItem('selectedForDate', newDate);
+    const end_date = formatDate(newDate)
+    localStorage.setItem('selectedForDate', end_date);
 });
 
 watch(times, (newValue) => {
@@ -238,7 +300,8 @@ watch(times, (newValue) => {
 });
 
 watch(repeatInterval, (newValue) => {
-    localStorage.setItem('intervalValue', newValue)});
+    localStorage.setItem('intervalValue', newValue)
+});
 
 const getHourPosition = (hour) => {
     const angle = (hour - 3) * 30;
@@ -267,6 +330,8 @@ const confirmTime = () => {
     if (selectedMinute.value > 59) {
         alert('Minute must be between 0 and 59');
     } else {
+        time.value = timeText.value;
+        localStorage.setItem('timeText', timeText.value);
         isTimePickerPopupVisible.value = false;
     }
 };
@@ -293,31 +358,27 @@ const updateRepeatText = () => {
         repeatName: selectedRepeat.value,
         intervalValue: repeatInterval.value,
         repeatType: selectedRepeatType.value,
-        selectedForDate: internalForDate.value,
-        selectedInternalDate: internalDate.value,
+        selectedForDate: formatDate(internalForDate.value),
+        selectedInternalDate: formatDate(internalDate.value),
         times: times.value,
         timeText: timeText.value
     });
     localStorage.setItem('intervalValue', repeatInterval.value);
     localStorage.setItem('repeatType', selectedRepeatType.value);
     localStorage.setItem('repeatName', selectedRepeat.value);
-    localStorage.setItem('selectedForDate', internalForDate.value);
-    localStorage.setItem('selectedInternalDate', internalDate.value);
+    localStorage.setItem('selectedForDate', formatDate(internalForDate.value));
+    localStorage.setItem('selectedInternalDate', formatDate(internalDate.value));
     localStorage.setItem('times', times.value);
     localStorage.setItem('timeText', timeText.value);
     togglePopup();
 };
 
 const toggleDay = (day) => {
-    if (selectedDays.value.includes(day)) {
-        console.log("Removing day:", selectedDays.value);
-        selectedDays.value = selectedDays.value.filter(d => d !== day);
-    } else {
-        selectedDays.value.push(day);
-        repeatInterval.value = selectedDays.value[0]
-        localStorage.setItem('intervalValue', repeatInterval.value)
-    }
+    selectedDays.value = selectedDays.value.includes(day) ? [] : [day];
+    repeatInterval.value = selectedDays.value[0] || null;
+    localStorage.setItem('intervalValue', repeatInterval.value);
 };
+
 </script>
 
 <style>

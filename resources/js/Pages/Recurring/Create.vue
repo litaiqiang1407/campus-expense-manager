@@ -1,12 +1,13 @@
 <template>
     <div>
         <Form :action="'Save'" @submit="submitForm">
-            <InputMoney :inputValue="amount" @update:inputValue="updateAmount" />
+            <InputMoney :inputValue="amount.toString()" @update:inputValue="updateAmount" />
             <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'"
                 :sizeText="'16'" :getItemLabel="item => item.name" @update:selectText="updateCategory"
                 @click="goPage('SelectCategories')" />
             <Note v-model="note" fromPage="AddRecurringTransaction" />
-            <Recurring :repeatText="repeatName" @update:repeatText="updateRepeatTextHandler" />
+            <Recurring :repeatText="repeatName" :start_date="selectedInternalDate" :timeText="timetext" :times="times" :repeatType="repeatType"
+                :end_date="selectedForDate" :frequency="intervalValue" @update:repeatText="updateRepeatTextHandler" />
             <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
                 :items="wallets" :getItemLabel="item => item.name" @click="goPage('SelectWallet')" />
             <Submit> Save</Submit>
@@ -22,7 +23,13 @@ import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
 
 const toast = useToast();
+const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
 
+    return `${day}/${month}/${year}`;
+};
 const getLocalStorageItem = (key, defaultValue = null) => {
     const item = localStorage.getItem(key);
     try {
@@ -41,19 +48,20 @@ const category_id = ref(getLocalStorageItem('categoryId', null));
 const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
 const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
 
-const repeatName = ref(getLocalStorageItem('repeatName', "No Repeat"));
+const repeatName = ref(getLocalStorageItem('repeatName', "Repeat Daily"));
 const timetext = ref(getLocalStorageItem('timeText'), null);
 const intervalValue = ref(getLocalStorageItem('intervalValue'), null);
-const repeatType = ref(getLocalStorageItem('repeatType'), null);
-const selectedForDate = ref(new Date(getLocalStorageItem('selectedForDate', new Date())));
-const selectedInternalDate = ref(new Date(getLocalStorageItem('selectedInternalDate', new Date())));
+const repeatType = ref(getLocalStorageItem('repeatType', 'Forever'), null);
+const selectedForDate = ref(getLocalStorageItem('selectedForDate', formatDate(new Date())));
+const selectedInternalDate = ref(getLocalStorageItem('selectedInternalDate', formatDate(new Date())));
+console.log("hahaư",selectedInternalDate.value)
 const times = ref(getLocalStorageItem('times'), null);
 const updateRepeatTextHandler = (data) => {
     repeatName.value = data.repeatName;
     intervalValue.value = data.intervalValue;
     repeatType.value = data.repeatType;
-    selectedForDate.value = new Date(data.selectedForDate);
-    selectedInternalDate.value = new Date(data.selectedInternalDate);
+    selectedForDate.value = data.selectedForDate;
+    selectedInternalDate.value = data.selectedInternalDate;
     times.value = data.times;
     timetext.value = data.timeText;
 };
@@ -78,19 +86,9 @@ const updateCategory = (value) => {
     localStorage.setItem('selectedCategory', JSON.stringify(value));
 };
 
-const formatDate = (date) => {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-
-    return `${day}/${month}/${year}`;
-};
-
 const submitForm = async () => {
-    const startDate = new Date(selectedInternalDate.value);
-    const endDate = new Date(selectedForDate.value);
-    const start_date = `${formatDate(startDate)} ${timetext.value}`;
-    const end_day = `${formatDate(endDate)} ${timetext.value}`;
+    const start_date = `${selectedInternalDate.value} ${timetext.value}`;
+    const end_day = `${selectedForDate.value} ${timetext.value}`;
     try {
         const formData = {
             category_id: category_id.value,
@@ -106,6 +104,7 @@ const submitForm = async () => {
             type: repeatName.value,
             frequency: intervalValue.value,
         };
+
         console.log(formData);
         const response = await axios.post(route('CreateRecurringTransaction'), formData);
         if (response.data.success) {

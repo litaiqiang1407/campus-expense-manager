@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Services\TransactionRecurringService;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class RecurringController extends Controller
 {
     protected $transactionRecurringService;
+    protected $transactionService;
 
-    public function __construct(TransactionRecurringService $transactionRecurringService)
+    public function __construct(TransactionRecurringService $transactionRecurringService, TransactionService $transactionService)
     {
         $this->transactionRecurringService = $transactionRecurringService;
+        $this->transactionService = $transactionService;
     }
     public function index(Request $request)
     {
@@ -91,7 +94,21 @@ class RecurringController extends Controller
             'transactionRecurring' => $transactionRecurring,
         ]);
     }
+    public function edit(Request $request, $transactionRecurringId)
+    {
+        $user = $request->user();
+        $transactionRecurring = $this->transactionRecurringService->getEditRecurringTransaction($transactionRecurringId);
 
+        if ($request->wantsJson()) {
+            return response()->json(data: [
+                'transactionRecurring' => $transactionRecurring,
+            ]);
+        }
+
+        return Inertia::render('Recurring/Edit', [
+            'transactionRecurring' => $transactionRecurring,
+        ]);
+    }
     public function delete(Request $request, $transactionId)
     {
         $user_id = $request->user()->id;
@@ -100,6 +117,29 @@ class RecurringController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'transaction recurring deleted successfully!',
+        ]);
+    }
+    public function update(Request $request, $transactionRecurringId)
+    {
+        $user_id = $request->user()->id;
+
+        // Xác thực dữ liệu
+        $validatedData = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'amount' => 'required|numeric|min:0',
+            'wallet_id' => 'required|exists:wallets,id',
+            'start_date' => 'required',
+            'interval' => 'required',
+            'type' => 'required',
+            'frequency' => 'required',
+            'note' => 'nullable|string|max:255',
+        ]);
+
+        $this->transactionRecurringService->updateRecurringTransaction($transactionRecurringId, $validatedData, $user_id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaction Recurring updated successfully!',
         ]);
     }
 }

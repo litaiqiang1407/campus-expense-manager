@@ -118,9 +118,9 @@ const goPage = (page) => {
     });
 };
 
-const transactionRecurringDetails = (transactionRecurringId) => {
+const transactionRecurringDetails = (id) => {
     localStorage.clear();
-    router.push({ name: 'TransactionRecurringDetails', params: { transactionRecurringId } });
+    router.push({ name: 'TransactionRecurringDetails', params: { id } });
 };
 
 const goBack = () => {

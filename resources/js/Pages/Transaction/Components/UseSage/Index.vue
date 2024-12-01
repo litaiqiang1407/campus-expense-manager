@@ -124,8 +124,8 @@ const calculateInflowAndOutflow = (transactions) => {
     totalFlow.value = inflow.value - outflow.value;
 };
 
-const transactionDetails = (transactionId) => {
-    router.push({ name: 'TransactionDetails', params: { transactionId } });
+const transactionDetails = (id) => {
+    router.push({ name: 'TransactionDetails', params: { id } });
 };
 
 watch(
