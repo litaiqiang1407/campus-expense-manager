@@ -208,6 +208,8 @@ class TransactionRecurringService
                 'id' => $transaction->id,
                 'amount' => $transaction->amount,
                 'wallet_id' => $transaction->wallet_id,
+                'frequency' => is_numeric($transaction['frequency']) ? (int) $transaction['frequency'] : $transaction['frequency'],
+                'interval' => $transaction ->interval,
                 'start_date' => $transaction->start_date,
                 'category_name' => $transaction->category->name ?? null,
                 'icon_path' => $transaction->category->icon->path ?? null,
@@ -279,5 +281,96 @@ class TransactionRecurringService
     {
         $category = Category::find($categoryId);
         return $category ? $category->type : null;
+    }
+    public function getTransactionDetails($data)
+    {
+        $startDate = \DateTime::createFromFormat('d/m/Y h:i A', $data['start_date']);
+        if (!$startDate) {
+            throw new \Exception('Invalid start date format');
+        }
+
+        $type = strtolower(trim($data['repeat_type']));
+        $transactions = [];
+
+        if (is_numeric($data['interval'])) {
+            // Loại 2: interval là số lần lặp
+            $occurrences = $data['interval'];
+            $currentDate = clone $startDate;
+
+            switch ($type) {
+                case 'repeat daily':
+                    $step = '+' . $data['frequency'] . ' days';
+                    break;
+                case 'repeat weekly':
+                    $step = '+' . (7 * $data['frequency']) . ' days';
+                    break;
+                case 'repeat monthly':
+                    $step = '+' . $data['frequency'] . ' months';
+                    break;
+                case 'repeat yearly':
+                    $step = '+' . $data['frequency'] . ' years';
+                    break;
+                default:
+                    throw new \Exception('Invalid repeat type');
+            }
+
+            for ($i = 0; $i < $occurrences; $i++) {
+                $transactions[] = [
+                    'id' => $data['id'],
+                    'amount' => $data['amount'],
+                    'repeat_type' => ucfirst($type),
+                    'start_date' => $currentDate->format('Y-m-d H:i:s'),
+                    'name' => $data['name'],
+                    'iconPath' => $data['iconPath'],
+                    'type' => $data['type'],
+                    'wallet_id' => $data['wallet_id'],
+                    'note' => $data['note'],
+                ];
+                $currentDate->modify($step);
+            }
+        } else {
+            // Loại 1: interval là ngày kết thúc
+            $endDate = \DateTime::createFromFormat('d/m/Y h:i A', $data['interval']);
+            if (!$endDate) {
+                throw new \Exception('Invalid end date format');
+            }
+
+            $currentDate = clone $startDate;
+            $step = '';
+
+            switch ($type) {
+                case 'repeat daily':
+                    $step = '+' . $data['frequency'] . ' days';
+                    break;
+                case 'repeat weekly':
+                    $step = '+7 days';
+                    break;
+                case 'repeat monthly':
+                    $step = '+1 month';
+                    break;
+                case 'repeat yearly':
+                    $step = '+1 year';
+                    break;
+                default:
+                    throw new \Exception('Invalid repeat type');
+            }
+
+            while ($currentDate <= $endDate) {
+                $transactions[] = [
+                    'id' => $data['id'],
+                    'amount' => $data['amount'],
+                    'repeat_type' => ucfirst($type),
+                    'start_date' => $currentDate->format('Y-m-d H:i:s'),
+                    'name' => $data['name'],
+                    'iconPath' => $data['iconPath'],
+                    'type' => $data['type'],
+                    'wallet_id' => $data['wallet_id'],
+                    'note' => $data['note'],
+                ];
+                $currentDate->modify($step);
+            }
+        }
+
+        return $transactions;
     }
 }

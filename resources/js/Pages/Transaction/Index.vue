@@ -69,7 +69,7 @@ const fetchTransactions = async () => {
         const response = await axios.get(route('Transaction'));
         transactions.value = response.data.transactions;
         wallets.value = response.data.wallets;
-
+        console.log("Finnal",response.data.recurringTransaction);
         wallets.value.sort((a, b) => {
             if (a.name === 'Total') return -1;
             if (b.name === 'Total') return 1;

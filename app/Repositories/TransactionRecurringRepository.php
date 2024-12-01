@@ -22,7 +22,7 @@ class TransactionRecurringRepository
     public function getIndexRecurringTransaction($userId)
     {
         return RecurringTransaction::with(['category.icon'])
-            ->select('id', 'amount', 'category_id', 'start_date', 'wallet_id')
+            ->select('id', 'amount', 'category_id', 'start_date', 'wallet_id','frequency','interval','type')
             ->where('user_id', $userId)
             ->get();
     }

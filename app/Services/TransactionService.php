@@ -3,7 +3,7 @@ namespace App\Services;
 
 use App\Repositories\TransactionRepository;
 use App\Repositories\WalletRepository;
-
+use App\Services\TransactionRecurringService;
 use Illuminate\Http\Request;
 
 class TransactionService
@@ -11,10 +11,12 @@ class TransactionService
     protected $transactionRepository;
     protected $walletRepository;
 
-    public function __construct(TransactionRepository $transactionRepository, WalletRepository $walletRepository)
+    protected $transactionRecurringService;
+    public function __construct(TransactionRepository $transactionRepository, WalletRepository $walletRepository, TransactionRecurringService $transactionRecurringService)
     {
         $this->transactionRepository = $transactionRepository;
         $this->walletRepository = $walletRepository;
+        $this->transactionRecurringService = $transactionRecurringService;
     }
     public function getTransactionEdit($transactionId)
     {
@@ -57,6 +59,22 @@ class TransactionService
 
         $transactions = $this->transactionRepository->getTransactionsByUser($userId);
 
+        $rtdata = $this->transactionRecurringService->getIndexRecurringTransaction($userId);
+
+        $data1 = [
+            "id" => 122,
+            "amount" => 5022,
+            "wallet_id" => 29,
+            "frequency" => 30, // Khoảng cách lặp lại (30 ngày)
+            "interval" => 1,  // Số lần lặp lại
+            "start_date" => "03/12/2024 12:00 AM",
+            "category_name" => "Gas Bill",
+            "icon_path" => "/assets/icon/expense/gas_bill.png",
+            "type" => "expense"
+        ];
+        //dd($rtdata);
+        $recurringTransaction = $this->transactionRecurringService->getTransactionDetails($data1);
+        dd($recurringTransaction);
         $data = $transactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
@@ -71,6 +89,7 @@ class TransactionService
         });
 
         return [
+            'recurringTransaction' => $recurringTransaction,
             'transactions' => $data,
             'wallets' => $wallets,
         ];
