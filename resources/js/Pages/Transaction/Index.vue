@@ -62,10 +62,9 @@ const fetchTransactions = async () => {
         const response = await axios.get(route('Transaction'));
         transactions.value = response.data.transactions;
         const recurringTransactions = response.data.calculatedTransactions;
-
-        // Merge both transactions and recurring transactions
+        wallets.value = response.data.wallets;
         transactions.value = [...transactions.value, ...recurringTransactions];
-        console.log(transactions.value)
+        console.log('test',calculatedTransactions.value)
         wallets.value.sort((a, b) => {
             if (a.name === 'Total') return -1;
             if (b.name === 'Total') return 1;
