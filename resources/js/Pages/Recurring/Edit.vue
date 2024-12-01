@@ -80,8 +80,8 @@ const repeatType = ref(getLocalStorageItem('repeatType', 'Forever'), null);
 const selectedForDate = ref(getLocalStorageItem('selectedForDate', formatDate(new Date())));
 const selectedInternalDate = ref(getLocalStorageItem('selectedInternalDate', formatDate(new Date())));
 const category_id = ref(getLocalStorageItem('categoryId', []));
-const times = ref(null);
-const timetext = ref('');
+const times = ref(getLocalStorageItem('times', '1'));
+const timetext = ref(getLocalStorageItem('timeText', "00:00 AM"));
 
 const id = router.currentRoute.value.params.id;
 const fetchTransactionData = async () => {
@@ -89,19 +89,13 @@ const fetchTransactionData = async () => {
         const response = await axios.get(route('EditRecurringTransaction', { id }));
         console.log("Fetched data:", response.data.transactionRecurring);
         const data = response.data.transactionRecurring;
-        //amount.value = data.amount;
-        //note.value = data.note;
-        //selectedCategory.value = data.category_name;
-        //selectedWallet.value = data.wallet_name;
-        //category_id.value = data.category_id;
-        //wallet_id.value = data.wallet_id;
-        repeatName.value = data.type;
-        intervalValue.value = data.frequency || null;
-        repeatType.value = data.repeatType;
-        selectedInternalDate.value = extractDate(data.start_date);
-        timetext.value = extractTime(data.start_date);
-        selectedForDate.value = data.end_date ? formatDate(new Date(data.end_date)) : formatDate(new Date());
-        times.value = data.times || 1;
+        if (!localStorage.getItem('repeatType')) repeatType.value = data.repeatType;
+        if (!localStorage.getItem('selectedInternalDate')) selectedInternalDate.value = extractDate(data.start_date);
+        if (!localStorage.getItem('timeText')) timetext.value = extractTime(data.start_date);
+        if (!localStorage.getItem('times')) times.value = data.times || 1;
+        if (!localStorage.getItem('selectedForDate')) selectedForDate.value = data.end_date ? formatDate(new Date(data.end_date)) : formatDate(new Date());
+        if (!localStorage.getItem('intervalValue')) intervalValue.value = data.frequency || 1;
+        if (!localStorage.getItem('repeatName')) repeatName.value = data.type;
         if (!localStorage.getItem('CategoryIcon')) categoryIcon.value = data.icon_path;
         if (!localStorage.getItem('WalletIcon')) WalletIcon.value = data.wallet_image;
         if (!localStorage.getItem('amount')) amount.value = data.amount;

@@ -22,6 +22,7 @@
             </div>
         </div>
     </div>
+
     <div class="m-0 mt-2 p-0">
         <div v-for="group in groupedTransactions" :key="group.date" class="my-4 bg-white">
             <div class="flex items-center justify-between px-4 py-2 relative">
@@ -42,14 +43,23 @@
             <div class="px-4">
                 <span class="block w-full h-px bg-[#A7A7A7] mx-auto"></span>
             </div>
-            <div v-for="transaction in group.transactions" :key="transaction.id"
-                class="flex items-center px-4 py-2 relative cursor-pointer" @click="transactionDetails(transaction.id)">
+            <div v-for="transaction in group.transactions" :key="transaction.id || transaction.name"
+                class="flex items-center px-4 py-2 relative cursor-pointer" @click="() => {
+                    if (transaction.repeat_type) {
+                        transactionRecurringDetails(transaction.id); // Gọi hàm cho giao dịch lặp lại
+                    } else {
+                        transactionDetails(transaction.id); // Gọi hàm cho giao dịch thông thường
+                    }
+                }" :class="{ 'bg-blue-100': activeType === 'transaction' && currentTypeId === transaction.id }">
                 <img :src="transaction.iconPath" alt="Icon" class="w-8 h-8">
                 <div class="flex justify-between w-full ml-2">
                     <span class="font-semibold text-[14px]">{{ transaction.name }}</span>
-                    <span :class="transaction.type === 'income' ? 'text-blue-500' : 'text-red-500'">{{ transaction.amount }}</span>
+                    <span :class="transaction.type === 'income' ? 'text-blue-500' : 'text-red-500'">
+                        {{ transaction.amount }}
+                    </span>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -60,7 +70,15 @@ import { useRouter } from 'vue-router';
 
 const props = defineProps({
     transactions: Array,
+    calculatedTransactions: Array,
 });
+const activeType = ref(null); // Trạng thái loại được chọn
+const currentTypeId = ref(null); // Lưu ID giao dịch hiện tại
+
+const setActiveType = (type, id = null) => {
+    activeType.value = type;
+    currentTypeId.value = id;
+};
 
 const router = useRouter();
 const inflow = ref(0);
@@ -125,7 +143,14 @@ const calculateInflowAndOutflow = (transactions) => {
 };
 
 const transactionDetails = (id) => {
+    setActiveType('transaction', id); // Đặt loại là transaction
     router.push({ name: 'TransactionDetails', params: { id } });
+};
+
+const transactionRecurringDetails = (id) => {
+    setActiveType('recurring'); // Đặt loại là recurring
+    localStorage.clear();
+    router.push({ name: 'TransactionRecurringDetails', params: { id } });
 };
 
 watch(

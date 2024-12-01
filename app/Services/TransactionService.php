@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Repositories\TransactionRepository;
@@ -25,7 +26,7 @@ class TransactionService
         return [
             'id' => $transaction->id,
             'amount' => $transaction->amount,
-            'category_id'=> $transaction->category_id,
+            'category_id' => $transaction->category_id,
             'type' => optional($transaction->category)->type,
             'wallet_name' => optional($transaction->wallet)->name,
             'wallet_id' => $transaction->wallet_id,
@@ -37,50 +38,49 @@ class TransactionService
     }
 
     public function getTransactionDetails($transactionId)
-{
-    $transaction = $this->transactionRepository->getTransactionById($transactionId);
+    {
+        $transaction = $this->transactionRepository->getTransactionById($transactionId);
 
-    return [
-        'id' => $transaction->id,
-        'amount' => $transaction->amount,
-        'type' => optional($transaction->category)->type,
-        'wallet_name' => optional($transaction->wallet)->name,
-        'note' => $transaction->note,
-        'iconPath' => optional($transaction->category->icon)->path,
-        'walletIcon' => optional($transaction->wallet->icon)->path,
-        'category_name' => optional($transaction->category)->name,
-        'date' => $transaction->date,
-    ];
-}
+        return [
+            'id' => $transaction->id,
+            'amount' => $transaction->amount,
+            'type' => optional($transaction->category)->type,
+            'wallet_name' => optional($transaction->wallet)->name,
+            'note' => $transaction->note,
+            'iconPath' => optional($transaction->category->icon)->path,
+            'walletIcon' => optional($transaction->wallet->icon)->path,
+            'category_name' => optional($transaction->category)->name,
+            'date' => $transaction->date,
+        ];
+    }
 
     public function getTransactionsAndWalletsByUser($userId)
     {
         $wallets = $this->walletRepository->getAllWallets($userId);
-
         $transactions = $this->transactionRepository->getTransactionsByUser($userId);
-
         $rtdata = $this->transactionRecurringService->getIndexRecurringTransaction($userId);
 
-        $data1 = [
-            "id" => 122,
-            "amount" => 5022,
-            "wallet_id" => 29,
-            "frequency" => 30, // Khoảng cách lặp lại (30 ngày)
-            "interval" => 1,  // Số lần lặp lại
-            "start_date" => "03/12/2024 12:00 AM",
-            "category_name" => "Gas Bill",
-            "icon_path" => "/assets/icon/expense/gas_bill.png",
-            "type" => "expense"
-        ];
-        //dd($rtdata);
-        $recurringTransaction = $this->transactionRecurringService->getTransactionDetails($data1);
-        dd($recurringTransaction);
+        // Khởi tạo một mảng để lưu kết quả đã được tính toán
+        $calculatedTransactions = [];
+
+        // Lặp qua từng phần tử trong collection
+        foreach ($rtdata['transactionsRecurring'] as $transaction) {
+            // Gọi hàm getTransactionDetails() để tính toán chi tiết cho từng giao dịch
+            $transactionDetails = $this->transactionRecurringService->getTransactionDetails($transaction);
+            // Gộp các mảng con vào mảng lớn
+            $calculatedTransactions = array_merge($calculatedTransactions, $transactionDetails);
+        }
+
+        // Xem kết quả đã được tính toán
+        //dd($calculatedTransactions);
+
+        // Chuyển đổi dữ liệu của transactions
         $data = $transactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
                 'amount' => $transaction->amount,
                 'type' => optional($transaction->category)->type,
-                'wallet_id' => $transaction -> wallet_id,
+                'wallet_id' => $transaction->wallet_id,
                 'note' => $transaction->note,
                 'iconPath' => optional($transaction->category->icon)->path,
                 'name' => optional($transaction->category)->name,
@@ -89,11 +89,12 @@ class TransactionService
         });
 
         return [
-            'recurringTransaction' => $recurringTransaction,
             'transactions' => $data,
             'wallets' => $wallets,
+            'calculatedTransactions' => $calculatedTransactions,
         ];
     }
+
     public function deleteTransaction($transactionId, $userId)
     {
         $this->transactionRepository->deleteTransaction($transactionId);

@@ -50,11 +50,10 @@ const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
 
 const repeatName = ref(getLocalStorageItem('repeatName', "Repeat Daily"));
 const timetext = ref(getLocalStorageItem('timeText'), null);
-const intervalValue = ref(getLocalStorageItem('intervalValue'), null);
+const intervalValue = ref(getLocalStorageItem('intervalValue', []), []);
 const repeatType = ref(getLocalStorageItem('repeatType', 'Forever'), null);
 const selectedForDate = ref(getLocalStorageItem('selectedForDate', formatDate(new Date())));
 const selectedInternalDate = ref(getLocalStorageItem('selectedInternalDate', formatDate(new Date())));
-console.log("hahaư",selectedInternalDate.value)
 const times = ref(getLocalStorageItem('times'), null);
 const updateRepeatTextHandler = (data) => {
     repeatName.value = data.repeatName;

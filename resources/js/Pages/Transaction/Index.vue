@@ -7,37 +7,29 @@
         <Header :totalFlow="totalFlow" :wallets="wallets" @walletSelected="handleWalletSelected" />
 
         <div class="overflow-x-auto max-w-full bg-white">
-    <div class="flex justify-between items-center">
-      <div
-        v-for="(month, index) in availableMonths"
-        :key="month"
-        class="min-w-[110px] flex-shrink-0 pt-2 px-4 flex flex-col items-center"
-        @click="selectMonth(month, index)"
-        ref="monthRefs"
-      >
-        <span
-          class="text-[12px] font-bold w-full text-center"
-          :class="{
-            'text-black': selectedMonth === month,
-            'text-secondaryText': selectedMonth !== month
-          }"
-        >
-          {{ month === 'this' ? 'THIS MONTH' : month === 'last' ? 'LAST MONTH' : month === 'future' ? 'FUTURE' : `${month}` }}
-        </span>
+            <div class="flex justify-between items-center">
+                <div v-for="(month, index) in availableMonths" :key="month"
+                    class="min-w-[110px] flex-shrink-0 pt-2 px-4 flex flex-col items-center"
+                    @click="selectMonth(month, index)" ref="monthRefs">
+                    <span class="text-[12px] font-bold w-full text-center" :class="{
+                        'text-black': selectedMonth === month,
+                        'text-secondaryText': selectedMonth !== month
+                    }">
+                        {{ month === 'this' ? 'THIS MONTH' : month === 'last' ? 'LAST MONTH' : month === 'future' ?
+                        'FUTURE' : `${month}` }}
+                    </span>
 
-        <div
-          class="h-[3px] w-[90%] mt-2 rounded-t-full transition-all duration-300 ease-in-out"
-          :style="{
-            transform: `translateX(${selectedMonth === month ? 0 : -100}%)`,
-            backgroundColor: selectedMonth === month ? 'black' : 'transparent'
-          }"
-        ></div>
-      </div>
-    </div>
-  </div>
+                    <div class="h-[3px] w-[90%] mt-2 rounded-t-full transition-all duration-300 ease-in-out" :style="{
+                        transform: `translateX(${selectedMonth === month ? 0 : -100}%)`,
+                        backgroundColor: selectedMonth === month ? 'black' : 'transparent'
+                    }"></div>
+                </div>
+            </div>
+        </div>
         <main class="bg-primaryBackground">
             <div>
-                <UseSage v-if="filteredTransactions.length" :transactions="filteredTransactions" />
+                <UseSage v-if="filteredTransactions.length" :calculatedTransactions="calculatedTransactions"
+                    :transactions="filteredTransactions" />
                 <NoData v-else message="You don't have any transactions yet" :action="true"
                     :actionText="'Create a transaction'" :destinationPage="'AddRecurringTransaction'" />
             </div>
@@ -53,6 +45,7 @@ import Loading from '@/Components/Loading/Index.vue';
 
 const transactions = ref([]);
 const filteredTransactions = ref([]);
+const calculatedTransactions = ref([]);
 const inflow = ref(0);
 const outflow = ref(0);
 const totalFlow = ref(0);
@@ -68,8 +61,11 @@ const fetchTransactions = async () => {
         isLoading.value = true;
         const response = await axios.get(route('Transaction'));
         transactions.value = response.data.transactions;
-        wallets.value = response.data.wallets;
-        console.log("Finnal",response.data.recurringTransaction);
+        const recurringTransactions = response.data.calculatedTransactions;
+
+        // Merge both transactions and recurring transactions
+        transactions.value = [...transactions.value, ...recurringTransactions];
+        console.log(transactions.value)
         wallets.value.sort((a, b) => {
             if (a.name === 'Total') return -1;
             if (b.name === 'Total') return 1;
@@ -82,7 +78,6 @@ const fetchTransactions = async () => {
             selectedWallet.value = wallets.value[0];
         }
 
-        // createAvailableMonths();
         filterTransactions();
     } catch (error) {
         console.error(error);
@@ -90,6 +85,7 @@ const fetchTransactions = async () => {
         isLoading.value = false;
     }
 };
+
 
 const handleWalletSelected = (wallet) => {
     selectedWallet.value = wallet;
@@ -192,6 +188,9 @@ const filterTransactions = () => {
             break;
     }
 
+    // Sort the filtered transactions by date to ensure proper grouping
+    filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     filteredTransactions.value = filtered;
     calculateInflowAndOutflow(filteredTransactions.value);
 };
@@ -219,20 +218,20 @@ const selectMonth = (month, index) => {
 };
 
 onMounted(() => {
-  nextTick(() => {
-    const thisMonthIndex = availableMonths.value.indexOf('this');
-    if (thisMonthIndex !== -1) {
-      selectedMonth.value = 'this';
-      const monthElement = monthRefs.value[thisMonthIndex];
-      if (monthElement) {
-        monthElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-          inline: 'center'
-        });
-      }
-    }
-  });
+    nextTick(() => {
+        const thisMonthIndex = availableMonths.value.indexOf('this');
+        if (thisMonthIndex !== -1) {
+            selectedMonth.value = 'this';
+            const monthElement = monthRefs.value[thisMonthIndex];
+            if (monthElement) {
+                monthElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'center'
+                });
+            }
+        }
+    });
 });
 
 const isThisMonth = (date) => {

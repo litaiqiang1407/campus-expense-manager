@@ -259,12 +259,6 @@ const timeText = computed(() => {
     return timeString;
 });
 const selectedRepeat = ref(props.repeatText || ref(getLocalStorageItem('repeatName', 'No Repeat'), null))
-//const selectedRepeatType = ref(getLocalStorageItem('repeatType', 'Forever'), null);
-// const selectedInternalDate = ref(new Date(getLocalStorageItem('selectedForDate', new Date())));
-// const selectedDays = ref(
-//     props.repeatText === 'Repeat Weekly' ?
-//         localStorage.getItem('intervalValue') : []
-// );
 console.log("Final",props.frequency)
 const selectedRepeatType = ref(props.repeatType ? props.repeatType : repeatType.value)
 const mmStart_date = formatDateMMDDYYY(props.start_date);
@@ -276,9 +270,9 @@ const internalForDate = ref(
     props.end_date ? new Date(mmEnd_date) : new Date()
 );
 const time = ref(props.timeText ? props.timeText : timeText.value)
-const repeatInterval = ref( props.frequency ? props.frequency : null)
-const selectedDays = ref(typeof props.frequency === 'number' ? null : props.frequency);
-// const repeatInterval = ref(getLocalStorageItem('intervalValue', 1), 1);
+const repeatInterval = ref( props.frequency ? props.frequency : 1)
+const selectedDays = ref(typeof props.frequency === 'number' ? [] : props.frequency);
+console.log('a',selectedDays.value)
 const times = ref(getLocalStorageItem('times', 1), null);
 const isTimePickerPopupVisible = ref(false);
 const repeatOptions = ["Repeat Daily", "Repeat Weekly", "Repeat Monthly", "Repeat Yearly"];
@@ -327,8 +321,14 @@ const toggleTimePickerPopup = () => {
 };
 
 const confirmTime = () => {
-    if (selectedMinute.value > 59) {
-        alert('Minute must be between 0 and 59');
+    if (selectedMinute.value > 59 || selectedMinute.value < 0) {
+        Swal.fire({
+            title: 'Invalid input!',
+            text: 'Minute must be between 0 and 59',
+            icon: 'error',
+            confirmButtonColor: '#00BC2A',
+            confirmButtonText: 'OK',
+        });
     } else {
         time.value = timeText.value;
         localStorage.setItem('timeText', timeText.value);

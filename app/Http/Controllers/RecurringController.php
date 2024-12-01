@@ -22,7 +22,7 @@ class RecurringController extends Controller
     {
         $user = $request->user();
 
-        $data = $this->transactionRecurringService->getIndexRecurringTransaction($user->id);
+        $data = $this->transactionRecurringService->getTransactionIndexRecurringTransaction($user->id);
 
         if ($request->wantsJson()) {
             return response()->json([

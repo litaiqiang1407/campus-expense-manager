@@ -199,6 +199,26 @@ class TransactionRecurringService
         }
         return $recurringtransaction;
     }
+    public function getTransactionIndexRecurringTransaction($userId)
+    {
+        $recurringTransactions = $this->transactionRecurringRepository->getTransactionIndexRecurringTransaction($userId);
+
+        $data = $recurringTransactions->map(function ($transaction) {
+            return [
+                'id' => $transaction->id,
+                'amount' => $transaction->amount,
+                'wallet_id' => $transaction->wallet_id,
+                'start_date' => $transaction->start_date,
+                'category_name' => $transaction->category->name ?? null,
+                'icon_path' => $transaction->category->icon->path ?? null,
+                'type' => optional($transaction->category)->type,
+            ];
+        });
+
+        return [
+            'transactionsRecurring' => $data,
+        ];
+    }
     public function getIndexRecurringTransaction($userId)
     {
         $recurringTransactions = $this->transactionRecurringRepository->getIndexRecurringTransaction($userId);
@@ -206,14 +226,16 @@ class TransactionRecurringService
         $data = $recurringTransactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
+                'repeat_type' => $transaction->type,
                 'amount' => $transaction->amount,
                 'wallet_id' => $transaction->wallet_id,
                 'frequency' => is_numeric($transaction['frequency']) ? (int) $transaction['frequency'] : $transaction['frequency'],
-                'interval' => $transaction ->interval,
-                'start_date' => $transaction->start_date,
-                'category_name' => $transaction->category->name ?? null,
-                'icon_path' => $transaction->category->icon->path ?? null,
+                'interval' => $transaction->interval,
+                'date' => $transaction->date, // Sử dụng 'date' đã đổi tên ở repository
+                'name' => $transaction->category->name ?? null,
+                'iconPath' => $transaction->category->icon->path ?? null,
                 'type' => optional($transaction->category)->type,
+                'note' => $transaction->note,
             ];
         });
 
@@ -284,7 +306,7 @@ class TransactionRecurringService
     }
     public function getTransactionDetails($data)
     {
-        $startDate = \DateTime::createFromFormat('d/m/Y h:i A', $data['start_date']);
+        $startDate = \DateTime::createFromFormat('d/m/Y h:i A', $data['date']);
         if (!$startDate) {
             throw new \Exception('Invalid start date format');
         }
@@ -299,16 +321,16 @@ class TransactionRecurringService
 
             switch ($type) {
                 case 'repeat daily':
-                    $step = '+' . $data['frequency'] . ' days';
+                    $step = '+' . (int)$data['frequency'] . ' days';
                     break;
                 case 'repeat weekly':
-                    $step = '+' . (7 * $data['frequency']) . ' days';
+                    $step = '+' . ((int)$data['frequency'] * 7) . ' days';
                     break;
                 case 'repeat monthly':
-                    $step = '+' . $data['frequency'] . ' months';
+                    $step = '+' . (int)$data['frequency'] . ' months';
                     break;
                 case 'repeat yearly':
-                    $step = '+' . $data['frequency'] . ' years';
+                    $step = '+' . (int)$data['frequency'] . ' years';
                     break;
                 default:
                     throw new \Exception('Invalid repeat type');
@@ -319,7 +341,7 @@ class TransactionRecurringService
                     'id' => $data['id'],
                     'amount' => $data['amount'],
                     'repeat_type' => ucfirst($type),
-                    'start_date' => $currentDate->format('Y-m-d H:i:s'),
+                    'date' => $currentDate->format('Y-m-d H:i:s'),
                     'name' => $data['name'],
                     'iconPath' => $data['iconPath'],
                     'type' => $data['type'],
@@ -360,7 +382,7 @@ class TransactionRecurringService
                     'id' => $data['id'],
                     'amount' => $data['amount'],
                     'repeat_type' => ucfirst($type),
-                    'start_date' => $currentDate->format('Y-m-d H:i:s'),
+                    'date' => $currentDate->format('Y-m-d H:i:s'),
                     'name' => $data['name'],
                     'iconPath' => $data['iconPath'],
                     'type' => $data['type'],
