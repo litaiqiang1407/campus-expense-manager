@@ -5,3 +5,4 @@ export const Note = defineAsyncComponent(() => import('./CRUD/Note.vue'));
 export const Form = defineAsyncComponent(() => import('./CRUD/Form.vue'));
 export const Input = defineAsyncComponent(() => import('./CRUD/Input.vue'));
 export const DateTimePicker = defineAsyncComponent(() => import('./CRUD/DateTimePicker.vue'));
+export const Recurring = defineAsyncComponent(() => import('./CRUD/Recurring.vue'));

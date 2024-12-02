@@ -85,7 +85,7 @@
                 </button>
             </div>
              <!-- Recurring Transactions -->
-            <div class="flex items-center justify-between py-2">
+            <div class="flex items-center justify-between py-2" @click="goToPage('RecurringTransaction')">
                 <div class="flex items-center space-x-3">
                     <font-awesome-icon icon="money-bills" class="text-secondaryText size-5 px-2" />
                     <span class="text-black font-medium text-sm">Recurring Transactions</span>
@@ -143,7 +143,7 @@ const isLoading = ref(true);
 const fetchAccount = async () => {
     try {
         const response = await axios.get(route('Account'));
-        account.value = response.data; 
+        account.value = response.data;
     } catch (error) {
         console.error('Error fetching Account:', error);
     } finally {

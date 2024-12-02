@@ -13,8 +13,8 @@
                 v-if="noteContent"
                 v-model="noteContent"
                 placeholder="Write Note"
-                class="text-secondaryText text-[14px] w-full outline-none leading-none cursor-default" />
-            <span v-else class="font-medium text-[14px] text-secondaryText">Write note</span>
+                class="text-secondaryText text-[16px] w-full outline-none leading-none cursor-default" />
+            <span v-else class="font-medium text-[16px] text-secondaryText">Write note</span>
         </button>
     </div>
 </template>
