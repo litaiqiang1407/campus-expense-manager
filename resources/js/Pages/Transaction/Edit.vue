@@ -45,17 +45,17 @@ const amount = ref(getLocalStorageItem('amount', '0'));
 const note = ref(getLocalStorageItem('note', ''));
 const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
-const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
 const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
 const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
+const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
 
 const router = useRouter();
-const transactionId = router.currentRoute.value.params.transactionId;
+const id = router.currentRoute.value.params.id;
 
 const fetchTransactionData = async () => {
     try {
         isLoading.value = true;
-        const response = await axios.get(route('EditTransaction', { transactionId }));
+        const response = await axios.get(route('EditTransaction', { id }));
         const transactionData = response.data.transaction;
 
         if (!localStorage.getItem('amount')) amount.value = transactionData.amount;
@@ -78,7 +78,7 @@ const selectWallet = () => {
     router.push({
         name: 'SelectWallet',
         query: {
-            transactionId: transactionId,
+            id: id,
             fromPage: 'EditTransaction'
         }
     });
@@ -92,7 +92,7 @@ const goToSelectCategories = () => {
     router.push({
         name: 'SelectCategories',
         query: {
-            transactionId: transactionId,
+            id: id,
             fromPage: 'EditTransaction'
         }
     });
@@ -114,7 +114,7 @@ const submitForm = async () => {
             type: 'expense',
         };
 
-        const response = await axios.post(route('UpdateTransaction', { transactionId }), formData);
+        const response = await axios.post(route('UpdateTransaction', { id }), formData);
         if (response.data.success) {
             toast.success(response.data.message);
             window.location.href = '/transaction';

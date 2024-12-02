@@ -7,7 +7,7 @@
             <div v-else class="size-[20px] flex items-center justify-center">
                 <font-awesome-icon :icon="icon" class="text-black text-[16px]" />
             </div>
-            <span class="font-medium text-secondaryText" :style="{ fontSize: sizeText + 'px' }">{{ selectText }}</span>
+            <span class="font-medium text-secondaryText">{{ selectText }}</span>
         </button>
     </div>
 </template>
