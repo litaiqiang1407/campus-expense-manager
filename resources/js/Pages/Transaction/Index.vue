@@ -6,7 +6,7 @@
     <div v-else class="flex flex-col">
         <Header :totalFlow="totalFlow" :wallets="wallets" @walletSelected="handleWalletSelected" />
 
-        <div class="overflow-x-auto max-w-full bg-white">
+        <div class="overflow-x-auto max-w-full bg-white scroll-container" ref="scrollContainer">
             <div class="flex justify-between items-center">
                 <div v-for="(month, index) in availableMonths" :key="month"
                     class="min-w-[110px] flex-shrink-0 pt-2 px-4 flex flex-col items-center"
@@ -260,3 +260,21 @@ onMounted(() => {
     });
 });
 </script>
+<style>
+/* Hide scrollbar but still allow scrolling */
+.scroll-container {
+    overflow-x: scroll;
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none;
+    /* Hide the scrollbar for WebKit browsers (Chrome, Safari) */
+}
+
+.scroll-container {
+    -ms-overflow-style: none;
+    /* Hide scrollbar for Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+}
+</style>
