@@ -1,6 +1,6 @@
 <template>
   <Form :action="'Save'" @submit="submitForm">
-      <Select :iconSrc="selectedCategoryIcon" :selectText="selectedCategoryName || 'Select category'" @click="goPage('SelectCategory')"/>
+      <Select :iconSrc="selectedCategoryIcon" :selectText="selectedCategoryName || 'Select category'" @click="goToPage('SelectCategory')"/>
       <InputMoney :inputValue="amount" @update:inputValue="amount = $event" />
       
       <div class="relative">
@@ -36,7 +36,7 @@
         </div>
       </div>
       
-      <Select :icon="'wallet'" :selectText="'Select wallet'" @click="goPage('SelectWallet')" />
+      <Select :icon="'wallet'" :selectText="'Select wallet'" @click="goToPage('SelectWallet')" />
       <Submit>Create Budget</Submit>
     </Form>
   </template>
@@ -48,6 +48,7 @@
   import { useToast } from 'vue-toastification';
   import axios from 'axios';
   import { useRouter, useRoute } from 'vue-router';
+  import { goPage } from '@/Helpers/Helpers';
   
   const toast = useToast();
   const router = useRouter();
@@ -189,8 +190,8 @@
   }
 };
   
-  const goPage = (page) => {
-      router.push({ name: page });
+  const goToPage = (page) => {
+      goPage(router, page);
   };
   </script>
   

@@ -8,12 +8,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#00BC2A', 
+        primary: '#00BC2A',
         secondaryText: '#A7A7A7',
         blueText: '#0080FF',
         redText: '#FF2121',
         primaryBackground: '#F8F9FA',
-        hoverPrimary: 'rgba(0, 188, 42, 0.8)', 
+        hoverPrimary: 'rgba(0, 188, 42, 0.8)',
       },
     },
   },

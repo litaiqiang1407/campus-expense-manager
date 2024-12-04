@@ -65,12 +65,12 @@ const gotoback = (category) => {
     localStorage.setItem('selectedCategory', category.name);
     localStorage.setItem('CategoryIcon', category.icon_path);
     const fromPage = router.currentRoute.value.query.fromPage;
-    const transactionId = router.currentRoute.value.query.transactionId;
+    const id = router.currentRoute.value.query.id;
     if (isSelectCategoryPage.value) {
         if (fromPage) {
             router.push({
                 name: fromPage,
-                params: { transactionId: transactionId },
+                params: { id: id },
             });
         } else {
             console.error('fromPage is not defined or is invalid');
