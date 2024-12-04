@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use InvalidArgumentException;
 
 class TransactionRepository
 {
@@ -315,5 +316,5 @@ class TransactionRepository
         ];
 
         return $result;
-    }
+    }  
 }

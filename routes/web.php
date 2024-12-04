@@ -12,6 +12,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\RecurringController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Middleware\CheckWallet;
 use App\Http\Middleware\HandleInertiaRequests;
 
@@ -29,6 +30,10 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
     Route::get('/categories', [CategoryController::class, 'index'])->name('Categories');
     Route::get('/recurring', [TransactionController::class, 'index'])->name('Recurring');
 
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get('/', [ReportsController::class, 'index'])->name('Reports');
+        Route::get('/category', [ReportsController::class, 'category'])->name('CategoryReport');
+    });
 
     Route::group(['prefix' => 'transaction'], function ()
     {

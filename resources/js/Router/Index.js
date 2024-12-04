@@ -28,7 +28,9 @@ import {
     SelectCategory,
     AddRecurringTransaction,
     RecurringTransactionDetails,
-    EditRecurringTransaction
+    EditRecurringTransaction,
+    Reports,
+    CategoryReport
 } from "../Pages/Index";
 
 // Import layout components
@@ -201,7 +203,7 @@ const routes = [
         component: SelectCategories,
         meta: {
             layout: HeaderLayout,
-            title: "Select Wallet",
+            title: "Select Category",
             isBack: true,
             isCancel: false,
         },
@@ -257,7 +259,7 @@ const routes = [
         component: SelectWallet,
         meta: {
             layout: HeaderLayout,
-            title: "Select wallet",
+            title: "Select Wallet",
             isBack: false,
             isCancel: true,
         },
@@ -287,6 +289,18 @@ const routes = [
             isCancel: false,
         },
         props: true,
+    },  
+    {
+        path: '/reports',
+        name: 'Reports',
+        component: Reports,
+        meta: { layout: MenuLayout },
+    },  
+    {
+        path: '/reports/category',
+        name: 'CategoryReport',
+        component: CategoryReport,
+        meta: { layout: MenuLayout },
     },
     {
         path: "/transaction/add-recurring",
@@ -365,7 +379,8 @@ router.beforeEach(async (to, from, next) => {
             "CreateTransaction",
             "CreateWallet",
             "Icon",
-            "EditRecurringTransaction"
+            "EditRecurringTransaction",
+            "CategoryReport"
         ].includes(to.name)
     ) {
         localStorage.clear();
