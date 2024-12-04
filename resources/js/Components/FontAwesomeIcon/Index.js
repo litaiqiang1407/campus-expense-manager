@@ -41,6 +41,7 @@ import {
   faSpinner,
   faTableCellsLarge,
   faCalendar as faCalendarSolid,
+  faLayerGroup,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCalendar, faCircleQuestion as faCircleQuestionRegular, faComment as faCommentRegular, faCircleXmark as faXmarkRegular } from '@fortawesome/free-regular-svg-icons';
@@ -93,7 +94,8 @@ library.add(
   faSun,
   faSpinner,
   faTableCellsLarge,
-  faCalendarSolid
+  faCalendarSolid,
+  faLayerGroup,
 );
 
 export default FontAwesomeIcon;

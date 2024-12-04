@@ -1,67 +1,53 @@
 <template>
-    <header class="sticky px-4 py-2 flex flex-col items-center bg-white">
-        <div class="h-13 flex items-center w-full justify-between">
-            <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack" />
-            <div class="flex flex-col items-center">
-                <span class="text-[12px]">Balance</span>
-                <span class="text-[20px] font-semibold">Reports</span>
+    <div class="flex flex-col min-h-screen ">
+        <header class="sticky px-4 py-2 flex flex-col items-center bg-white">
+            <div class="h-13 flex items-center w-full justify-between">
+                <div class="flex items-center gap-2">
+                    <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack" />
+                    <h1 class="text-[20px] font-semibold text-black leading-6">Category report</h1>
+                </div>
+                <button class="text-[20px] text-primary" @click="() => openSelectTimeRange = true">
+                    <font-awesome-icon icon="fa-regular fa-calendar" class="text-black text-[20px]" />
+                </button>
             </div>
-            <button class="text-[20px] text-primary" @click="() => openSelectTimeRange = true">
-                <font-awesome-icon icon="fa-regular fa-calendar" class="text-black text-[20px]" />
-            </button>
-        </div>
-        <div class="w-full flex items-center justify-center mt-2">
-            <button class="p-2 rounded-[8px] bg-gray-100 flex items-center gap-2" @click="toggleSelectWallet">
-                <img :src="selectedWallet.icon_path || '/assets/img/wallet.png'" alt="Wallet" class="size-6 rounded-full" />
-                <span class="text-black text-[12px] font-semibold">{{ selectedWallet.name || 'Select Wallet' }}</span>
-                <font-awesome-icon icon="chevron-down" class="text-[12px]" />
-            </button>
-        </div>
-        <div class="overflow-x-auto max-w-full bg-white scrollbar-hide">
-            <div class="flex justify-between items-center">
-                <div
-                    v-for="(value, index) in filteredTimeRangeValues"
-                    :key="index"
-                    class="min-w-[110px] flex-shrink-0 pt-2 px-4 flex flex-col items-center"
-                    @click="selectTimeRangeValue(value, index)"
-                    ref="timeRangeRefs">
-                    <span
-                        class="text-[12px] font-bold w-full text-center"
-                        :class="{
-                            'text-black': selectedTimeRangeValue === value,
-                            'text-secondaryText': selectedTimeRangeValue !== value
-                        }">
-                        {{ value }}
-                    </span>
+            <div class="w-full flex items-center justify-center mt-2">
+                <button class="p-2 rounded-[8px] bg-gray-100 flex items-center gap-2" @click="goToSelectCategories">
+                    <img :src="categoryIcon || '/assets/img/wallet.png'" alt="Wallet" class="size-6 rounded-full" />
+                    <span class="text-black text-[12px] font-semibold">{{ selectedCategory || 'Select Category' }}</span>
+                    <font-awesome-icon icon="chevron-down" class="text-[12px]" />
+                </button>
+            </div>
+            <div class="overflow-x-auto max-w-full bg-white scrollbar-hide">
+                <div class="flex justify-between items-center">
                     <div
-                        class="h-[3px] w-[90%] mt-2 rounded-t-full transition-all duration-300 ease-in-out"
-                        :style="{
-                            transform: `translateX(${selectedTimeRangeValue === value ? 0 : -100}%)`,
-                            backgroundColor: selectedTimeRangeValue === value ? 'black' : 'transparent'
-                        }">
+                        v-for="(value, index) in filteredTimeRangeValues"
+                        :key="index"
+                        class="min-w-[110px] flex-shrink-0 pt-2 px-4 flex flex-col items-center"
+                        @click="selectTimeRangeValue(value, index)"
+                        ref="timeRangeRefs">
+                        <span
+                            class="text-[12px] font-bold w-full text-center"
+                            :class="{
+                                'text-black': selectedTimeRangeValue === value,
+                                'text-secondaryText': selectedTimeRangeValue !== value
+                            }">
+                            {{ value }}
+                        </span>
+                        <div
+                            class="h-[3px] w-[90%] mt-2 rounded-t-full transition-all duration-300 ease-in-out"
+                            :style="{
+                                transform: `translateX(${selectedTimeRangeValue === value ? 0 : -100}%)`,
+                                backgroundColor: selectedTimeRangeValue === value ? 'black' : 'transparent'
+                            }">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
-    <div class="bg-primaryBackground px-4 py-8">
-        <!-- <div class="flex flex-col gap-2">
-            <div class="flex items-center justify-between">
-                <span>Opening balance</span>
-                <span class="text-gray-800 font-semibold">0</span>
-            </div>
-            <div class="flex items-center justify-between">
-                <span>Ending balance</span>
-                <span class="text-gray-800 font-semibold">0</span>
-            </div>
-        </div> -->
-        <div class="flex flex-col gap-4">
-            <Chart :type="'Expense'" :balance="expense.balance" :data="expense.categories"/>
-            <Chart :type="'Income'" :balance="income.balance" :data="income.categories"/>
-            <button class="bg-white rounded-[12px] p-4 flex flex-col text-primary items-center gap-1" @click="goToPage('CategoryReport')">
-                <font-awesome-icon icon="layer-group" />
-                <span class="font-semibold">See report by categories</span>
-            </button>
+        </header>
+
+        <div class="bg-white flex flex-col gap-4 mt-1 flex-1">
+            <NoData v-if="isNoData" :message="'No data to display'"/>
+            <Chart v-else :data="dataChart" :timeRange="selectedTimeRange"/>
         </div>
     </div>
 
@@ -92,48 +78,33 @@
             </div>
         </div>
     </div>
-    
-    <div 
-    v-if="openSelectWallet" 
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50" 
-    @click.self="closeSelectWallet">
-    <div class="bg-white w-full max-w-md p-4 rounded-t-lg">
-        <h3 class="text-lg font-bold text-center">Select Wallet</h3>
-        <div class="flex flex-col gap-2">
-            <button 
-                v-for="wallet in wallets" 
-                :key="wallet.id" 
-                class="py-2 px-4 flex items-center justify-between"           
-                @click="selectWallet(wallet)">
-                <div class="flex items-center gap-4">
-                    <img :src="wallet.icon_path" alt="Wallet Icon" class="w-6 h-6 rounded-full" />
-                    <span class="text-[16px]" :class="[selectedWallet.id === wallet.id ? 'font-bold' : 'font-semibold']">
-                        {{ wallet.name }}
-                    </span>
-                </div>
-                <font-awesome-icon 
-                    v-if="selectedWallet.id === wallet.id" 
-                    icon="check" 
-                    class="text-primary text-[20px]" />
-            </button>
-        </div>
-    </div>
-</div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, nextTick } from 'vue';
-import { goPage, goBack } from '@/Helpers/Helpers';
-import Chart from './Components/Chart.vue';
+import { ref, onMounted, computed, nextTick, watch } from 'vue';
+import dayjs from 'dayjs';
 import { useRouter } from 'vue-router'; 
+import Chart from './Components/BarChart.vue';
+import NoData from '@/Components/NoData/Index.vue';
+import { goBack } from '@/Helpers/Helpers';
 
 const router = useRouter();
 
+const getLocalStorageItem = (key, defaultValue = null) => {
+    const item = localStorage.getItem(key);
+    try {
+        return item ? JSON.parse(item) : defaultValue;
+    } catch (error) {
+        return item || defaultValue;
+    }
+};
+
 const selectedTimeRange = ref('month');
-const selectedWallet = ref({}); 
+const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
+const categoryID = ref(getLocalStorageItem('categoryId', null));
+const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
 
 const openSelectTimeRange = ref(false);
-const openSelectWallet = ref(false); 
 
 const startDate = ref(null);
 const endDate = ref(null);
@@ -145,9 +116,8 @@ const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(
 startDate.value = firstDayOfMonth.toISOString().split('T')[0]; 
 endDate.value = lastDayOfMonth.toISOString().split('T')[0];   
 
-const wallets = ref([]);
-const expense = ref([]);
-const income = ref([]);
+const dataChart = ref({});
+const isNoData = ref(!dataChart.value?.income?.balance && !dataChart.value?.expense?.balance);
 
 const timeRangeOptions = [
     { label: 'Day', icon: 'calendar-day', value: 'day' },
@@ -162,18 +132,13 @@ const closeSelectTimeRange = () => {
     openSelectTimeRange.value = false;
 };
 
-const toggleSelectWallet = () => {
-    openSelectWallet.value = !openSelectWallet.value;
-}
-
-const closeSelectWallet = () => {
-    openSelectWallet.value = false;
-}
-
-const selectWallet = (wallet) => {
-    selectedWallet.value = wallet;
-    fetchReports(startDate.value, endDate.value, wallet.id);
-    closeSelectWallet(); 
+const goToSelectCategories = () => {
+    router.push({
+        name: 'SelectCategories',
+        query: {
+            fromPage: 'CategoryReport'
+        }
+    });
 };
 
 const formatDate = (date) => {
@@ -242,12 +207,14 @@ const updateDateRange = (value) => {
                 startDate.value = sd;
                 endDate.value = ed;
             } else {
-                const selectedDate = new Date(value.split('/').reverse().join('/'));
-                startDate.value = toISOStringDate(selectedDate);
-                endDate.value = toISOStringDate(selectedDate);
+                const date = value.split('/').reverse().join('/');
+                const selectedDate = dayjs(date, 'DD/MM/YYYY'); 
+                startDate.value = selectedDate.format('YYYY-MM-DD');
+                endDate.value = selectedDate.format('YYYY-MM-DD');
             }
             break;
         }
+
         case 'week': {
             if (value === 'This Week' || value === 'Last Week') {
                 const { startDate: sd, endDate: ed } = handleWeekRange(value);
@@ -260,6 +227,7 @@ const updateDateRange = (value) => {
             }
             break;
         }
+
         case 'month': {
             if (value === 'This Month' || value === 'Last Month') {
                 const { startDate: sd, endDate: ed } = handleMonthRange(value);
@@ -274,6 +242,7 @@ const updateDateRange = (value) => {
             }
             break;
         }
+
         case 'quarter': {
             const quarter = Number(value[1]);
             const startMonth = (quarter - 1) * 3;
@@ -283,6 +252,7 @@ const updateDateRange = (value) => {
             endDate.value = toISOStringDate(lastDay);
             break;
         }
+
         case 'year': {
             const firstDay = new Date(value, 0, 1);
             const lastDay = new Date(value, 11, 31);
@@ -290,6 +260,7 @@ const updateDateRange = (value) => {
             endDate.value = toISOStringDate(lastDay);
             break;
         }
+
         case 'all': {
             startDate.value = null;
             endDate.value = null;
@@ -393,7 +364,7 @@ const selectTimeRange = async (range) => {
     } else {
         updateDateRange(selectedTimeRangeValue.value);
     }
-    fetchReports(startDate.value, endDate.value, selectedWallet.value.id);
+    fetchReports(startDate.value, endDate.value, categoryID.value);
     closeSelectTimeRange();
 
     await nextTick();
@@ -420,7 +391,7 @@ const selectTimeRangeValue = (value, index) => {
     selectedTimeRangeValue.value = value;
 
     updateDateRange(value);
-    fetchReports(startDate.value, endDate.value, selectedWallet.value.id);
+    fetchReports(startDate.value, endDate.value, categoryID.value);
     const timeRangeRef = timeRangeRefs.value[index];
     if (timeRangeRef) {
         setTimeout(() => {
@@ -433,18 +404,17 @@ const selectTimeRangeValue = (value, index) => {
     }
 };
 
-const fetchReports = async (startDate = null, endDate = null, walletId = null) => {
-    try {     
-        const response = await axios.get(route('Reports'), {
+const fetchReports = async (startDate = null, endDate = null, categoryId = null) => {
+    try {
+        const response = await axios.get(route('CategoryReport'), {
             params: {  
                 startDate, 
                 endDate,
-                walletId  
+                categoryId  
             },
         });
-        expense.value = response.data.reports.expense;
-        income.value = response.data.reports.income;
-        wallets.value = response.data.wallets;
+        dataChart.value = response.data.reports;
+        isNoData.value = !dataChart.value?.income?.balance && !dataChart.value?.expense?.balance;
     } catch (error) {
         console.error('Error fetching report trending:', error);
     };
@@ -464,10 +434,10 @@ onMounted(async () => {
             });
         }
     }
-    fetchReports(startDate.value, endDate.value, selectedWallet.id);
+    fetchReports(startDate.value, endDate.value, categoryID.value);
 });
 
-const goToPage = (page) => {
-    goPage(router, page);
-};
+watch(isNoData, (value) => {
+    isNoData.value = value;
+});
 </script>

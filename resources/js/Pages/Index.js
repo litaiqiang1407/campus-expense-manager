@@ -35,6 +35,7 @@ export const SelectWallet = () => import('./MyWallet/SelectWallet/Index.vue');
 export const Icon = () => import('./Icon/Index.vue');
 
 export const Reports = () => import('./Reports/Index.vue');
+export const CategoryReport = () => import('./Reports/Category.vue');
 
 export const App = defineAsyncComponent(() => import('./App.vue'));
 

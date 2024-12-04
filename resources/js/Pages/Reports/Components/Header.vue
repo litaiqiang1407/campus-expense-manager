@@ -10,13 +10,13 @@
                 <font-awesome-icon icon="fa-regular fa-calendar" class="text-black text-[20px]" />
             </button>
         </div>
-        <div class="w-full flex items-center justify-center mt-2">
+        <!-- <div class="w-full flex items-center justify-center mt-2">
             <button class="p-2 rounded-[8px] bg-gray-100 flex items-center gap-2" @click="toggleSelectWallet">
                 <img :src="selectedWallet.icon_path || '/assets/img/wallet.png'" alt="Wallet" class="size-6 rounded-full" />
                 <span class="text-black text-[12px] font-semibold">{{ selectedWallet.name || 'Select Wallet' }}</span>
                 <font-awesome-icon icon="chevron-down" class="text-[12px]" />
             </button>
-        </div>
+        </div> -->
         <div class="overflow-x-auto max-w-full bg-white scrollbar-hide">
             <div class="flex justify-between items-center">
                 <div
@@ -44,26 +44,6 @@
             </div>
         </div>
     </header>
-    <div class="bg-primaryBackground px-4 py-8">
-        <!-- <div class="flex flex-col gap-2">
-            <div class="flex items-center justify-between">
-                <span>Opening balance</span>
-                <span class="text-gray-800 font-semibold">0</span>
-            </div>
-            <div class="flex items-center justify-between">
-                <span>Ending balance</span>
-                <span class="text-gray-800 font-semibold">0</span>
-            </div>
-        </div> -->
-        <div class="flex flex-col gap-4">
-            <Chart :type="'Expense'" :balance="expense.balance" :data="expense.categories"/>
-            <Chart :type="'Income'" :balance="income.balance" :data="income.categories"/>
-            <button class="bg-white rounded-[12px] p-4 flex flex-col text-primary items-center gap-1" @click="goToPage('CategoryReport')">
-                <font-awesome-icon icon="layer-group" />
-                <span class="font-semibold">See report by categories</span>
-            </button>
-        </div>
-    </div>
 
     <div 
         v-if="openSelectTimeRange" 
@@ -92,48 +72,14 @@
             </div>
         </div>
     </div>
-    
-    <div 
-    v-if="openSelectWallet" 
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50" 
-    @click.self="closeSelectWallet">
-    <div class="bg-white w-full max-w-md p-4 rounded-t-lg">
-        <h3 class="text-lg font-bold text-center">Select Wallet</h3>
-        <div class="flex flex-col gap-2">
-            <button 
-                v-for="wallet in wallets" 
-                :key="wallet.id" 
-                class="py-2 px-4 flex items-center justify-between"           
-                @click="selectWallet(wallet)">
-                <div class="flex items-center gap-4">
-                    <img :src="wallet.icon_path" alt="Wallet Icon" class="w-6 h-6 rounded-full" />
-                    <span class="text-[16px]" :class="[selectedWallet.id === wallet.id ? 'font-bold' : 'font-semibold']">
-                        {{ wallet.name }}
-                    </span>
-                </div>
-                <font-awesome-icon 
-                    v-if="selectedWallet.id === wallet.id" 
-                    icon="check" 
-                    class="text-primary text-[20px]" />
-            </button>
-        </div>
-    </div>
-</div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed, nextTick } from 'vue';
-import { goPage, goBack } from '@/Helpers/Helpers';
-import Chart from './Components/Chart.vue';
-import { useRouter } from 'vue-router'; 
-
-const router = useRouter();
 
 const selectedTimeRange = ref('month');
-const selectedWallet = ref({}); 
 
 const openSelectTimeRange = ref(false);
-const openSelectWallet = ref(false); 
 
 const startDate = ref(null);
 const endDate = ref(null);
@@ -434,6 +380,7 @@ const selectTimeRangeValue = (value, index) => {
 };
 
 const fetchReports = async (startDate = null, endDate = null, walletId = null) => {
+    console.log('Wallet ID:', walletId);
     try {     
         const response = await axios.get(route('Reports'), {
             params: {  
@@ -467,7 +414,7 @@ onMounted(async () => {
     fetchReports(startDate.value, endDate.value, selectedWallet.id);
 });
 
-const goToPage = (page) => {
-    goPage(router, page);
+const goBack = () => {
+    window.history.back()
 };
 </script>
