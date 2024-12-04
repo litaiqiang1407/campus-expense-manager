@@ -70,7 +70,7 @@ class TransactionController extends Controller
             'date' => 'required|date',
         ]);
 
-        $transaction = $this->transactionService->createTransaction($validatedData, $request->user()->id);
+        $this->transactionService->createTransaction($validatedData, $request->user()->id);
 
         return response()->json([
             'success' => true,

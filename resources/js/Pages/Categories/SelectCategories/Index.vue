@@ -32,7 +32,7 @@
             <Income v-if="activeCategory === 'income'" :categories="incomeCategories" />
         </div>
 
-        <div class="">
+        <!-- <div class="">
             <div v-for="category in getCategory()" :key="category.id" class="bg-white shadow my-2 py-2">
                 <div class="flex justify-between items-center py-2 px-4" @click="goToEditTransaction(category)">
                     <div class="flex items-center space-x-3">
@@ -60,7 +60,7 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -75,7 +75,7 @@ const activeCategory = ref('expense');
 const categories = ref([]);
 const expenseCategories = ref([]);
 const incomeCategories = ref([]);
-const isLoading = ref(false);
+const isLoading = ref(true);
 
 const selectCategory = (category) => {
     activeCategory.value = category;
@@ -95,32 +95,32 @@ const fetchCategories = async () => {
     }
 };
 
-const goBack = () => {
-    window.history.back();
-};
+// const goBack = () => {
+//     window.history.back();
+// };
 
 onMounted(() => {
     fetchCategories();
 });
 
-const props = defineProps({
-    categories: Array
-});
+// const props = defineProps({
+//     categories: Array
+// });
 
-const getCategory = () => {
-    if (!Array.isArray(props.categories)) {
-        return [];
-    }
-    return props.categories.filter(
-        category => category.parent_id === null && category.name !== "Expenses"
-    );
-};
+// const getCategory = () => {
+//     if (!Array.isArray(props.categories)) {
+//         return [];
+//     }
+//     return props.categories.filter(
+//         category => category.parent_id === null && category.name !== "Expenses"
+//     );
+// };
 
 
-const getSubcategories = (parentId) => {
-    const subcategories = props.categories.filter(category => category.parent_id === parentId);
-    return subcategories;
-};
+// const getSubcategories = (parentId) => {
+//     const subcategories = props.categories.filter(category => category.parent_id === parentId);
+//     return subcategories;
+// };
 </script>
 
 <style>

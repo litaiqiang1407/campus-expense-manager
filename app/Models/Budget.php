@@ -12,7 +12,8 @@ class Budget extends Model
     protected $fillable = [
         'category_id',
         'amount',
-        'time_range',
+        'start_date',
+        'end_date',
         'wallet_id',
         'user_id',
     ];

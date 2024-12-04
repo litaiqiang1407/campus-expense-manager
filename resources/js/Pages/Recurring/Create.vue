@@ -41,11 +41,11 @@ const getLocalStorageItem = (key, defaultValue = null) => {
 
 const amount = ref(getLocalStorageItem('amount', '0'));
 const note = ref(getLocalStorageItem('note', ''));
-const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
-const wallet_id = ref(getLocalStorageItem('wallet_id', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
 const category_id = ref(getLocalStorageItem('categoryId', null));
 const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
+const wallet_id = ref(getLocalStorageItem('wallet_id', null));
+const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
 const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
 
 const repeatName = ref(getLocalStorageItem('repeatName', "Repeat Daily"));

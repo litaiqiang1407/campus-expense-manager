@@ -22,13 +22,9 @@
 
             <!-- Subcategories List -->
             <ul v-if="getSubcategories(category.parent_id).length" class="pl-8">
-                <li
-                    v-for="(subcategory, index) in getSubcategories(category.id)"
-                    :key="subcategory.id"
-                    :class="[ 'flex items-center space-x-2 py-2',
-                        index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2' ]"
-                    @click="gotoback(subcategory)"
-                >
+                <li v-for="(subcategory, index) in getSubcategories(category.id)" :key="subcategory.id" :class="['flex items-center space-x-2 py-2',
+                    index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2']"
+                    @click="gotoback(subcategory)">
                     <div class="h-[2px] bg-gray-200 w-2 absolute"></div>
                     <img :src="subcategory.icon_path" alt="Subcategory Icon" class="w-8 h-8 rounded-full">
                     <div>
@@ -48,7 +44,7 @@ import { useRouter } from 'vue-router'; // Import useRouter to handle navigation
 import { computed } from 'vue';
 
 const router = useRouter();
-
+const fromPage = router.currentRoute.value.query.fromPage
 const props = defineProps({
     categories: Array
 });
