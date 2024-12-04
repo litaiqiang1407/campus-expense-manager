@@ -119,7 +119,6 @@ const goPage = (page) => {
 };
 
 const transactionRecurringDetails = (id) => {
-    localStorage.clear();
     router.push({ name: 'TransactionRecurringDetails', params: { id } });
 };
 
@@ -131,5 +130,6 @@ const goBack = () => {
 onMounted(() => {
     fetchWalletDetails();
     fetchTransactionRecurring();
+    localStorage.clear();
 });
 </script>

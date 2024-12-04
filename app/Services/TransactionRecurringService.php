@@ -129,7 +129,7 @@ class TransactionRecurringService
             if ((int) $transaction->interval === 30) {
                 $repeatType = 'Forever';
             } else {
-                $repeatType = 'Times';
+                $repeatType = 'For';
             }
         } else {
             $repeatType = null;
