@@ -95,7 +95,7 @@ const submitForm = async () => {
             wallet_id: wallet_id.value,
             note: note.value,
             start_date: start_date,
-            interval: repeatType.value === "Untill"
+            interval: repeatType.value === "Until"
                 ? end_day
                 : repeatType.value === "Forever"
                     ? 30

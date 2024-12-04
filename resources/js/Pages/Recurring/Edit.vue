@@ -92,7 +92,7 @@ const fetchTransactionData = async () => {
         if (!localStorage.getItem('repeatType')) repeatType.value = data.repeatType;
         if (!localStorage.getItem('selectedInternalDate')) selectedInternalDate.value = extractDate(data.start_date);
         if (!localStorage.getItem('timeText')) timetext.value = extractTime(data.start_date);
-        if (!localStorage.getItem('times')) times.value = data.times || 1;
+        if (!localStorage.getItem('times')) times.value = data.interval || 1;
         if (!localStorage.getItem('selectedForDate')) selectedForDate.value = data.end_date ? formatDate(new Date(data.end_date)) : formatDate(new Date());
         if (!localStorage.getItem('intervalValue')) intervalValue.value = data.frequency || 1;
         if (!localStorage.getItem('repeatName')) repeatName.value = data.type;
@@ -150,7 +150,7 @@ const submitForm = async () => {
             wallet_id: wallet_id.value,
             note: note.value,
             start_date: start_date,
-            interval: repeatType.value === "Untill"
+            interval: repeatType.value === "Until"
                 ? end_day
                 : repeatType.value === "Forever"
                     ? 30

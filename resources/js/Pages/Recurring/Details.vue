@@ -2,7 +2,7 @@
     <div class="bg-white">
         <div v-if="loading" class="w-full h-screen flex items-center justify-center">
             <Loading class="size-8" />
-        </div>  
+        </div>
         <div class="pl-4 mt-4 pr-4">
             <Select :iconSrc="categoryIcon" :selectText="category_name ? category_name : 'Select category'"
                 :sizeText="'16'" :getItemLabel="item => item.name" />
@@ -90,7 +90,7 @@ const deleteRecurringTransaction = async (id) => {
 };
 
 onMounted(() => {
-    localStorage.clear();
     fetchTransactionDetailsData();
+    localStorage.clear();
 });
 </script>

@@ -137,7 +137,7 @@
                             {{ selectedRepeatType || 'Forever' }}
                             <font-awesome-icon class="pl-2 text-[12px] text-gray-500" icon="chevron-down" />
                         </button>
-                        <div v-if="selectedRepeatType === 'Untill'">
+                        <div v-if="selectedRepeatType === 'Until'">
                             <div class="flex items-center space-x-2">
                                 <Datepicker class="mt-1.5 text-primary" v-model="internalForDate"
                                     :inputFormat="'dd-MM-yyyy'"></Datepicker>
@@ -273,10 +273,10 @@ const time = ref(props.timeText ? props.timeText : timeText.value)
 const repeatInterval = ref( props.frequency ? props.frequency : 1)
 const selectedDays = ref(typeof props.frequency === 'number' ? [] : props.frequency);
 console.log('a',selectedDays.value)
-const times = ref(getLocalStorageItem('times', 1), null);
+const times = ref( props.times ? props.times : 1)
 const isTimePickerPopupVisible = ref(false);
 const repeatOptions = ["Repeat Daily", "Repeat Weekly", "Repeat Monthly", "Repeat Yearly"];
-const repeatType = ["Forever", "Untill", "For"];
+const repeatType = ["Forever", "Until", "For"];
 const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 watch(internalDate, (newDate) => {
