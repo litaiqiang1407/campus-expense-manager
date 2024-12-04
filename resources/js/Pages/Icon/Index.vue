@@ -41,11 +41,9 @@ const selectIcon = (icon) => {
     const walletId = router.currentRoute.value.query.walletId;
 
     if (walletId) {
-        router.push({ name: 'EditWallet', params: { walletId }, query: { icon: JSON.stringify(icon)} }); 
-    }
-
-    if (walletType) {
-        router.push({ name: 'CreateWallet', params: { walletType }, query: { icon: JSON.stringify(icon)} }); 
+        router.push({  name: 'AddCategory', query: { iconId: icon.id }});
+    } else if (walletType) {
+        router.push({ name: 'CreateWallet', params: { walletType }, query: { iconId: icon.id }});
     }
 };
 

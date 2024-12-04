@@ -34,6 +34,8 @@ import {
   faCheck,
   faCircleArrowDown,
   faCircleArrowUp,
+  faPlusMinus,
+  faLayerGroup,
   faCalendarDay,
   faCalendarWeek,
   faCalendarDays,
@@ -41,7 +43,6 @@ import {
   faSpinner,
   faTableCellsLarge,
   faCalendar as faCalendarSolid,
-  faLayerGroup,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCalendar, faCircleQuestion as faCircleQuestionRegular, faComment as faCommentRegular, faCircleXmark as faXmarkRegular } from '@fortawesome/free-regular-svg-icons';
@@ -88,6 +89,8 @@ library.add(
   faXmarkRegular,
   faCircleArrowDown,
   faCircleArrowUp,
+  faPlusMinus,
+  faLayerGroup,
   faCalendarDay,
   faCalendarWeek,
   faCalendarDays,
@@ -95,7 +98,6 @@ library.add(
   faSpinner,
   faTableCellsLarge,
   faCalendarSolid,
-  faLayerGroup,
 );
 
 export default FontAwesomeIcon;

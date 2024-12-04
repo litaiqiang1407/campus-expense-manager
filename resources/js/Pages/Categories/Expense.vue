@@ -1,7 +1,7 @@
 <template>
     <div class="">
+        <button class="flex items-center p-4 bg-white w-full gap-4" @click="goPage('AddCategory')">
         <!-- Button to add new category -->
-        <button class="flex items-center p-4 bg-white w-full gap-4">
             <font-awesome-icon icon="circle-plus" class="text-primary size-8" />
             <span class="text-primary font-bold">NEW CATEGORY</span>
         </button>
@@ -56,6 +56,10 @@ const getCategory = () => {
 const getSubcategories = (parentId) => {
     return props.categories.filter(category => category.parent_id === parentId);
 };
+
+function goPage(routeName) {
+    router.push({ name: routeName });
+}
 
 const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'SelectCategories');
 

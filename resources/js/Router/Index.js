@@ -30,7 +30,8 @@ import {
     RecurringTransactionDetails,
     EditRecurringTransaction,
     Reports,
-    CategoryReport
+    CategoryReport,
+    AddCategory,
 } from "../Pages/Index";
 
 // Import layout components
@@ -265,7 +266,13 @@ const routes = [
         },
         props: true,
     },
-
+    {
+        path: '/add-category',
+        name: 'AddCategory',
+        component: AddCategory,
+        meta: { layout: HeaderLayout, title: 'New Category', isBack: true},
+        
+    },
     {
         path: "/select-category",
         name: "SelectCategory",

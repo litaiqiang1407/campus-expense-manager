@@ -40,5 +40,9 @@ class CategoryController extends Controller
         return Inertia::render('Categories/Index', [
             'categories' => $categories,
         ]);
-    }    
+    } 
+    public function create()
+{
+    return Inertia::render('Categories/Create');
+}
 }
