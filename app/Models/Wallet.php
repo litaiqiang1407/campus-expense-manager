@@ -32,11 +32,6 @@ class Wallet extends Model
         return parent::delete();
     }
 
-    // public function walletType()
-    // {
-    //     return $this->belongsTo(WalletType::class);
-    // }
-
     public static function hasNonTotalWallet($userId)
     {
         return self::where('user_id', $userId)

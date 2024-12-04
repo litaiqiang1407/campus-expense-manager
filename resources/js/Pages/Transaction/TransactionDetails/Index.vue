@@ -1,11 +1,10 @@
 <template>
     <div class="bg-white">
-        <div v-if="loading" class="flex w-screen items-center justify-center h-64">
-            <Loading class="size-16" />
+        <div v-if="loading" class="w-full h-screen flex items-center justify-center">
+            <Loading class="size-8" />
         </div>
-
         <div class="pl-4 mt-4 pr-4">
-            <InputMoney :inputValue="amount.toString()" />
+            <InputMoney :inputValue="amount.toString()":readonly="true" />
 
             <Select :iconSrc="categoryIcon" :selectText="category_name ? category_name : 'Select category'"
                 :sizeText="'16'" :getItemLabel="item => item.name" />
@@ -16,10 +15,10 @@
 
             <Select :iconSrc="walletIcon" :selectText="wallet_name ? wallet_name : 'Select Wallet'"/>
             <button class="mt-4 mr-1 w-full p-2 bg-primary text-white text-[16px] rounded-[1000px]"
-                @click="editTransaction(transactionId)">
+                @click="editTransaction(id)">
                 Edit
             </button>
-            <button class="mt-4 p-2 bg-[#8B0000] w-full text-white text-[16px] rounded-[1000px]" @click="confirmDelete(transactionId)">
+            <button class="mt-4 p-2 bg-[#8B0000] w-full text-white text-[16px] rounded-[1000px]" @click="confirmDelete(id)">
                 Delete
             </button>
         </div>
@@ -43,12 +42,12 @@ const wallet_name = ref(null);
 const categoryIcon = ref(null);
 const walletIcon = ref(null);
 const router = useRouter();
-const transactionId = router.currentRoute.value.params.transactionId;
+const id = router.currentRoute.value.params.id;
 
 const fetchTransactionDetailsData = async () => {
     try {
         loading.value = true;
-        const response = await axios.get(route('TransactionDetails', { transactionId }));
+        const response = await axios.get(route('TransactionDetails', { id }));
         amount.value = response.data.transaction.amount;
         category_name.value = response.data.transaction.category_name;
         note.value = response.data.transaction.note;
@@ -65,11 +64,11 @@ const fetchTransactionDetailsData = async () => {
     }
 };
 
-const editTransaction = (transactionId) => {
-    router.push({ name: 'EditTransaction', params: { transactionId } });
+const editTransaction = (id) => {
+    router.push({ name: 'EditTransaction', params: { id } });
 };
 
-const confirmDelete = (transactionId) => {
+const confirmDelete = (id) => {
     Swal.fire({
         title: 'Are you sure?',
         text: 'You won\'t be able to revert this!',
@@ -81,14 +80,14 @@ const confirmDelete = (transactionId) => {
         cancelButtonText: 'No, cancel!',
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteTransaction(transactionId);
+            deleteTransaction(id);
         }
     });
 };
 
-const deleteTransaction = async (transactionId) => {
+const deleteTransaction = async (id) => {
     try {
-        await axios.post(route('DeleteTransaction', { transactionId }));
+        await axios.post(route('DeleteTransaction', { id }));
         window.location.href = '/transaction';
     } catch (error) {
         console.error('Error deleting transaction:', error);

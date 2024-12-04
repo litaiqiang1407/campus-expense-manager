@@ -44,7 +44,6 @@ watch(internalDate, (newDate) => {
 </script>
 
 <style>
-/* Các style trước đó của bạn */
 .datepicker{
     background-color: white;
 }
@@ -59,4 +58,10 @@ watch(internalDate, (newDate) => {
 .v3dp__popout {
     width: 100% !important;
 }
+.v3dp__input_wrapper input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
 </style>

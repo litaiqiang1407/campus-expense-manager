@@ -1,16 +1,17 @@
 <template>
     <div>
-        <div v-if="loading" class="flex w-screen items-center justify-center h-64">
-            <Loading class="size-16" />
+        <div v-if="isLoading" class="w-full h-screen flex items-center justify-center">
+            <Loading class="size-8" />
         </div>
         <Form :action="'Save'" @submit="submitForm">
             <InputMoney :inputValue="amount.toString()" @update:inputValue="updateAmount" />
-            <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'" :sizeText="'16'"
-                :getItemLabel="item => item.name" @update:selectText="updateCategory" @click="goToSelectCategories" />
+            <Select :iconSrc="categoryIcon" :selectText="selectedCategory ? selectedCategory : 'Select category'"
+                :sizeText="'16'" :getItemLabel="item => item.name" @update:selectText="updateCategory"
+                @click="goToSelectCategories" />
             <Note v-model="note" fromPage="EditTransaction" />
             <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'" :items="wallets"
-                :getItemLabel="item => item.name" @click="selectWallet" />
+            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
+                :items="wallets" :getItemLabel="item => item.name" @click="selectWallet" />
 
             <Submit> Save</Submit>
         </Form>
@@ -36,8 +37,7 @@ const getLocalStorageItem = (key, defaultValue = null) => {
         return item || defaultValue;
     }
 };
-
-const loading = ref(false);
+const isLoading = ref(false);
 const category_id = ref(getLocalStorageItem('categoryId', []));
 const wallets = ref([]);
 const wallet_id = ref(getLocalStorageItem('wallet_id', []));
@@ -45,17 +45,17 @@ const amount = ref(getLocalStorageItem('amount', '0'));
 const note = ref(getLocalStorageItem('note', ''));
 const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
-const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
 const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
 const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
+const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
 
 const router = useRouter();
-const transactionId = router.currentRoute.value.params.transactionId;
+const id = router.currentRoute.value.params.id;
 
 const fetchTransactionData = async () => {
     try {
-        loading.value = true;
-        const response = await axios.get(route('EditTransaction', { transactionId }));
+        isLoading.value = true;
+        const response = await axios.get(route('EditTransaction', { id }));
         const transactionData = response.data.transaction;
 
         if (!localStorage.getItem('amount')) amount.value = transactionData.amount;
@@ -70,7 +70,7 @@ const fetchTransactionData = async () => {
         console.error('Error fetching transaction data:', error);
         toast.error('Failed to load data. Please try again.');
     } finally {
-        loading.value = false;
+        isLoading.value = false;
     }
 };
 
@@ -78,7 +78,7 @@ const selectWallet = () => {
     router.push({
         name: 'SelectWallet',
         query: {
-            transactionId: transactionId,
+            id: id,
             fromPage: 'EditTransaction'
         }
     });
@@ -92,7 +92,7 @@ const goToSelectCategories = () => {
     router.push({
         name: 'SelectCategories',
         query: {
-            transactionId: transactionId,
+            id: id,
             fromPage: 'EditTransaction'
         }
     });
@@ -114,7 +114,7 @@ const submitForm = async () => {
             type: 'expense',
         };
 
-        const response = await axios.post(route('UpdateTransaction', { transactionId }), formData);
+        const response = await axios.post(route('UpdateTransaction', { id }), formData);
         if (response.data.success) {
             toast.success(response.data.message);
             window.location.href = '/transaction';

@@ -5,7 +5,7 @@
                 <div class="bg-white rounded-[16px] py-4 pl-4 shadow">
                     <div class="flex items-center justify-between border-b-[1px] border-secondaryText pb-2 pr-4">
                         <span class="font-semibold text-[14px]">My Wallets</span>
-                        <a href="/my-wallet" class="text-primary font-semibold text-[10px]">See all</a>
+                        <a @click="goToMyWallet" class="text-primary font-semibold text-[10px]">See all</a>
                     </div>
                     <div v-if="isLoading" class="w-full h-32 flex items-center justify-center">
                       <Loading class="size-8"/>
@@ -27,9 +27,12 @@
 
 <script setup>
 import { Header, Report, Spending, Transaction } from '@/Pages/Home/Components/Index.js';
-import { formatBalance } from '@/Helpers/Helpers';
+import { formatBalance, goPage } from '@/Helpers/Helpers';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router'; 
 import Loading  from '@/Components/Loading/Index.vue'; 
+
+const router = useRouter();
 
 const totalBalance = ref(0);
 const walletList = ref([])
@@ -51,6 +54,10 @@ const fetchWallets = async () => {
   } finally {
     isLoading.value = false;
   }
+};
+
+const goToMyWallet = () => {
+  goPage(router, 'MyWallet');
 };
 
 onMounted(fetchWallets);

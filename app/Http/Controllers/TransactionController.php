@@ -22,17 +22,19 @@ class TransactionController extends Controller
         $user = $request->user();
 
         $data = $this->transactionService->getTransactionsAndWalletsByUser($user->id);
-
+        //dd($data);
         if ($request->wantsJson()) {
             return response()->json([
                 'transactions' => $data['transactions'],
                 'wallets' => $data['wallets'],
+                'calculatedTransactions' => $data['calculatedTransactions']
             ]);
         }
 
         return Inertia::render('Transaction/Index', [
             'transactions' => $data['transactions'],
             'wallets' => $data['wallets'],
+            'calculatedTransactions' => $data['calculatedTransactions']
         ]);
     }
     public function create(Request $request)
@@ -68,7 +70,7 @@ class TransactionController extends Controller
             'date' => 'required|date',
         ]);
 
-        $transaction = $this->transactionService->createTransaction($validatedData, $request->user()->id);
+        $this->transactionService->createTransaction($validatedData, $request->user()->id);
 
         return response()->json([
             'success' => true,

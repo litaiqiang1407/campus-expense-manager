@@ -2,7 +2,7 @@
     <div class="flex flex-col space-y-2">
         <div class="flex items-center justify-between">
             <span class="font-semibold text-[10px] text-secondaryText">Top spending</span>
-            <button class="text-primary font-semibold text-[10px]">See details</button>
+            <button class="text-primary font-semibold text-[10px]" @click="showPopup">See details</button>
         </div>
         <div class="p-4 rounded-lg shadow bg-white">
             <div class="flex items-center p-1 bg-[#f0f0f0] rounded-[8px]">
@@ -40,6 +40,7 @@
                     </div>
                 </div>
             </div>
+            <Popup ref="popup" title="Coming Soon!" message="This feature is under development." />
         </div>
     </div>
 </template>
@@ -47,6 +48,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { formatBalance } from '@/Helpers/Helpers';
+import Popup from '@/Components/Popup/Index.vue';
 import Loading  from '@/Components/Loading/Index.vue'; 
 
 const props = defineProps({
@@ -57,6 +59,11 @@ const props = defineProps({
 const isLoading = ref(false);
 const activeButton = ref('month');
 const topSpending = ref([]); 
+const popup = ref(null);
+
+const showPopup = () => {
+    popup.value.openPopup();
+};
 
 watch(
     () => props.topSpending,

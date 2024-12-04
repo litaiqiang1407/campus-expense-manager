@@ -49,4 +49,17 @@ const showAlert = ({ title, text, confirmText, onConfirm }) => {
     });
 }
 
-export { formatBalance, showAlert, goPage };
+const goBack = () => {
+    const currentPath = window.location.pathname; 
+    const pathSegments = currentPath.split('/').filter(segment => segment); 
+
+    if (pathSegments.length > 1) {
+        pathSegments.pop(); 
+        const newPath = '/' + pathSegments.join('/');
+        window.location.href = newPath; 
+    } else {
+        window.location.href = '/';
+    }
+};
+
+export { formatBalance, showAlert, goPage, goBack };

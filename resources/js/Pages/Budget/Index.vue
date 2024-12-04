@@ -31,9 +31,15 @@
                         :class="{ 'text-black': activeTimeRange === range, 'text-secondaryText': activeTimeRange !== range }">
                         This {{ range }}
                     </span>
-                    <div class="h-[3px] w-[90%] mt-2 rounded-t-full" :class="{ 'bg-black': activeTimeRange === range }">
+    
+                    <div class="h-[3px] w-[90%] mt-2 rounded-t-full transition-all duration-300 ease-in-out"
+                        :style="{
+                            transform: `translateX(${activeTimeRange === range ? 0 : -100}%)`,
+                            backgroundColor: activeTimeRange === range ? 'black' : 'transparent'
+                        }">
                     </div>
                 </div>
+
             </div>
             <!-- <div class="w-full bg-white p-4 mb-4">
         <p class="text-black text-left text-sm font-bold inline-block ml-2 relative">
@@ -209,6 +215,7 @@ const fetchBudgets = async () => {
                 walletId: walletId,
             },
         });
+        console.log("data",response.data)
         budgetList.value = response.data.budgets;
         wallet.value = response.data.wallet;
         timeRanges.value = [...new Set(budgetList.value.map(budget => budget.time_range))];
@@ -225,9 +232,13 @@ const fetchBudgets = async () => {
 }
 
 const selectWallet = () => {
-    router.push({ name: 'SelectWallet', query: { walletId: walletId } });
+    router.push({
+        name: 'SelectWallet',
+        query: {
+            fromPage: 'Budget'
+        }
+    });
 };
-
 const timeRangeBudgets = () => {
     if (activeTimeRange.value) {
         timeRangeBudgetList.value = budgetList.value.filter(budget => budget.time_range === activeTimeRange.value);

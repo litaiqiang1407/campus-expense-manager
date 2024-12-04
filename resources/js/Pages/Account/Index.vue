@@ -1,6 +1,6 @@
 <template>
     <div class="bg-white">
-        <div class=" flex items-center justify-center" @click="goPage('MyAccount')">
+        <div class=" flex items-center justify-center" @click="goToPage('MyAccount')">
             <!-- Avatar Circle -->
             <div
                 class="flex items-center justify-center w-16 h-16 border-[1px] rounded-full absolute z-0">
@@ -51,15 +51,15 @@
             <p class="text-xs text-secondaryText">{{  account.email  }}</p>
         </div>
         <div class="h-28 bg-gray-200 border border-gray-300 flex items-center justify-center text-center">
-            <video class="w-full h-full object-cover" autoplay controls loop>
-                <source src="/assets/video/demovideo.mp4" type="video/mp4" />
+            <video class="w-full h-full object-cover" autoplay loop muted>
+                <source src="/assets/video/doodle.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
         </div>
 
         <div class=" w-full max-w-md mx-auto p-4 md:p-6 lg:p-8">
             <!-- My Wallets -->
-            <div class="flex items-center justify-between py-2" @click="goPage('MyWallet')">
+            <div class="flex items-center justify-between py-2" @click="goToPage('MyWallet')">
                 <div class="flex items-center space-x-3">
                     <font-awesome-icon icon="wallet" class="text-secondaryText size-5 px-2" />
                     <span class="text-black font-medium text-sm">My Wallets</span>
@@ -70,7 +70,7 @@
             </div>
             <!-- Categories -->
             <div class="flex items-center justify-between py-2">
-                <div class="flex items-center space-x-3" @click="goPage('Categories')">
+                <div class="flex items-center space-x-3" @click="goToPage('Categories')">
                     <font-awesome-icon icon="cubes" class="text-secondaryText size-5 px-2" />
                     <span class="text-black font-medium text-sm">Categories</span>
                 </div>
@@ -85,7 +85,7 @@
                 </button>
             </div>
              <!-- Recurring Transactions -->
-            <div class="flex items-center justify-between py-2">
+            <div class="flex items-center justify-between py-2" @click="goToPage('RecurringTransaction')">
                 <div class="flex items-center space-x-3">
                     <font-awesome-icon icon="money-bills" class="text-secondaryText size-5 px-2" />
                     <span class="text-black font-medium text-sm">Recurring Transactions</span>
@@ -115,7 +115,7 @@
                 </div>
             </div>
              <!-- About -->
-            <div class="flex items-center justify-between py-2" @click="goPage('AppInfo')">
+            <div class="flex items-center justify-between py-2" @click="goToPage('AppInfo')">
                 <div class="flex items-center space-x-3">
                     <font-awesome-icon icon="circle-info" class="text-secondaryText size-5 px-2" />
                     <span class="text-black font-medium text-sm">About</span>
@@ -133,6 +133,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { goPage } from '@/Helpers/Helpers';
 
 const router = useRouter();
 
@@ -142,7 +143,7 @@ const isLoading = ref(true);
 const fetchAccount = async () => {
     try {
         const response = await axios.get(route('Account'));
-        account.value = response.data; 
+        account.value = response.data;
     } catch (error) {
         console.error('Error fetching Account:', error);
     } finally {
@@ -153,7 +154,7 @@ onMounted(() => {
     fetchAccount();
 });
 
-const goPage = (page) => {
-    router.push({ name: page });
+const goToPage = (page) => {
+    goPage(router, page);
 };
 </script>
