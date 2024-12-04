@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use InvalidArgumentException;
 
 class TransactionRepository
 {
@@ -36,16 +37,11 @@ class TransactionRepository
 
         // Cập nhật lại số dư ví
         if ($categoryType === 'income') {
-            // Nếu là thu nhập, trừ số tiền từ ví vì giao dịch thu nhập bị xóa
             $this->updateWalletBalance($walletId, $amount, false);  // Trừ tiền khỏi ví
         } else {
-            // Nếu là chi phí, cộng số tiền vào ví vì giao dịch chi phí bị xóa
             $this->updateWalletBalance($walletId, $amount, true);   // Cộng tiền vào ví
         }
-
-        // Xóa giao dịch
         $transaction->delete();
-
         return true;
     }
         public function createTransaction($data, $userId)
@@ -320,5 +316,5 @@ class TransactionRepository
         ];
 
         return $result;
-    }
+    }  
 }

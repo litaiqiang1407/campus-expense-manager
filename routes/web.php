@@ -9,8 +9,10 @@ use App\Http\Controllers\MyWalletController;
 use App\Http\Controllers\NotFoundController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\RecurringController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Middleware\CheckWallet;
 use App\Http\Middleware\HandleInertiaRequests;
 
@@ -28,16 +30,26 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
     Route::get('/categories', [CategoryController::class, 'index'])->name('Categories');
     Route::get('/recurring', [TransactionController::class, 'index'])->name('Recurring');
 
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get('/', [ReportsController::class, 'index'])->name('Reports');
+        Route::get('/category', [ReportsController::class, 'category'])->name('CategoryReport');
+    });
 
     Route::group(['prefix' => 'transaction'], function ()
     {
         Route::get('/', [TransactionController::class, 'index'])->name('Transaction');
+        Route::get('/recurring', [RecurringController::class, 'index'])->name('TransactionRecurring');
         Route::get('/create', [TransactionController::class, 'create'])->name('CreateTransaction');
+        Route::post('/store/recurring', [RecurringController::class, 'store'])->name('CreateRecurringTransaction');
         Route::post('/store', [TransactionController::class, 'store'])->name('StoreTransaction');
-        Route::get('/edit/{transactionId}', [TransactionController::class, 'edit'])->name('EditTransaction');
-        Route::post('/update/{transactionId}', [TransactionController::class, 'update'])->name('UpdateTransaction');
-        Route::get('/transaction-details/{transactionId}', [TransactionController::class, 'transactionDetails'])->name('TransactionDetails');
-        Route::post('/delete/{transactionId}', [TransactionController::class, 'delete'])->name('DeleteTransaction');
+        Route::get('/edit/{id}', [TransactionController::class, 'edit'])->name('EditTransaction');
+        Route::get('/edit-recurring/{id}', [RecurringController::class, 'edit'])->name('EditRecurringTransaction');
+        Route::post('/update/{id}', [TransactionController::class, 'update'])->name('UpdateTransaction');
+        Route::post('/update-recurring/{id}', [RecurringController::class, 'update'])->name('UpdateRecurringTransaction');
+        Route::get('/transaction-details/{id}', [TransactionController::class, 'transactionDetails'])->name('TransactionDetails');
+        Route::get('/recurring/{id}', [RecurringController::class, 'transactionRecurringDetails'])->name('TransactionRecurringDetails');
+        Route::post('/delete/{id}', [TransactionController::class, 'delete'])->name('DeleteTransaction');
+        Route::post('/delete-recurring/{id}', [RecurringController::class, 'delete'])->name('DeleteRecurringTransaction');
     });
     Route::group(['prefix' => 'my-wallet'], function () {
         Route::get('/', [MyWalletController::class, 'index'])->name('MyWallet');

@@ -1,185 +1,348 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { Home, NotFound, Welcome, Signup, Signin, Account, Transaction, Notification, Budget, CreateTransaction, EditTransaction, CreateBudget, MyWallet, AppInfo, MyAccount, CreateWallet, EditWallet, Icon, Categories,SelectCategories, SelectWallet, WriteNote, TransactionDetails, RecurringTransaction, SelectCategory } from "../Pages/Index";
-
+import {
+    Home,
+    NotFound,
+    Welcome,
+    Signup,
+    Signin,
+    Account,
+    Transaction,
+    Notification,
+    Budget,
+    CreateTransaction,
+    EditTransaction,
+    CreateBudget,
+    MyWallet,
+    AppInfo,
+    MyAccount,
+    CreateWallet,
+    EditWallet,
+    Icon,
+    Categories,
+    SelectCategories,
+    SelectWallet,
+    WriteNote,
+    TransactionDetails,
+    RecurringTransaction,
+    SelectCategory,
+    AddRecurringTransaction,
+    RecurringTransactionDetails,
+    EditRecurringTransaction,
+    Reports,
+    CategoryReport
+} from "../Pages/Index";
 
 // Import layout components
-import { MenuLayout, HeaderLayout, DefaultLayout, NoneLayout } from "../Components/Layout/Index";
+import {
+    MenuLayout,
+    HeaderLayout,
+    DefaultLayout,
+    NoneLayout,
+} from "../Components/Layout/Index";
 
-import { Support, Menu, Search, SelectWallet as SelectComponent, SaveButton} from "../Components/Header/Components/Index";
+import {
+    Support,
+    Menu,
+    Search,
+    SelectWallet as SelectComponent,
+    SaveButton,
+} from "../Components/Header/Components/Index";
 
 const routes = [
     {
-        path: '/',
-        name: 'Home',
+        path: "/",
+        name: "Home",
         component: Home,
         meta: { layout: MenuLayout },
     },
     {
-        path: '/welcome',
-        name: 'Welcome',
-        component: Welcome
+        path: "/welcome",
+        name: "Welcome",
+        component: Welcome,
     },
     {
-        path: '/signup',
-        name: 'Signup',
-        component: Signup
+        path: "/signup",
+        name: "Signup",
+        component: Signup,
     },
     {
-        path: '/app-info',
-        name: 'AppInfo',
+        path: "/app-info",
+        name: "AppInfo",
         component: AppInfo,
-        meta: { layout: HeaderLayout, title: '', isBack: true, isCancel: false},
+        meta: {
+            layout: HeaderLayout,
+            title: "",
+            isBack: true,
+            isCancel: false,
+        },
     },
     {
-        path: '/transaction',
-        name: 'Transaction',
+        path: "/transaction",
+        name: "Transaction",
         component: Transaction,
         meta: { layout: MenuLayout },
     },
     {
-        path: '/transaction/create',
-        name: 'CreateTransaction',
+        path: "/transaction/create",
+        name: "CreateTransaction",
         component: CreateTransaction,
-        meta: { layout: HeaderLayout, title: 'Add transaction', isBack: false, isCancel: true},
+        meta: {
+            layout: HeaderLayout,
+            title: "Add transaction",
+            isBack: false,
+            isCancel: true,
+        },
     },
 
     {
-        path: '/transaction/edit/:transactionId',
-        name: 'EditTransaction',
+        path: "/transaction/edit/:id",
+        name: "EditTransaction",
         component: EditTransaction,
-        meta: { layout: HeaderLayout, title: 'Edit transaction', isBack: false, isCancel: true},
+        meta: {
+            layout: HeaderLayout,
+            title: "Edit transaction",
+            isBack: false,
+            isCancel: true,
+        },
     },
 
     {
-        path: '/transaction/transaction-details/:transactionId',
-        name: 'TransactionDetails',
+        path: "/transaction/transaction-details/:id",
+        name: "TransactionDetails",
         component: TransactionDetails,
-        meta: { layout: HeaderLayout, title: 'Transactiton Details', isBack: true, isCancel: false},
+        meta: {
+            layout: HeaderLayout,
+            title: "Transactiton Details",
+            isBack: true,
+            isCancel: false,
+        },
     },
 
     {
-        path: '/note',
-        name: 'Note',
+        path: "/note",
+        name: "Note",
         component: WriteNote,
         meta: {
             layout: HeaderLayout,
-            title: 'Note',
+            title: "Note",
             isBack: false,
             isCancel: true,
         },
     },
     {
-        path: '/signin',
-        name: 'login',
-        component: Signin
+        path: "/signin",
+        name: "login",
+        component: Signin,
     },
     {
-        path: '/:pathMatch(.*)*',
-        name: 'NotFound',
-        component: NotFound
+        path: "/:pathMatch(.*)*",
+        name: "NotFound",
+        component: NotFound,
     },
     {
-        path: '/account',
-        name: 'Account',
+        path: "/account",
+        name: "Account",
         component: Account,
-        meta: { layout: DefaultLayout, title: 'Account', isBack: false, isCancel: false, headerComponent: [Support]},
+        meta: {
+            layout: DefaultLayout,
+            title: "Account",
+            isBack: false,
+            isCancel: false,
+            headerComponent: [Support],
+        },
     },
     {
-        path: '/my-account',
-        name: 'MyAccount',
+        path: "/my-account",
+        name: "MyAccount",
         component: MyAccount,
-        meta: { layout: DefaultLayout, title: 'My Account', isBack: true},
-
-    },
-{
-        path: '/notification',
-        name: 'Notification',
-        component: Notification,
-        meta: { layout: HeaderLayout, title: 'Notifications', isBack: false, isCancel: true},
+        meta: { layout: DefaultLayout, title: "My Account", isBack: true },
     },
     {
-        path: '/budget',
-        name: 'Budget',
+        path: "/notification",
+        name: "Notification",
+        component: Notification,
+        meta: {
+            layout: HeaderLayout,
+            title: "Notifications",
+            isBack: false,
+            isCancel: true,
+        },
+    },
+    {
+        path: "/budget",
+        name: "Budget",
         component: Budget,
         meta: { layout: MenuLayout },
     },
     {
-        path: '/budget/create',
-        name: 'CreateBudget',
+        path: "/budget/create",
+        name: "CreateBudget",
         component: CreateBudget,
-        meta: { layout: HeaderLayout, title: 'Add budget', isBack: false, isCancel: true},
+        meta: {
+            layout: HeaderLayout,
+            title: "Add budget",
+            isBack: false,
+            isCancel: true,
+        },
     },
     {
-        path: '/categories',
-        name: 'Categories',
+        path: "/categories",
+        name: "Categories",
         component: Categories,
-        meta: { layout: HeaderLayout, title: 'Categories', isBack: false, isCancel: true},
+        meta: {
+            layout: HeaderLayout,
+            title: "Categories",
+            isBack: false,
+            isCancel: true,
+        },
     },
     {
-        path: '/select-categories',
-        name: 'SelectCategories',
+        path: "/select-categories",
+        name: "SelectCategories",
         component: SelectCategories,
-        meta: { layout: HeaderLayout, title: 'Select Wallet', isBack: true, isCancel: false},
-
+        meta: {
+            layout: HeaderLayout,
+            title: "Select Category",
+            isBack: true,
+            isCancel: false,
+        },
     },
     {
-        path: '/my-wallet',
-        name: 'MyWallet',
+        path: "/my-wallet",
+        name: "MyWallet",
         component: MyWallet,
     },
     {
-        path: '/my-wallet/:walletType/create',
-        name: 'CreateWallet',
+        path: "/my-wallet/:walletType/create",
+        name: "CreateWallet",
         component: CreateWallet,
-        meta: { layout: HeaderLayout, title: 'Add wallet', isBack: false, isCancel: true },
+        meta: {
+            layout: HeaderLayout,
+            title: "Add wallet",
+            isBack: false,
+            isCancel: true,
+        },
         props: true,
     },
     {
-        path: '/my-wallet/edit/:walletId',
-        name: 'EditWallet',
+        path: "/my-wallet/edit/:walletId",
+        name: "EditWallet",
         component: EditWallet,
-        meta: { layout: HeaderLayout, title: 'Edit wallet', isBack: false, isCancel: true },
+        meta: {
+            layout: HeaderLayout,
+            title: "Edit wallet",
+            isBack: false,
+            isCancel: true,
+        },
         props: true,
     },
     {
-        path: '/logout',
-        name: 'Logout',
+        path: "/logout",
+        name: "Logout",
     },
     {
-        path: '/icon',
-        name: 'Icon',
+        path: "/icon",
+        name: "Icon",
         component: Icon,
-        meta: { layout: HeaderLayout, title: 'Icon', isBack: true, isCancel: false },
+        meta: {
+            layout: HeaderLayout,
+            title: "Icon",
+            isBack: true,
+            isCancel: false,
+        },
         props: true,
     },
     {
-        path: '/select-wallet',
-        name: 'SelectWallet',
+        path: "/select-wallet",
+        name: "SelectWallet",
         component: SelectWallet,
-        meta: { layout: HeaderLayout, title: 'Select wallet', isBack: false, isCancel: true },
+        meta: {
+            layout: HeaderLayout,
+            title: "Select Wallet",
+            isBack: false,
+            isCancel: true,
+        },
         props: true,
     },
 
     {
-        path: '/select-category',
-        name: 'SelectCategory',
+        path: "/select-category",
+        name: "SelectCategory",
         component: SelectCategory,
-        meta: { layout: HeaderLayout, title: 'Select Category', isBack: true, isCancel: false },
+        meta: {
+            layout: HeaderLayout,
+            title: "Select Category",
+            isBack: true,
+            isCancel: false,
+        },
         props: true,
     },
     {
-        path: '/transaction/recurring',
-        name: 'RecurringTransaction',
+        path: "/transaction/recurring",
+        name: "RecurringTransaction",
         component: RecurringTransaction,
-        meta: { layout: DefaultLayout, title: 'RecurringTransaction', isBack: true, isCancel: false },
+        meta: {
+            layout: MenuLayout,
+            title: "RecurringTransaction",
+            isBack: true,
+            isCancel: false,
+        },
+        props: true,
+    },  
+    {
+        path: '/reports',
+        name: 'Reports',
+        component: Reports,
+        meta: { layout: MenuLayout },
+    },  
+    {
+        path: '/reports/category',
+        name: 'CategoryReport',
+        component: CategoryReport,
+        meta: { layout: MenuLayout },
+    },
+    {
+        path: "/transaction/add-recurring",
+        name: "AddRecurringTransaction",
+        component: AddRecurringTransaction,
+        meta: {
+            layout: HeaderLayout,
+            title: "Add Recurring Transaction",
+            isBack: true,
+            isCancel: false,
+        },
         props: true,
     },
-]
+    {
+        path: "/transaction/recurring/details/:id",
+        name: "TransactionRecurringDetails",
+        component: RecurringTransactionDetails,
+        meta: {
+            layout: HeaderLayout,
+            title: "Recurring Transaction Details",
+            isBack: true,
+            isCancel: false,
+        },
+        props: true,
+    },
+    {
+        path: "/transaction/edit-recurring/:id",
+        name: "EditRecurringTransaction",
+        component: EditRecurringTransaction,
+        meta: {
+            layout: HeaderLayout,
+            title: "Edit Recurring Transaction",
+            isBack: true,
+            isCancel: false,
+        },
+        props: true,
+    },
+];
 
 const router = createRouter({
     history: createWebHistory(),
-    routes
+    routes,
 });
 
 // router.beforeEach(async (to, from, next) => {
@@ -204,7 +367,22 @@ const router = createRouter({
 // });
 
 router.beforeEach(async (to, from, next) => {
-    if (!['Note', 'SelectCategories', 'SelectWallet','EditWallet', 'EditTransaction','CreateTransaction',"CreateBudget",'CreateWallet','Icon'].includes(to.name)) {
+    if (
+        ![
+            "Note",
+            "RecurringTransaction",
+            "SelectCategories",
+            "SelectWallet",
+            "EditWallet",
+            "EditTransaction",
+            "AddRecurringTransaction",
+            "CreateTransaction",
+            "CreateWallet",
+            "Icon",
+            "EditRecurringTransaction",
+            "CategoryReport"
+        ].includes(to.name)
+    ) {
         localStorage.clear();
     }
     next();

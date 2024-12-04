@@ -2,7 +2,7 @@
     <div class="flex flex-col space-y-2">
         <div class="flex items-center justify-between">
             <span class="font-semibold text-[10px] text-secondaryText">Report this month</span>
-            <button class="text-primary font-semibold text-[10px]" @click="showPopup">See report</button>
+            <button class="text-primary font-semibold text-[10px]" @click="goToReports">See report</button>
         </div>
         <div class="p-4 rounded-lg shadow bg-white">
             <swiper
@@ -93,7 +93,7 @@
 
 <script setup>
 import { ref, watch, onMounted  } from 'vue';
-import { formatBalance } from '@/Helpers/Helpers';
+import { formatBalance, goPage } from '@/Helpers/Helpers';
 import Popup from '@/Components/Popup/Index.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
@@ -104,10 +104,13 @@ import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 
 import { Line, Bar } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, LineElement, PointElement, LinearScale, CategoryScale, Filler  } from 'chart.js';
+import { useRouter } from 'vue-router';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, LineElement, PointElement, LinearScale, CategoryScale, Filler);
 
 const modules = [Navigation, Pagination, Scrollbar, A11y]; 
+
+const router = useRouter();
 
 const activeTrending = ref('expense');
 const activeSpending = ref('month');
@@ -136,6 +139,10 @@ const popup = ref(null);
 
 const showPopup = () => {
     popup.value.openPopup();
+};
+
+const goToReports = () => {
+    goPage(router, 'Reports');
 };
 
 const barChartOptions = {

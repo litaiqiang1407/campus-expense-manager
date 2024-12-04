@@ -63,11 +63,13 @@ const gotoback = (category) => {
     localStorage.setItem('categoryId', category.id);
     localStorage.setItem('selectedCategory', category.name);
     localStorage.setItem('CategoryIcon', category.icon_path);
-    const transactionId = router.currentRoute.value.query.transactionId
+
+    const fromPage = router.currentRoute.value.query.fromPage
+    const id = router.currentRoute.value.query.id
     if (isSelectCategoryPage.value) {
         router.push({
             name: fromPage,
-            params: { transactionId: transactionId },
+            params: { id: id },
         });
     }
 };
