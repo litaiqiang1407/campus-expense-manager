@@ -37,6 +37,28 @@ class MyWalletController extends Controller
         ]);
     }
 
+    public function selectWallet(Request $request)
+    {
+        $userId = $request->user()->id;
+        $wallets = $this->walletService->getWallets($userId);
+        $walletTypes = $this->walletService->getWalletTypes();
+        $totalWalletBalance = $this->walletService->recalculateTotalWalletBalance($userId);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'walletTypes' => $walletTypes,
+                'wallets' => $wallets,
+                'totalWalletBalance' => $totalWalletBalance,
+            ]);
+        }
+
+        return Inertia::render('MyWallet/SelectWallet/Index', [
+            'walletTypes' => $walletTypes,
+            'wallets' => $wallets,
+            'totalWalletBalance' => $totalWalletBalance,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $user_id = $request->user()->id;

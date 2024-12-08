@@ -37,14 +37,17 @@ const fetchIcon = async () => {
 };
 
 const selectIcon = (icon) => {
-    const walletType = router.currentRoute.value.query.walletType;
-    const walletId = router.currentRoute.value.query.walletId;
+    // const walletType = router.currentRoute.value.query.walletType;
+    // const walletId = router.currentRoute.value.query.walletId;
 
-    if (walletId) {
-        router.push({  name: 'AddCategory', query: { iconId: icon.id }});
-    } else if (walletType) {
-        router.push({ name: 'CreateWallet', params: { walletType }, query: { iconId: icon.id }});
-    }
+    // if (walletId) {
+    //     router.push({  name: 'AddCategory', query: { iconId: icon.id }});
+    // } else if (walletType) {
+    //     router.push({ name: 'CreateWallet', params: { walletType }, query: { iconId: icon.id }});
+    // }
+    localStorage.setItem('selectedIcon', JSON.stringify(icon)); 
+    const previousPath = localStorage.getItem('previousPath') || '/';
+    router.push(previousPath); 
 };
 
 onMounted(fetchIcon);

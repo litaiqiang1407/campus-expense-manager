@@ -68,6 +68,7 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
     });
 
     Route::get('/icon', [IconController::class, 'index'])->name('Icon');
+    Route::get('/select-wallet', [MyWalletController::class, 'selectWallet'])->name('SelectWallet');
 });
 
 require __DIR__ . '/auth.php';

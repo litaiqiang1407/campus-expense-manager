@@ -7,7 +7,7 @@
                 @click="goToSelectCategories" />
             <Note v-model="note" fromPage="CreateTransaction" />
             <DateTimePicker :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
-            <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
+            <Select :iconSrc="selectedWallet.icon_path" :selectText="selectedWallet.name ? selectedWallet.name : 'Select Wallet'"
                 :items="wallets" :getItemLabel="item => item.name" @click="selectWallet" />
             <Submit> Save</Submit>
         </Form>
@@ -21,6 +21,7 @@ import { InputMoney, Select, Note, Form, DateTimePicker } from '@/Components/For
 import { useToast } from 'vue-toastification';
 import Submit from '@/Components/Button/Submit/Index.vue';
 import axios from 'axios';
+import { goSelect } from '@/Helpers/Helpers';
 
 const toast = useToast();
 
@@ -34,24 +35,26 @@ const getLocalStorageItem = (key, defaultValue = null) => {
 };
 const amount = ref(getLocalStorageItem('amount', '0'));
 const note = ref(getLocalStorageItem('note', ''));
-const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
+// const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
 const wallet_id = ref(getLocalStorageItem('wallet_id', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
 const category_id = ref(getLocalStorageItem('categoryId', null));
 const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
 const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
 const transactionDate = ref(getLocalStorageItem('transactionDate') ? new Date(getLocalStorageItem('transactionDate')) : new Date());
+const selectedWallet = ref(JSON.parse(localStorage.getItem('selectedWallet')) || {});
 
 const router = useRouter();
 const wallets = ref([]);
 
 const selectWallet = () => {
-    router.push({
-        name: 'SelectWallet',
-        query: {
-            fromPage: 'CreateTransaction'
-        }
-    });
+    // router.push({
+    //     name: 'SelectWallet',
+    //     query: {
+    //         fromPage: 'CreateTransaction'
+    //     }
+    // });
+    goSelect(router, 'select-wallet');
 };
 
 const updateAmount = (value) => {

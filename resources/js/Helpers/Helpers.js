@@ -62,4 +62,29 @@ const goBack = () => {
     }
 };
 
-export { formatBalance, showAlert, goPage, goBack };
+const goCancel = () => {
+    const currentPath = window.location.pathname; 
+    let targetPath = '/'; 
+
+    const cancelMapping = [
+        { pattern: /^\/my-wallet\/edit\/\d+$/, target: '/my-wallet' },
+        { pattern: /^\/transaction\/edit\/\d+$/, target: '/transaction' },
+    ];
+
+    for (const { pattern, target } of cancelMapping) {
+        if (pattern.test(currentPath)) {
+            targetPath = target;
+            break;
+        }
+    }
+
+    window.location.href = targetPath;
+};
+
+const goSelect = (router, page) => {
+    const currentPath = window.location.pathname; 
+    localStorage.setItem('previousPath', currentPath); 
+    router.push(`${currentPath}/${page}`); 
+};
+
+export { formatBalance, showAlert, goPage, goBack, goCancel, goSelect };

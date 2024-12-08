@@ -109,7 +109,7 @@ const initialQuery = ref('');
 const fetchWallets = async () => {
   try {
     isLoading.value = true;
-    const response = await axios.get(route('MyWallet'));
+    const response = await axios.get(route('SelectWallet'));
     walletTypes.value = response.data.walletTypes;
     wallets.value = response.data.wallets;
     totalWalletBalance.value = response.data.totalWalletBalance;
@@ -132,23 +132,26 @@ const performSearch = async (query) => {
   }
 };
 const selectWallet = (wallets) => {
-    localStorage.setItem('wallet_id', wallets.id);
-    localStorage.setItem('selectedWallet', wallets.name);
-    localStorage.setItem('WalletIcon', wallets.icon_path);
+    // localStorage.setItem('wallet_id', wallets.id);
+    // localStorage.setItem('walletName', wallets.name);
+    // localStorage.setItem('WalletIcon', wallets.icon_path);
 
-    const fromPage = router.currentRoute.value.query.fromPage;
-    const id = router.currentRoute.value.query.id;
+    // const fromPage = router.currentRoute.value.query.fromPage;
+    // const id = router.currentRoute.value.query.id;
 
-    if (fromPage) {
-        const query = { walletId: wallets.id };
-        router.push({
-            name: fromPage,
-            query: query,
-            params: {id: id},
-        });
-    } else {
-        console.error('fromPage is missing in query parameters');
-    }
+    // if (fromPage) {
+    //     const query = { walletId: wallets.id };
+    //     router.push({
+    //         name: fromPage,
+    //         query: query,
+    //         params: {id: id},
+    //     });
+    // } else {
+    //     console.error('fromPage is missing in query parameters');
+    // }
+    localStorage.setItem('selectedWallet', JSON.stringify(wallets)); 
+    const previousPath = localStorage.getItem('previousPath') || '/';
+    router.push(previousPath); 
 };
 
 const displayWalletTypes = () => {
