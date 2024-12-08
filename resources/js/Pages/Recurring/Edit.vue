@@ -14,7 +14,7 @@
                     :timeText="timetext" :times="times" :end_date="selectedForDate" :frequency="intervalValue"
                     :repeatType="repeatType" @update:repeatText="updateRepeatTextHandler" />
                 <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
-                    :items="wallets" :getItemLabel="item => item.name" @click="goPage('SelectWallet')" />
+                  :getItemLabel="item => item.name" @click="goPage('SelectWallet')" />
                 <Submit> Save</Submit>
             </Form>
         </div>
@@ -35,15 +35,6 @@ const formatDate = (date) => {
     return `${day}/${month}/${year}`;
 };
 const isDataReady = computed(() => {
-    console.log('isLoading:', isLoading.value);
-    console.log('repeatName:', repeatName.value);
-    console.log('selectedInternalDate:', selectedInternalDate.value);
-    console.log('selectedforDate:', selectedForDate.value);
-    console.log('timetext:', timetext.value);
-    console.log('times:', times.value);
-    console.log('intervalValue:', intervalValue.value);
-    console.log('Type:', repeatType.value);
-
     return !isLoading.value &&
         repeatType.value &&
         repeatName.value &&
@@ -87,7 +78,6 @@ const id = router.currentRoute.value.params.id;
 const fetchTransactionData = async () => {
     try {
         const response = await axios.get(route('EditRecurringTransaction', { id }));
-        console.log("Fetched data:", response.data.transactionRecurring);
         const data = response.data.transactionRecurring;
         if (!localStorage.getItem('repeatType')) repeatType.value = data.repeatType;
         if (!localStorage.getItem('selectedInternalDate')) selectedInternalDate.value = extractDate(data.start_date);
@@ -126,7 +116,6 @@ const updateCategory = (value) => {
     selectedCategory.value = value;
 };
 const updateRepeatTextHandler = (data) => {
-    console.log("Received data from Recurring component:", data);
     repeatName.value = data.repeatName || repeatName.value;
     intervalValue.value = data.intervalValue || intervalValue.value;
     repeatType.value = data.repeatType || repeatType.value;
