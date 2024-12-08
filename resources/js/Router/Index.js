@@ -243,7 +243,7 @@ const routes = [
         name: "Logout",
     },
     {
-        path: "/icon",
+        path: "/:parentPath*/icon",
         name: "Icon",
         component: Icon,
         meta: {
@@ -252,19 +252,19 @@ const routes = [
             isBack: true,
             isCancel: false,
         },
-        props: true,
+        props: route => ({ parentPath: route.params.parentPath || '' }),
     },
     {
-        path: "/select-wallet",
+        path: "/:parentPath*/select-wallet",
         name: "SelectWallet",
         component: SelectWallet,
         meta: {
             layout: HeaderLayout,
             title: "Select Wallet",
-            isBack: false,
-            isCancel: true,
+            isBack: true,
+            isCancel: false,
         },
-        props: true,
+        props: route => ({ parentPath: route.params.parentPath || '' }),
     },
     {
         path: '/add-category',
@@ -380,6 +380,7 @@ router.beforeEach(async (to, from, next) => {
             "RecurringTransaction",
             "SelectCategories",
             "SelectWallet",
+            'CreateWallet',
             "EditWallet",
             "EditTransaction",
             "AddRecurringTransaction",

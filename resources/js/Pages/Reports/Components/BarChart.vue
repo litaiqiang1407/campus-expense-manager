@@ -90,13 +90,13 @@ const labels = computed(() => {
 
         case 'quarter':
             generatedLabels = Array.from({ length: 3 }, (_, i) =>
-                start.add(i, 'month').format('MMM')
+                start.add(i + 1, 'month').format('M')
             );
             break;
 
         case 'year':
             generatedLabels = Array.from({ length: 12 }, (_, i) =>
-                start.month(i).format('MMM')
+                start.month(i).format('M')
             );
             break;
 
@@ -108,14 +108,22 @@ const labels = computed(() => {
 });
 
 const calculateAmountForRange = (label) => {
-    const dateRange = label.includes(' - ') ? label.split(' - ') : [label, label];
+    let startRange, endRange;
 
-    const [startDay, endDay] = dateRange;
-    const startStr = `${startDay.split('/').reverse().join('/')}/${dayjs(startDate.value).year()}`;
-    const endStr = `${endDay.split('/').reverse().join('/')}/${dayjs(endDate.value).year()}`;
-
-    const startRange = dayjs(startStr, 'DD/MM/YYYY');
-    const endRange = dayjs(endStr, 'DD/MM/YYYY');
+    if (!label.includes(' - ') && !label.includes('/')) {
+        const month = Number(label); 
+        const year = dayjs(startDate.value).year(); 
+        startRange = dayjs(`${month}/01/${year + 1}`, 'DD/MM/YYYY');
+        endRange = dayjs(`${month}/${startRange.daysInMonth()}/${year + 1}`, 'DD/MM/YYYY');
+    } 
+    else {
+        const dateRange = label.includes(' - ') ? label.split(' - ') : [label, label];
+        const [startDay, endDay] = dateRange;
+        const startStr = `${startDay.split('/').reverse().join('/')}/${dayjs(startDate.value).year()}`;
+        const endStr = `${endDay.split('/').reverse().join('/')}/${dayjs(endDate.value).year()}`;
+        startRange = dayjs(startStr, 'DD/MM/YYYY');
+        endRange = dayjs(endStr, 'DD/MM/YYYY');
+    }
 
     const total = transactions.value.reduce((sum, transaction) => {
         const transactionDate = dayjs(transaction.date, 'DD/MM');
