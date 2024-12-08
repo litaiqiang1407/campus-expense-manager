@@ -29,7 +29,7 @@ Route::middleware(['auth', CheckWallet::class, HandleInertiaRequests::class])->g
     Route::get('/account', [AccountController::class, 'index'])->name('Account');
     Route::get('/categories', [CategoryController::class, 'index'])->name('Categories');
     Route::get('/categories/add', [CategoryController::class, 'create'])->name('AddCategory');
-    Route::get('/recurring', [TransactionController::class, 'index'])->name('Recurring');
+    Route::post('/store/category', [CategoryController::class, 'store'])->name('StoreCategory');
 
     Route::group(['prefix' => 'reports'], function () {
         Route::get('/', [ReportsController::class, 'index'])->name('Reports');

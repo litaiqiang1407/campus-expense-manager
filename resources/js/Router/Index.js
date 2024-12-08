@@ -385,7 +385,9 @@ router.beforeEach(async (to, from, next) => {
             "AddRecurringTransaction",
             "CreateTransaction",
             "CreateWallet",
+            "AddCategory",
             "Icon",
+            "ParentCategories",
             "EditRecurringTransaction",
             "CategoryReport"
         ].includes(to.name)

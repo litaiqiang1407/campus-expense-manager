@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <button class="flex items-center p-4 bg-white w-full gap-4">
+        <button class="flex items-center p-4 bg-white w-full gap-4" @click="goPage('AddCategory','income')">
             <font-awesome-icon icon="circle-plus" class="text-primary size-8" />
             <span class="text-primary font-bold">NEW CATEGORY</span>
         </button>
@@ -18,7 +18,7 @@
                 </button>
             </div>
 
-            <ul v-if="getSubcategories(category.parent_id).length" class="pl-8">
+            <ul v-if="getSubcategories(category.parent_id).length && router.currentRoute.value.name !== 'ParentCategories'" class="pl-8">
                 <li v-for="(subcategory, index) in getSubcategories(category.id)" :key="subcategory.id" :class="[
                     'flex items-center space-x-2 py-2',
                     index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2'
@@ -58,7 +58,17 @@ const getSubcategories = (parentId) => {
 };
 
 // Check if the current route is select-categories
-const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'SelectCategories');
+const isSelectCategoryPage = computed(() =>
+    router.currentRoute.value.name === 'SelectCategories' ||
+    router.currentRoute.value.name === 'ParentCategories'
+);
+
+function goPage(routeName, type) {
+    localStorage.setItem('type', type);
+    router.push({
+        name: routeName,
+    });
+}
 const gotoback = (category) => {
     console.log('Selected Category:', category);
     localStorage.setItem('categoryId', category.id);
