@@ -20,12 +20,12 @@ import {
     EditWallet,
     Icon,
     Categories,
-    SelectCategories,
+    //SelectCategories,
     SelectWallet,
     WriteNote,
     TransactionDetails,
     RecurringTransaction,
-    SelectCategory,
+    //SelectCategory,
     AddRecurringTransaction,
     RecurringTransactionDetails,
     EditRecurringTransaction,
@@ -201,10 +201,21 @@ const routes = [
     {
         path: "/select-categories",
         name: "SelectCategories",
-        component: SelectCategories,
+        component: Categories,
         meta: {
             layout: HeaderLayout,
             title: "Select Category",
+            isBack: true,
+            isCancel: false,
+        },
+    },
+    {
+        path: "/parent-categories",
+        name: "ParentCategories",
+        component: Categories,
+        meta: {
+            layout: HeaderLayout,
+            title: "Select Parent Category",
             isBack: true,
             isCancel: false,
         },
@@ -271,19 +282,7 @@ const routes = [
         name: 'AddCategory',
         component: AddCategory,
         meta: { layout: HeaderLayout, title: 'New Category', isBack: true},
-        
-    },
-    {
-        path: "/select-category",
-        name: "SelectCategory",
-        component: SelectCategory,
-        meta: {
-            layout: HeaderLayout,
-            title: "Select Category",
-            isBack: true,
-            isCancel: false,
-        },
-        props: true,
+
     },
     {
         path: "/transaction/recurring",
@@ -296,13 +295,13 @@ const routes = [
             isCancel: false,
         },
         props: true,
-    },  
+    },
     {
         path: '/reports',
         name: 'Reports',
         component: Reports,
         meta: { layout: MenuLayout },
-    },  
+    },
     {
         path: '/reports/category',
         name: 'CategoryReport',

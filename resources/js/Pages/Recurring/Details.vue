@@ -40,7 +40,6 @@ const fetchTransactionDetailsData = async () => {
     try {
         loading.value = true;
         const response = await axios.get(route('TransactionRecurringDetails', { id }));
-        console.log("data", response.data.transactionRecurring)
         amount.value = response.data.transactionRecurring?.amount ?? 0;
         category_name.value = response.data.transactionRecurring?.category_name ?? 'Unknown';
         wallet_name.value = response.data.transactionRecurring?.wallet_name ?? 'Unknown';

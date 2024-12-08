@@ -1,9 +1,6 @@
 <template>
     <div class="py-4 pl-0.5">
         <button type="button" class="flex w-full space-x-2 items-center" @click="togglePopup">
-            <div v-if="iconSrc" class="w-15 flex items-center justify-start">
-                <img :src="iconSrc" class="w-11 h-11" />
-            </div>
             <div class="flex items-center justify-center">
                 <font-awesome-icon icon="fa-regular fa-calendar" class="text-black text-[16px]" />
             </div>
@@ -236,7 +233,7 @@ const props = defineProps({
         default: "Forever"
     },
     times: {
-        type: String,
+        type: [String, Number],
         default: "1"
     }
 });

@@ -90,7 +90,6 @@ const fetchTransactionRecurring = async () => {
         loading.value = true;
         const response = await axios.get(route('TransactionRecurring'));
         transactionRecurring.value = response.data.transactionsRecurring || [];
-        console.log(transactionRecurring.value);
     } catch (error) {
         console.error('Error fetching transaction recurring:', error);
     } finally {

@@ -24,8 +24,8 @@ export const CreateBudget = () => import('./Budget/Create.vue');
 
 export const Categories = () => import('./Categories/Index.vue');
 export const AddCategory = () => import('./Categories/Create.vue');
-export const SelectCategories = () => import('./Categories/SelectCategories/Index.vue');
-export const SelectCategory = () => import('./Categories/SelectCategory/Index.vue');
+// export const SelectCategories = () => import('./Categories/SelectCategories/Index.vue');
+// export const SelectCategory = () => import('./Categories/SelectCategory/Index.vue');
 
 export const Notification = () => import('./Notification/Index.vue');
 export const MyWallet = () => import('./MyWallet/Index.vue');

@@ -4,7 +4,7 @@
             <Loading class="size-8" />
         </div>
         <div class="pl-4 mt-4 pr-4">
-            <InputMoney :inputValue="amount.toString()":readonly="true" />
+            <InputMoney :inputValue="amount.toString()" :readonly="true" />
 
             <Select :iconSrc="categoryIcon" :selectText="category_name ? category_name : 'Select category'"
                 :sizeText="'16'" :getItemLabel="item => item.name" />
@@ -13,12 +13,13 @@
             <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate"
                 :readonly="true" />
 
-            <Select :iconSrc="walletIcon" :selectText="wallet_name ? wallet_name : 'Select Wallet'"/>
+            <Select :iconSrc="walletIcon" :selectText="wallet_name ? wallet_name : 'Select Wallet'" />
             <button class="mt-4 mr-1 w-full p-2 bg-primary text-white text-[16px] rounded-[1000px]"
                 @click="editTransaction(id)">
                 Edit
             </button>
-            <button class="mt-4 p-2 bg-[#8B0000] w-full text-white text-[16px] rounded-[1000px]" @click="confirmDelete(id)">
+            <button class="mt-4 p-2 bg-[#8B0000] w-full text-white text-[16px] rounded-[1000px]"
+                @click="confirmDelete(id)">
                 Delete
             </button>
         </div>

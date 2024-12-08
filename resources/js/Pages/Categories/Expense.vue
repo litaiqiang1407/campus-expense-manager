@@ -21,7 +21,7 @@
             </div>
 
             <!-- Subcategories List -->
-            <ul v-if="getSubcategories(category.parent_id).length" class="pl-8">
+            <ul v-if="getSubcategories(category.parent_id).length && router.currentRoute.value.name !== 'ParentCategories'" class="pl-8">
                 <li v-for="(subcategory, index) in getSubcategories(category.id)" :key="subcategory.id" :class="['flex items-center space-x-2 py-2',
                     index === getSubcategories(category.id).length - 1 ? 'border-left-half' : 'border-l-2']"
                     @click="gotoback(subcategory)">
@@ -40,11 +40,10 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'; // Import useRouter to handle navigation
+import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 
 const router = useRouter();
-const fromPage = router.currentRoute.value.query.fromPage
 const props = defineProps({
     categories: Array
 });

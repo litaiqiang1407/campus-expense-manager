@@ -64,7 +64,6 @@ const fetchTransactions = async () => {
         const recurringTransactions = response.data.calculatedTransactions;
         wallets.value = response.data.wallets;
         transactions.value = [...transactions.value, ...recurringTransactions];
-        console.log('test',calculatedTransactions.value)
         wallets.value.sort((a, b) => {
             if (a.name === 'Total') return -1;
             if (b.name === 'Total') return 1;
