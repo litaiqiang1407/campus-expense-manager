@@ -9,7 +9,7 @@
                 :sizeText="'16'" :getItemLabel="item => item.name" @update:selectText="updateCategory"
                 @click="goToSelectCategories" />
             <Note v-model="note" fromPage="EditTransaction" />
-            <DateTimePicker v-if="!loading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
+            <DateTimePicker v-if="!isLoading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
             <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
                 :items="wallets" :getItemLabel="item => item.name" @click="selectWallet" />
 

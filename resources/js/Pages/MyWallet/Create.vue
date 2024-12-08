@@ -6,8 +6,8 @@
       </div>
       <Form :action="'Create Wallet'" @submit="submitForm">
           <div class="flex flex-col items-center">
-            <Select :selectText="''" @click="selectIcon" :iconSrc="iconSrc"/>
-            <span class="text-primary uppercase font-semibold text-[14px]">Select wallet icon</span>
+            <Select :selectText="''" @click="selectIcon" :iconSrc="selectedIcon?.path || '/assets/icon/income/salary.png'" :hideText="true"/>
+            <span class="text-primary font-semibold text-[14px]">{{ selectedIcon?.name || 'Select wallet icon'}}</span>
           </div>
           <Input v-model="walletName" :label="''" :placeholder="'Wallet name...'"  />
           <InputMoney :inputValue="balance" @update:inputValue="balance = $event" />
@@ -24,6 +24,7 @@ import { InputMoney, Select, Form, Input } from '@/Components/Form/Index';
 import Dropdown from '@/Components/Dropdown/Index.vue';
 import Submit from '@/Components/Button/Submit/Index.vue';
 import { useToast } from 'vue-toastification';
+import { goSelect } from '@/Helpers/Helpers';
 
 const toast = useToast();
 const router = useRouter();
@@ -31,10 +32,9 @@ const router = useRouter();
 const isFirstTime = ref(false);
 const walletTypeList = ref([]);
 const icons = ref([]);
-const iconSrc = ref('');
-const iconID = ref('');
 const balance = ref(localStorage.getItem('balance') || '0');
 const walletName = ref(localStorage.getItem('walletName') || '');
+const selectedIcon = ref(JSON.parse(localStorage.getItem('selectedIcon')) || {});
 
 const props = defineProps({
   walletType: {
@@ -50,7 +50,6 @@ const fetchWalletData = async () => {
     const response = await axios.get(route('CreateWallet'));
     walletTypeList.value = response.data.walletTypeList;
     icons.value = response.data.icons;
-    // walletType.value = response.data.walletType;
     isFirstTime.value = response.data.isFirstTime;
   } catch (error) {
     console.error('Error creating wallet:', error);
@@ -62,7 +61,7 @@ const selectIcon = () => {
   localStorage.setItem('balance', balance.value);
   localStorage.setItem('walletType', walletType.value);
 
-  router.push({ name: 'Icon', query: { walletType: walletType.value} });
+  goSelect(router, 'icon')
 };
 
 
@@ -70,7 +69,7 @@ const submitForm = async () => {
   const errors = [];
   if (!walletName.value.trim()) errors.push('Wallet name is required.');
   if (!walletType.value) errors.push('Please select a wallet type.');
-  if (!iconID.value) errors.push('Please select a wallet icon.');
+  if (!selectedIcon.value.id) errors.push('Please select a wallet icon.');
 
   if (errors.length) {
     errors.forEach(toast.error);
@@ -81,7 +80,7 @@ const submitForm = async () => {
     name: walletName.value.trim(),
     balance: balance.value,
     wallet_type_name: walletType.value,
-    icon_id: iconID.value,
+    icon_id: selectedIcon.value.id,
   };
 
   try {
@@ -101,14 +100,6 @@ const submitForm = async () => {
 };
 
 onMounted(() => {
-  const queryIcon = router.currentRoute.value.query.icon;
-
-  const defaultIcon = { path: '/assets/icon/income/salary.png' };
-  const selectedIcon = queryIcon ? JSON.parse(queryIcon) : defaultIcon;
-
-  iconSrc.value = selectedIcon.path;
-  iconID.value = selectedIcon.id;
-
   walletName.value = localStorage.getItem('walletName') || '';
   balance.value = localStorage.getItem('balance') || '0';
 
