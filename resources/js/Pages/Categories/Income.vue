@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <button class="flex items-center p-4 bg-white w-full gap-4">
+        <button class="flex items-center p-4 bg-white w-full gap-4" @click="goPage('AddCategory','income')">
             <font-awesome-icon icon="circle-plus" class="text-primary size-8" />
             <span class="text-primary font-bold">NEW CATEGORY</span>
         </button>
@@ -58,7 +58,17 @@ const getSubcategories = (parentId) => {
 };
 
 // Check if the current route is select-categories
-const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'SelectCategories');
+const isSelectCategoryPage = computed(() =>
+    router.currentRoute.value.name === 'SelectCategories' ||
+    router.currentRoute.value.name === 'ParentCategories'
+);
+
+function goPage(routeName, type) {
+    localStorage.setItem('type', type);
+    router.push({
+        name: routeName,
+    });
+}
 const gotoback = (category) => {
     console.log('Selected Category:', category);
     localStorage.setItem('categoryId', category.id);

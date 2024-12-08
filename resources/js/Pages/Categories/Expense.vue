@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <button class="flex items-center p-4 bg-white w-full gap-4" @click="goPage('AddCategory')">
+        <button class="flex items-center p-4 bg-white w-full gap-4" @click="goPage('AddCategory','expense')">
         <!-- Button to add new category -->
             <font-awesome-icon icon="circle-plus" class="text-primary size-8" />
             <span class="text-primary font-bold">NEW CATEGORY</span>
@@ -56,12 +56,17 @@ const getSubcategories = (parentId) => {
     return props.categories.filter(category => category.parent_id === parentId);
 };
 
-function goPage(routeName) {
-    router.push({ name: routeName });
+function goPage(routeName, type) {
+    localStorage.setItem('type', type);
+    router.push({
+        name: routeName,
+    });
 }
 
-const isSelectCategoryPage = computed(() => router.currentRoute.value.name === 'SelectCategories');
-
+const isSelectCategoryPage = computed(() =>
+    router.currentRoute.value.name === 'SelectCategories' ||
+    router.currentRoute.value.name === 'ParentCategories'
+);
 const gotoback = (category) => {
     localStorage.setItem('categoryId', category.id);
     localStorage.setItem('selectedCategory', category.name);
