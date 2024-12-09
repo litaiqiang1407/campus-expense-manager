@@ -61,7 +61,7 @@ const isLoading = ref(true);
 const wallet_id = ref(getLocalStorageItem('wallet_id', []));
 const amount = ref(getLocalStorageItem('amount', '0'));
 const note = ref(getLocalStorageItem('note', ''));
-const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
+const selectedWallet = ref(getLocalStorageItem('walletName', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
 const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
 const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
@@ -93,7 +93,7 @@ const fetchTransactionData = async () => {
         if (!localStorage.getItem('categoryId')) category_id.value = data.category_id;
         if (!localStorage.getItem('wallet_id')) wallet_id.value = data.wallet_id;
         if (!localStorage.getItem('selectedCategory')) selectedCategory.value = data.name;
-        if (!localStorage.getItem('selectedWallet')) selectedWallet.value = data.wallet_name;
+        if (!localStorage.getItem('walletName')) selectedWallet.value = data.wallet_name;
     } catch (error) {
         toast.error('Failed to load recurring  transaction data. Please try again.');
     } finally {

@@ -11,7 +11,7 @@
             <Note v-model="note" fromPage="EditTransaction" />
             <DateTimePicker v-if="!isLoading" :icon="'fa-regular fa-calendar'" v-model="transactionDate" />
             <Select :iconSrc="WalletIcon" :selectText="selectedWallet ? selectedWallet : 'Select Wallet'"
-                :items="wallets" :getItemLabel="item => item.name" @click="selectWallet" />
+                :getItemLabel="item => item.name" @click="selectWallet" />
 
             <Submit> Save</Submit>
         </Form>
@@ -43,7 +43,7 @@ const wallets = ref([]);
 const wallet_id = ref(getLocalStorageItem('wallet_id', []));
 const amount = ref(getLocalStorageItem('amount', '0'));
 const note = ref(getLocalStorageItem('note', ''));
-const selectedWallet = ref(getLocalStorageItem('selectedWallet', null));
+const selectedWallet = ref(getLocalStorageItem('walletName', null));
 const selectedCategory = ref(getLocalStorageItem('selectedCategory', null));
 const categoryIcon = ref(getLocalStorageItem('CategoryIcon', null));
 const WalletIcon = ref(getLocalStorageItem('WalletIcon', null));
@@ -63,7 +63,7 @@ const fetchTransactionData = async () => {
         if (!localStorage.getItem('categoryId')) category_id.value = transactionData.category_id;
         if (!localStorage.getItem('wallet_id')) wallet_id.value = transactionData.wallet_id;
         if (!localStorage.getItem('selectedCategory')) selectedCategory.value = transactionData.name;
-        if (!localStorage.getItem('selectedWallet')) selectedWallet.value = transactionData.wallet_name;
+        if (!localStorage.getItem('walletName')) selectedWallet.value = transactionData.wallet_name;
         if (!localStorage.getItem('transactionDate')) transactionDate.value = new Date(transactionData.date);
 
     } catch (error) {
