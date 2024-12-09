@@ -58,7 +58,7 @@ const isDropdownVisible = ref(false);
 // Find the wallet based on walletId
 const selectedWallet = ref(props.wallets.find(wallet => wallet.id == walletId) || props.wallets[0]);
 
-const visibleWallets = computed(() => props.wallets.slice(0, 3));
+const visibleWallets = computed(() => props.wallets.slice(0, 4));
 
 const toggleDropdown = () => {
     isDropdownVisible.value = !isDropdownVisible.value;

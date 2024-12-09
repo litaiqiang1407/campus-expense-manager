@@ -67,7 +67,7 @@ const submitForm = async () => {
         const formData = {
             name: input.value,
             parent_id: category_id.value,
-            type: 'expense',
+            type: categoryType.value,
             icon_id: selectedIcon.value.id || 36,
         };
         console.log(formData)
