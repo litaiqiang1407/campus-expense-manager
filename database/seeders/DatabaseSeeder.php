@@ -13,10 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             IconsTableSeeder::class,            
-            WalletTypesTableSeeder::class,
             CategorySeeder::class,
-            TransactionSeeder::class,
-            NotificationSeeder::class
+            // NotificationSeeder::class
         ]);
     }
 }
