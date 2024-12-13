@@ -389,7 +389,8 @@ router.beforeEach(async (to, from, next) => {
             "Icon",
             "ParentCategories",
             "EditRecurringTransaction",
-            "CategoryReport"
+            "CategoryReport",
+            "CreateBudget"
         ].includes(to.name)
     ) {
         localStorage.clear();
