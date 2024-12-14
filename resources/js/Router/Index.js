@@ -91,8 +91,8 @@ const routes = [
         meta: {
             layout: HeaderLayout,
             title: "Add transaction",
-            isBack: false,
-            isCancel: true,
+            isBack: true,
+            isCancel: false,
         },
     },
 
@@ -115,8 +115,8 @@ const routes = [
         meta: {
             layout: HeaderLayout,
             title: "Transactiton Details",
-            isBack: true,
-            isCancel: false,
+            isBack: false,
+            isCancel: true,
         },
     },
 
@@ -183,8 +183,8 @@ const routes = [
         meta: {
             layout: HeaderLayout,
             title: "Add budget",
-            isBack: false,
-            isCancel: true,
+            isBack: true,
+            isCancel: false,
         },
     },
     {
@@ -226,14 +226,14 @@ const routes = [
         component: MyWallet,
     },
     {
-        path: "/my-wallet/:walletType/create",
+        path: "/my-wallet/create",
         name: "CreateWallet",
         component: CreateWallet,
         meta: {
             layout: HeaderLayout,
             title: "Add wallet",
-            isBack: false,
-            isCancel: true,
+            isBack: true,
+            isCancel: false,
         },
         props: true,
     },

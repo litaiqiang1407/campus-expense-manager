@@ -12,12 +12,16 @@
 </template>
 <script setup>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import { goBack, goCancel } from '@/Helpers/Helpers';
+import { useRouter, useRoute } from 'vue-router';
+import { goBack as helperGoBack, goCancel as helperGoCancel } from '@/Helpers/Helpers';
 
+const router = useRouter();
 const route = useRoute();
 
 const title = computed(() => route.meta.title || '');
 const isBack = computed(() => route.meta.isBack !== false);  
 const isCancel = computed(() => route.meta.isCancel === true); 
+
+const goBack= () => helperGoBack(router);  
+const goCancel= () => helperGoCancel(router); 
 </script>

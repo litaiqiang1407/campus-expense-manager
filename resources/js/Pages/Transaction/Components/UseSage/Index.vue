@@ -15,7 +15,7 @@
             <div class="absolute top-0 right-0 h-px w-1/2 bg-secondaryText mx-4"></div>
         </div>
         <div class="flex justify-center items-center py-1">
-            <div class="bg-primary/10 w-3/5 flex justify-center items-center rounded-[25px]">
+            <div @click="goToReports" class="bg-primary/10 w-3/5 flex justify-center items-center rounded-[25px]">
                 <p class="text-[12px] text-primary m-2">
                     View report for this period
                 </p>
@@ -67,6 +67,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { goPage } from '@/Helpers/Helpers';
 
 const props = defineProps({
     transactions: Array,
@@ -78,6 +79,10 @@ const currentTypeId = ref(null); // Lưu ID giao dịch hiện tại
 const setActiveType = (type, id = null) => {
     activeType.value = type;
     currentTypeId.value = id;
+};
+
+const goToReports = () => {
+    goPage(router, 'Reports');
 };
 
 const router = useRouter();

@@ -78,7 +78,7 @@ import { Add } from '@/Components/Button/Index';
 import Loading from '@/Components/Loading/Index.vue';
 import Swal from 'sweetalert2';
 import { Search } from '@/Components/Header/Components/Index';
-import { formatBalance, goBack } from '@/Helpers/Helpers';
+import { formatBalance, goBack as goBackHelper } from '@/Helpers/Helpers';
 
 const router = useRouter();
 
@@ -184,6 +184,8 @@ const deleteWallet = async (walletId) => {
         console.error('Error deleting wallet:', error);
     }
 };
+
+const goBack = () => goBackHelper(router);
 
 onMounted(fetchWallets);
 </script>

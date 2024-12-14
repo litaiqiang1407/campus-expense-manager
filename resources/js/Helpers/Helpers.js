@@ -49,26 +49,27 @@ const showAlert = ({ title, text, confirmText, onConfirm }) => {
     });
 }
 
-const goBack = () => {
+const goBack = (router) => {
     const currentPath = window.location.pathname; 
     const pathSegments = currentPath.split('/').filter(segment => segment); 
 
     if (pathSegments.length > 1) {
         pathSegments.pop(); 
         const newPath = '/' + pathSegments.join('/');
-        window.location.href = newPath; 
+        router.push(newPath);  
     } else {
-        window.location.href = '/';
+        router.push('/');
     }
 };
 
-const goCancel = () => {
+const goCancel = (router) => {
     const currentPath = window.location.pathname; 
     let targetPath = '/'; 
 
     const cancelMapping = [
         { pattern: /^\/my-wallet\/edit\/\d+$/, target: '/my-wallet' },
         { pattern: /^\/transaction\/edit\/\d+$/, target: '/transaction' },
+        { pattern: /^\/transaction\/transaction-details\/\d+$/, target: '/transaction' },
     ];
 
     for (const { pattern, target } of cancelMapping) {
@@ -77,8 +78,7 @@ const goCancel = () => {
             break;
         }
     }
-
-    window.location.href = targetPath;
+    router.push(targetPath);  
 };
 
 const goSelect = (router, page) => {
