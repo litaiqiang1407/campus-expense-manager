@@ -5,7 +5,7 @@
     <div v-else class="bg-primaryBackground min-h-screen flex flex-col">
         <!-- Header -->
         <div class="flex justify-between items-center bg-white p-4 pb-14 border-b border-gray-300">
-            <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack" />
+            <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack(router)" />
             <h1 class="text-lg font-bold mr-auto ml-4">Recurring Transactions</h1>
             <div class="flex items-center space-x-4">
                 <button @click="goPage('SelectWallet')">
@@ -119,10 +119,6 @@ const goPage = (page) => {
 
 const transactionRecurringDetails = (id) => {
     router.push({ name: 'TransactionRecurringDetails', params: { id } });
-};
-
-const goBack = () => {
-    window.history.back();
 };
 
 // Lifecycle hook

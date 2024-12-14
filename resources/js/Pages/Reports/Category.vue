@@ -3,7 +3,7 @@
         <header class="sticky px-4 py-2 flex flex-col items-center bg-white">
             <div class="h-13 flex items-center w-full justify-between">
                 <div class="flex items-center gap-2">
-                    <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack" />
+                    <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack(router)" />
                     <h1 class="text-[20px] font-semibold text-black leading-6">Category report</h1>
                 </div>
                 <button class="text-[20px] text-primary" @click="() => openSelectTimeRange = true">

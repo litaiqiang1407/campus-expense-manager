@@ -1,7 +1,7 @@
 <template>
     <header class="sticky px-4 py-2 flex flex-col items-center bg-white">
         <div class="h-13 flex items-center w-full justify-between">
-            <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack" />
+            <font-awesome-icon icon="arrow-left" class="text-[20px]" @click="goBack(router)" />
             <div class="flex flex-col items-center">
                 <span class="text-[12px]">Balance</span>
                 <span class="text-[20px] font-semibold">Reports</span>
@@ -76,6 +76,9 @@
 
 <script setup>
 import { ref, onMounted, computed, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const selectedTimeRange = ref('month');
 
@@ -413,8 +416,4 @@ onMounted(async () => {
     }
     fetchReports(startDate.value, endDate.value, selectedWallet.id);
 });
-
-const goBack = () => {
-    window.history.back()
-};
 </script>

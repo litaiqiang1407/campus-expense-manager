@@ -67,10 +67,6 @@ const fetchCategories = async () => {
     }
 };
 
-const goBack = () => {
-    window.history.back()
-};
-
 onMounted(() => {
     fetchCategories();
 });

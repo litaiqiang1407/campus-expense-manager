@@ -46,7 +46,7 @@
   </div>
 
 
-  <button @click="goBack" class="fixed top-2 left-2 text-black text-2xl bg-transparent border-none cursor-pointer">
+  <button @click="goBack(router)" class="fixed top-2 left-2 text-black text-2xl bg-transparent border-none cursor-pointer">
     <i class="fa-solid fa-arrow-left"></i>
   </button>
   </div>
@@ -55,7 +55,8 @@
 </template>
  
 <script setup>
-const goBack = () => {
-  window.history.back();
-};
+import { goBack } from "@/Helpers/Helpers";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 </script>
